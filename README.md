@@ -14,6 +14,8 @@ AWS 개념과 실습 기록입니다.
 - [Lab8 Relational Database](Lab08_relational_database/README.md)
 - [Lab9 Serverless](Lab09_serverless/README.md)
 - [Lab10 CloudFormation](Lab10_cloudformation/README.md)
+- [Lab11 Cost Management and Support](Lab11_cost_management_support/README.md)
+- [Lab12 Disaster Recovery](Lab12_disaster_recovery/README.md)
 
 ## 정리한 내용
 
@@ -54,6 +56,10 @@ AWS 개념과 실습 기록입니다.
 - Infrastructure as Code와 CloudFormation 스택 관리
 - CloudFormation 템플릿, 변경 세트, 스택 업데이트, 드리프트 감지
 - Outputs Export와 ImportValue를 활용한 스택 분리
+- AWS 요금 구조, TCO, Pricing Calculator, Cost Explorer, Budgets
+- AWS Support 플랜, 지원 케이스 심각도, Trusted Advisor
+- RPO/RTO와 재해 복구 전략
+- Backup and Restore, Pilot Light, Warm Standby, Multi-site DR 패턴
 
 ## 읽는 순서
 
@@ -67,6 +73,8 @@ AWS 개념과 실습 기록입니다.
 8. `Lab08_relational_database`: RDS MySQL을 구성하고 EC2에서 SQL 접속/테이블 조회를 검증합니다.
 9. `Lab09_serverless`: Lambda가 DynamoDB에 주문 데이터를 저장하는 서버리스 흐름을 검증합니다.
 10. `Lab10_cloudformation`: CloudFormation으로 단일 스택을 생성/업데이트하고, VPC/EC2/ALB를 분리 스택으로 관리합니다.
+11. `Lab11_cost_management_support`: AWS 비용 구조, 비용 분석 도구, 예산 관리, 지원 플랜을 정리합니다.
+12. `Lab12_disaster_recovery`: RPO/RTO를 기준으로 재해 복구 패턴과 서비스별 복구 전략을 비교합니다.
 
 ## 보안 주의사항
 

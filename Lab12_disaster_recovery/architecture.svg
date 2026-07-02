@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="920" viewBox="0 0 1500 920">
+  <defs>
+    <style>
+      .bg { fill: #f7f9fc; }
+      .title { font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", Arial, sans-serif; font-size: 36px; font-weight: 800; fill: #172033; }
+      .subtitle { font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", Arial, sans-serif; font-size: 18px; fill: #526071; }
+      .panel { fill: #ffffff; stroke: #d8e1ec; stroke-width: 2; rx: 14; }
+      .tier1 { fill: #eaf3ff; stroke: #91b9e8; stroke-width: 2; rx: 12; }
+      .tier2 { fill: #edf9f4; stroke: #79b89b; stroke-width: 2; rx: 12; }
+      .tier3 { fill: #fff7e8; stroke: #dfb45f; stroke-width: 2; rx: 12; }
+      .tier4 { fill: #fff0f0; stroke: #df8b8b; stroke-width: 2; rx: 12; }
+      .head { font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", Arial, sans-serif; font-size: 22px; font-weight: 800; fill: #253247; }
+      .text { font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", Arial, sans-serif; font-size: 16px; fill: #405168; }
+      .small { font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", Arial, sans-serif; font-size: 14px; fill: #5f6f82; }
+      .axis { stroke: #405168; stroke-width: 3; fill: none; }
+      .dash { stroke: #aeb9c7; stroke-width: 2; stroke-dasharray: 8 8; fill: none; }
+    </style>
+  </defs>
+  <rect class="bg" width="1500" height="920"/>
+  <text class="title" x="70" y="72">Lab12 Disaster Recovery Strategy Map</text>
+  <text class="subtitle" x="70" y="105">Choose a DR pattern by business RPO/RTO, recovery speed, and cost tolerance</text>
+
+  <rect class="panel" x="70" y="145" width="1360" height="605"/>
+
+  <line class="axis" x1="160" y1="650" x2="1320" y2="650"/>
+  <line class="axis" x1="160" y1="650" x2="160" y2="230"/>
+  <text class="small" x="1260" y="690">Higher cost / lower RTO</text>
+  <text class="small" x="100" y="220">Lower RPO/RTO</text>
+  <text class="small" x="90" y="690">Lower cost / higher RTO</text>
+
+  <rect class="tier1" x="210" y="535" width="250" height="90"/>
+  <text class="head" x="240" y="570">Backup and Restore</text>
+  <text class="small" x="240" y="596">Backups in S3 or Glacier</text>
+  <text class="small" x="240" y="616">Restore when disaster occurs</text>
+
+  <rect class="tier2" x="500" y="430" width="250" height="105"/>
+  <text class="head" x="530" y="465">Pilot Light</text>
+  <text class="small" x="530" y="492">Core data and minimal stack</text>
+  <text class="small" x="530" y="514">Start and scale resources on event</text>
+
+  <rect class="tier3" x="790" y="325" width="250" height="105"/>
+  <text class="head" x="820" y="360">Warm Standby</text>
+  <text class="small" x="820" y="387">Reduced-capacity full stack</text>
+  <text class="small" x="820" y="409">Scale up during failover</text>
+
+  <rect class="tier4" x="1080" y="220" width="250" height="105"/>
+  <text class="head" x="1110" y="255">Multi-site</text>
+  <text class="small" x="1110" y="282">Active/active or full standby</text>
+  <text class="small" x="1110" y="304">Fastest recovery, highest cost</text>
+
+  <path class="dash" d="M460 535 C540 510, 610 475, 750 430"/>
+  <path class="dash" d="M750 430 C830 405, 900 370, 1040 325"/>
+  <path class="dash" d="M1040 325 C1120 300, 1190 265, 1330 220"/>
+
+  <rect class="panel" x="70" y="785" width="1360" height="85"/>
+  <text class="head" x="105" y="823">DR building blocks</text>
+  <text class="text" x="105" y="854">S3 replication, EBS snapshots, AMI copy, RDS backups/read replicas, DynamoDB PITR/global tables, Route 53 failover, IaC runbooks.</text>
+</svg>

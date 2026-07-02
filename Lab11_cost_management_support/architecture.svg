@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="920" viewBox="0 0 1500 920">
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#2f6fbd"/>
+    </marker>
+    <style>
+      .bg { fill: #f7f9fc; }
+      .title { font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", Arial, sans-serif; font-size: 36px; font-weight: 800; fill: #172033; }
+      .subtitle { font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", Arial, sans-serif; font-size: 18px; fill: #526071; }
+      .panel { fill: #ffffff; stroke: #d8e1ec; stroke-width: 2; rx: 14; }
+      .node { fill: #eaf3ff; stroke: #91b9e8; stroke-width: 2; rx: 12; }
+      .node2 { fill: #edf9f4; stroke: #79b89b; stroke-width: 2; rx: 12; }
+      .node3 { fill: #fff7e8; stroke: #dfb45f; stroke-width: 2; rx: 12; }
+      .warn { fill: #fff0f0; stroke: #df8b8b; stroke-width: 2; rx: 12; }
+      .head { font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", Arial, sans-serif; font-size: 22px; font-weight: 800; fill: #253247; }
+      .text { font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", Arial, sans-serif; font-size: 16px; fill: #405168; }
+      .small { font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", Arial, sans-serif; font-size: 14px; fill: #5f6f82; }
+      .line { stroke: #2f6fbd; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+    </style>
+  </defs>
+  <rect class="bg" width="1500" height="920"/>
+  <text class="title" x="70" y="72">Lab11 Cost Management and Support</text>
+  <text class="subtitle" x="70" y="105">A practical loop for visibility, budget control, optimization, and support escalation</text>
+
+  <rect class="panel" x="70" y="145" width="1360" height="610"/>
+
+  <rect class="node" x="125" y="255" width="250" height="105"/>
+  <text class="head" x="155" y="292">1. Usage</text>
+  <text class="text" x="155" y="322">EC2, RDS, S3, NAT, ALB</text>
+  <text class="small" x="155" y="346">Pay for actual resources used</text>
+
+  <rect class="node2" x="445" y="255" width="250" height="105"/>
+  <text class="head" x="475" y="292">2. Tag</text>
+  <text class="text" x="475" y="322">Project, Lab, Owner</text>
+  <text class="small" x="475" y="346">Prepare allocation by purpose</text>
+
+  <rect class="node" x="765" y="255" width="250" height="105"/>
+  <text class="head" x="795" y="292">3. Analyze</text>
+  <text class="text" x="795" y="322">Cost Explorer, CUR</text>
+  <text class="small" x="795" y="346">Find service and trend drivers</text>
+
+  <rect class="node3" x="1085" y="255" width="250" height="105"/>
+  <text class="head" x="1115" y="292">4. Alert</text>
+  <text class="text" x="1115" y="322">AWS Budgets</text>
+  <text class="small" x="1115" y="346">Notify before surprises grow</text>
+
+  <rect class="node2" x="765" y="485" width="250" height="120"/>
+  <text class="head" x="795" y="522">5. Optimize</text>
+  <text class="text" x="795" y="552">Right-size, stop idle</text>
+  <text class="small" x="795" y="578">RI, Savings Plans, storage tiering</text>
+
+  <rect class="node3" x="445" y="485" width="250" height="120"/>
+  <text class="head" x="475" y="522">6. Govern</text>
+  <text class="text" x="475" y="552">Budgets, tags, cleanup</text>
+  <text class="small" x="475" y="578">Repeat as a regular operation</text>
+
+  <rect class="warn" x="125" y="485" width="250" height="120"/>
+  <text class="head" x="155" y="522">Support</text>
+  <text class="text" x="155" y="552">Cases, severity, TAM</text>
+  <text class="small" x="155" y="578">Use the right plan for workload risk</text>
+
+  <path class="line" d="M375 307 L445 307"/>
+  <path class="line" d="M695 307 L765 307"/>
+  <path class="line" d="M1015 307 L1085 307"/>
+  <path class="line" d="M1210 360 C1210 440, 1060 545, 1015 545"/>
+  <path class="line" d="M765 545 L695 545"/>
+  <path class="line" d="M445 545 L375 545"/>
+  <path class="line" d="M250 485 C250 430, 250 400, 250 360"/>
+
+  <rect class="panel" x="70" y="790" width="1360" height="80"/>
+  <text class="head" x="105" y="826">Student account rule</text>
+  <text class="text" x="105" y="856">Check running EC2, RDS, NAT Gateway, Elastic IP, ALB, EBS snapshots, CloudWatch Logs, and S3 after every lab.</text>
+</svg>
