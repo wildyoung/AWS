@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="560" viewBox="0 0 1100 560" role="img" aria-labelledby="title desc">
+  <title id="title">Ping test checkpoint capture</title>
+  <desc id="desc">Sanitized terminal-style capture showing ping timeout before Internet Gateway route configuration</desc>
+  <defs>
+    <style>
+      .bg { fill: #f5f7fb; }
+      .title { font: 700 28px Arial, sans-serif; fill: #172033; }
+      .subtitle { font: 16px Arial, sans-serif; fill: #5a6578; }
+      .window { fill: #111827; stroke: #d6deeb; stroke-width: 2; }
+      .bar { fill: #263244; }
+      .dot-red { fill: #ff5f57; }
+      .dot-yellow { fill: #febc2e; }
+      .dot-green { fill: #28c840; }
+      .terminal-title { font: 13px Arial, sans-serif; fill: #cfd8e3; }
+      .prompt { font: 17px Menlo, Consolas, monospace; fill: #9ae6b4; }
+      .text { font: 17px Menlo, Consolas, monospace; fill: #e5e7eb; }
+      .muted { font: 14px Arial, sans-serif; fill: #65738a; }
+      .badge { fill: #fff7e8; stroke: #d99b29; stroke-width: 2; }
+      .badge-text { font: 700 14px Arial, sans-serif; fill: #8a5a00; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1100" height="560"/>
+  <text class="title" x="56" y="62">Ping Test: 34페이지 체크포인트</text>
+  <text class="subtitle" x="56" y="92">Internet Gateway 라우트가 없어서 EC2 퍼블릭 IP로 ping 응답이 없는 상태</text>
+
+  <rect class="badge" x="56" y="118" width="220" height="34" rx="17"/>
+  <text class="badge-text" x="166" y="141" text-anchor="middle">Public IP masked</text>
+
+  <rect class="window" x="56" y="178" width="988" height="302" rx="14"/>
+  <rect class="bar" x="56" y="178" width="988" height="44" rx="14"/>
+  <circle class="dot-red" cx="82" cy="200" r="7"/>
+  <circle class="dot-yellow" cx="106" cy="200" r="7"/>
+  <circle class="dot-green" cx="130" cy="200" r="7"/>
+  <text class="terminal-title" x="550" y="205" text-anchor="middle">terminal - ping checkpoint</text>
+
+  <text class="prompt" x="88" y="260">$ ping -c 5 &lt;PUBLIC_IP&gt;</text>
+  <text class="text" x="88" y="296">PING &lt;PUBLIC_IP&gt; (&lt;PUBLIC_IP&gt;): 56 data bytes</text>
+  <text class="text" x="88" y="326">Request timeout for icmp_seq 0</text>
+  <text class="text" x="88" y="356">Request timeout for icmp_seq 1</text>
+  <text class="text" x="88" y="386">Request timeout for icmp_seq 2</text>
+  <text class="text" x="88" y="416">Request timeout for icmp_seq 3</text>
+  <text class="text" x="88" y="446">--- &lt;PUBLIC_IP&gt; ping statistics ---</text>
+  <text class="text" x="88" y="476">5 packets transmitted, 0 packets received, 100.0% packet loss</text>
+
+  <text class="muted" x="56" y="522">실제 테스트 결과를 기반으로 작성했으며, GitHub 공개를 위해 퍼블릭 IP는 마스킹했습니다.</text>
+</svg>
