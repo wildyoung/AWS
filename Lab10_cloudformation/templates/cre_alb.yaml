@@ -1,0 +1,45 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Resources:
+  MyTargetGroup:
+    Type: "AWS::ElasticLoadBalancingV2::TargetGroup"
+    Properties:
+      Name: "my-alb-tg"
+      Port: 80
+      Protocol: HTTP
+      VpcId: !ImportValue "VPCId"
+      TargetType: "instance"
+      HealthCheckProtocol: HTTP
+      HealthCheckPort: "80"
+      HealthCheckPath: "/"
+      HealthCheckIntervalSeconds: 30
+      HealthCheckTimeoutSeconds: 5
+      HealthyThresholdCount: 2
+      UnhealthyThresholdCount: 2
+
+  MyLoadBalancer:
+    Type: "AWS::ElasticLoadBalancingV2::LoadBalancer"
+    Properties:
+      Name: "my-web-alb"
+      Scheme: "internet-facing"
+      Subnets:
+        - !ImportValue "SubnetId01"
+        - !ImportValue "SubnetId02"
+      SecurityGroups:
+        - !ImportValue "SecurityGroupId"
+      Type: "application"
+      IpAddressType: "ipv4"
+
+  MyListener:
+    Type: "AWS::ElasticLoadBalancingV2::Listener"
+    Properties:
+      DefaultActions:
+        - Type: "forward"
+          TargetGroupArn: !Ref MyTargetGroup
+      LoadBalancerArn: !Ref MyLoadBalancer
+      Port: 80
+      Protocol: HTTP
+
+Outputs:
+  LoadBalancerDNS:
+    Description: "DNS name of the load balancer"
+    Value: !GetAtt MyLoadBalancer.DNSName

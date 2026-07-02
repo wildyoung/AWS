@@ -1,0 +1,53 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Resources:
+  MyInstance01:
+    Type: "AWS::EC2::Instance"
+    Properties:
+      InstanceType: "t3.micro"
+      KeyName: "Your-Key-Name"
+      ImageId: "ami-010502f62836f0c67"
+      SubnetId: !ImportValue "SubnetId01"
+      SecurityGroupIds:
+        - !ImportValue "SecurityGroupId"
+      Tags:
+        - Key: "Name"
+          Value: "myweb01"
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          sudo -i
+          dnf -y update
+          dnf -y upgrade-minimal
+          dnf install -y httpd
+          systemctl start httpd
+          systemctl enable httpd
+          echo '<div style="display: flex; height: 100vh; justify-content: center; align-items: center;"><h1>Hello World  from <span style="color:red;">myweb01</span></h1></div>' > /var/www/html/index.html
+          dnf install -y https://dev.mysql.com/get/mysql80-community-release-el9-1.noarch.rpm
+          dnf -y install --nogpgcheck mysql-community-client
+          dnf -y install stress
+
+  MyInstance02:
+    Type: "AWS::EC2::Instance"
+    Properties:
+      InstanceType: "t3.micro"
+      KeyName: "Your-Key-Name"
+      ImageId: "ami-010502f62836f0c67"
+      SubnetId: !ImportValue "SubnetId02"
+      SecurityGroupIds:
+        - !ImportValue "SecurityGroupId"
+      Tags:
+        - Key: "Name"
+          Value: "myweb02"
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          sudo -i
+          dnf -y update
+          dnf -y upgrade-minimal
+          dnf install -y httpd
+          systemctl start httpd
+          systemctl enable httpd
+          echo '<div style="display: flex; height: 100vh; justify-content: center; align-items: center;"><h1>Hello World  from <span style="color:red;">myweb02</span></h1></div>' > /var/www/html/index.html
+          dnf install -y https://dev.mysql.com/get/mysql80-community-release-el9-1.noarch.rpm
+          dnf -y install --nogpgcheck mysql-community-client
+          dnf -y install stress

@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="900" viewBox="0 0 1500 900">
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#2f6fbd"/>
+    </marker>
+    <style>
+      .bg { fill: #f7f9fc; }
+      .panel { fill: #ffffff; stroke: #d8e1ec; stroke-width: 2; rx: 14; }
+      .stack1 { fill: #edf9f4; stroke: #79b89b; stroke-width: 2; rx: 12; }
+      .stack2 { fill: #eaf3ff; stroke: #91b9e8; stroke-width: 2; rx: 12; }
+      .stack3 { fill: #fff7e8; stroke: #dfb45f; stroke-width: 2; rx: 12; }
+      .title { font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", Arial, sans-serif; font-size: 34px; font-weight: 800; fill: #172033; }
+      .subtitle { font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", Arial, sans-serif; font-size: 18px; fill: #526071; }
+      .head { font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", Arial, sans-serif; font-size: 22px; font-weight: 800; fill: #253247; }
+      .text { font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", Arial, sans-serif; font-size: 17px; fill: #253247; }
+      .small { font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", Arial, sans-serif; font-size: 15px; fill: #5f6f82; }
+      .ok { fill: #eaf7ef; stroke: #78b88f; stroke-width: 2; rx: 10; }
+      .warn { fill: #fff0f0; stroke: #df8b8b; stroke-width: 2; rx: 10; }
+      .line { stroke: #2f6fbd; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+    </style>
+  </defs>
+  <rect class="bg" width="1500" height="900"/>
+  <text class="title" x="70" y="72">Lab10 Split Stack Result</text>
+  <text class="subtitle" x="70" y="105">Actual AWS CLI flow: network stack exports values, compute and ALB stacks import them</text>
+
+  <rect class="panel" x="70" y="145" width="1360" height="500"/>
+
+  <rect class="stack1" x="120" y="205" width="360" height="285"/>
+  <text class="head" x="150" y="245">my-stack1</text>
+  <text class="small" x="150" y="272">Status: CREATE_COMPLETE</text>
+  <text class="text" x="150" y="315">Creates</text>
+  <text class="small" x="170" y="345">VPC 10.10.0.0/16</text>
+  <text class="small" x="170" y="373">Public subnet x2</text>
+  <text class="small" x="170" y="401">Internet Gateway and route table</text>
+  <text class="small" x="170" y="429">Security group</text>
+  <text class="text" x="150" y="452">Exports</text>
+  <text class="small" x="170" y="476">VPCId, SubnetId01/02, SecurityGroupId</text>
+
+  <rect class="stack2" x="590" y="205" width="300" height="190"/>
+  <text class="head" x="620" y="245">my-stack2</text>
+  <text class="small" x="620" y="272">Status: CREATE_COMPLETE</text>
+  <text class="text" x="620" y="315">Creates</text>
+  <text class="small" x="640" y="345">MyInstance01</text>
+  <text class="small" x="640" y="373">MyInstance02</text>
+
+  <rect class="stack3" x="1030" y="205" width="330" height="215"/>
+  <text class="head" x="1060" y="245">my-stack3</text>
+  <text class="small" x="1060" y="272">Status: CREATE_COMPLETE</text>
+  <text class="text" x="1060" y="315">Creates</text>
+  <text class="small" x="1080" y="345">MyLoadBalancer</text>
+  <text class="small" x="1080" y="373">MyListener</text>
+  <text class="small" x="1080" y="401">MyTargetGroup</text>
+
+  <path class="line" d="M480 315 C535 315, 550 315, 590 315"/>
+  <text class="small" x="505" y="294">ImportValue</text>
+  <path class="line" d="M480 407 C740 520, 895 315, 1030 315"/>
+  <text class="small" x="745" y="498">ImportValue</text>
+
+  <rect class="warn" x="1030" y="460" width="330" height="72"/>
+  <text class="small" x="1060" y="490">Note: ALB target group was created,</text>
+  <text class="small" x="1060" y="516">but EC2 target attachments are not in template.</text>
+
+  <rect class="panel" x="70" y="685" width="1360" height="145"/>
+  <text class="head" x="100" y="725">Cleanup Order</text>
+  <rect class="ok" x="100" y="755" width="310" height="45"/>
+  <text class="text" x="126" y="784">1. my-stack2 DELETE_COMPLETE</text>
+  <rect class="ok" x="455" y="755" width="310" height="45"/>
+  <text class="text" x="481" y="784">2. my-stack3 DELETE_COMPLETE</text>
+  <rect class="ok" x="810" y="755" width="310" height="45"/>
+  <text class="text" x="836" y="784">3. my-stack1 DELETE_COMPLETE</text>
+  <text class="small" x="1145" y="784">Exports removed after VPC stack deletion.</text>
+</svg>

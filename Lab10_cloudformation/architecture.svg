@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="980" viewBox="0 0 1600 980">
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#2f6fbd"/>
+    </marker>
+    <style>
+      .bg { fill: #f6f8fb; }
+      .title { font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", Arial, sans-serif; font-size: 38px; font-weight: 800; fill: #172033; }
+      .subtitle { font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", Arial, sans-serif; font-size: 20px; fill: #526071; }
+      .section { fill: #ffffff; stroke: #d8e1ec; stroke-width: 2; rx: 14; }
+      .sectionTitle { font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", Arial, sans-serif; font-size: 24px; font-weight: 800; fill: #1f2a3d; }
+      .label { font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", Arial, sans-serif; font-size: 18px; fill: #253247; font-weight: 700; }
+      .small { font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", Arial, sans-serif; font-size: 15px; fill: #526071; }
+      .tiny { font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", Arial, sans-serif; font-size: 13px; fill: #5f6f82; }
+      .template { fill: #eaf3ff; stroke: #91b9e8; stroke-width: 2; rx: 10; }
+      .stack { fill: #edf9f4; stroke: #79b89b; stroke-width: 2; rx: 10; }
+      .resource { fill: #fff7e8; stroke: #dfb45f; stroke-width: 2; rx: 10; }
+      .warn { fill: #fff0f0; stroke: #df8b8b; stroke-width: 2; rx: 10; }
+      .line { stroke: #2f6fbd; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+      .line2 { stroke: #69a279; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1600" height="980"/>
+  <text class="title" x="70" y="70">Lab10 CloudFormation Architecture</text>
+  <text class="subtitle" x="70" y="104">Template -> Stack -> AWS Resources, with single-stack update and split-stack Import/Export</text>
+
+  <rect class="section" x="60" y="145" width="410" height="740"/>
+  <text class="sectionTitle" x="92" y="190">1. Templates</text>
+  <text class="small" x="92" y="220">YAML files stored and versioned in Git</text>
+
+  <rect class="template" x="95" y="260" width="335" height="82"/>
+  <text class="label" x="122" y="292">cre_testvpcAll.yaml</text>
+  <text class="small" x="122" y="318">VPC + 2 public subnets + EC2 x2</text>
+
+  <rect class="template" x="95" y="370" width="335" height="92"/>
+  <text class="label" x="122" y="404">update_testvpcAll.yaml</text>
+  <text class="small" x="122" y="430">Add private subnets, NAT Gateway,</text>
+  <text class="small" x="122" y="452">Elastic IP, private route table</text>
+
+  <rect class="template" x="95" y="505" width="335" height="82"/>
+  <text class="label" x="122" y="538">cre_myvpc.yaml</text>
+  <text class="small" x="122" y="564">Exports VPC, subnets, security group</text>
+
+  <rect class="template" x="95" y="615" width="335" height="82"/>
+  <text class="label" x="122" y="648">cre_ec2.yaml</text>
+  <text class="small" x="122" y="674">Imports VPC values and creates EC2</text>
+
+  <rect class="template" x="95" y="725" width="335" height="82"/>
+  <text class="label" x="122" y="758">cre_alb.yaml</text>
+  <text class="small" x="122" y="784">Imports VPC values and creates ALB</text>
+
+  <rect class="section" x="545" y="145" width="455" height="740"/>
+  <text class="sectionTitle" x="578" y="190">2. CloudFormation Stacks</text>
+  <text class="small" x="578" y="220">Create, change set, update, delete</text>
+
+  <rect class="stack" x="590" y="265" width="360" height="150"/>
+  <text class="label" x="624" y="300">test-all-stack</text>
+  <text class="small" x="624" y="330">CREATE_COMPLETE</text>
+  <text class="small" x="624" y="356">Change Set: Add NAT and private tier</text>
+  <text class="small" x="624" y="382">UPDATE_COMPLETE -> DELETE_COMPLETE</text>
+
+  <rect class="stack" x="590" y="492" width="360" height="125"/>
+  <text class="label" x="624" y="527">my-stack1</text>
+  <text class="small" x="624" y="557">Network stack</text>
+  <text class="small" x="624" y="583">Exports VPCId, SubnetId01/02, SG</text>
+
+  <rect class="stack" x="590" y="645" width="360" height="80"/>
+  <text class="label" x="624" y="678">my-stack2</text>
+  <text class="small" x="624" y="704">EC2 stack imports network values</text>
+
+  <rect class="stack" x="590" y="753" width="360" height="80"/>
+  <text class="label" x="624" y="786">my-stack3</text>
+  <text class="small" x="624" y="812">ALB stack imports network values</text>
+
+  <rect class="section" x="1070" y="145" width="470" height="740"/>
+  <text class="sectionTitle" x="1102" y="190">3. AWS Resources</text>
+  <text class="small" x="1102" y="220">Provisioned by stacks, then cleaned up</text>
+
+  <rect class="resource" x="1110" y="265" width="385" height="158"/>
+  <text class="label" x="1142" y="300">Single-stack VPC</text>
+  <text class="small" x="1142" y="330">Public subnet x2, EC2 x2</text>
+  <text class="small" x="1142" y="356">Private subnet x2, NAT Gateway</text>
+  <text class="small" x="1142" y="382">Public and private route tables</text>
+
+  <rect class="resource" x="1110" y="492" width="385" height="125"/>
+  <text class="label" x="1142" y="527">Network resources</text>
+  <text class="small" x="1142" y="557">VPC 10.10.0.0/16</text>
+  <text class="small" x="1142" y="583">Public subnets, IGW, route, SG</text>
+
+  <rect class="resource" x="1110" y="645" width="385" height="80"/>
+  <text class="label" x="1142" y="678">Compute resources</text>
+  <text class="small" x="1142" y="704">myweb01 and myweb02 EC2 instances</text>
+
+  <rect class="resource" x="1110" y="753" width="385" height="80"/>
+  <text class="label" x="1142" y="786">Load balancing resources</text>
+  <text class="small" x="1142" y="812">ALB, listener, target group</text>
+
+  <path class="line" d="M430 301 C505 301, 520 315, 590 315"/>
+  <path class="line" d="M430 416 C510 416, 535 350, 590 350"/>
+  <path class="line2" d="M950 338 C1020 338, 1035 338, 1110 338"/>
+
+  <path class="line" d="M430 546 C500 546, 525 552, 590 552"/>
+  <path class="line2" d="M950 552 C1025 552, 1040 552, 1110 552"/>
+
+  <path class="line" d="M430 656 C500 656, 525 685, 590 685"/>
+  <path class="line2" d="M950 685 C1025 685, 1040 685, 1110 685"/>
+
+  <path class="line" d="M430 766 C500 766, 525 793, 590 793"/>
+  <path class="line2" d="M950 793 C1025 793, 1040 793, 1110 793"/>
+
+  <path d="M770 617 L770 645" stroke="#69a279" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+  <path d="M830 617 L830 753" stroke="#69a279" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+  <text class="tiny" x="858" y="670">Export /</text>
+  <text class="tiny" x="858" y="688">ImportValue</text>
+
+  <rect class="warn" x="1080" y="870" width="440" height="70"/>
+  <text class="small" x="1110" y="900">Note: cre_alb.yaml creates a target group,</text>
+  <text class="small" x="1110" y="924">but does not attach EC2 targets.</text>
+</svg>

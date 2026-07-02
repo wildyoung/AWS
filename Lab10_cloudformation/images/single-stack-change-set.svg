@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="900" viewBox="0 0 1500 900">
+  <defs>
+    <style>
+      .bg { fill: #f7f9fc; }
+      .panel { fill: #ffffff; stroke: #d8e1ec; stroke-width: 2; rx: 14; }
+      .title { font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", Arial, sans-serif; font-size: 34px; font-weight: 800; fill: #172033; }
+      .subtitle { font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", Arial, sans-serif; font-size: 18px; fill: #526071; }
+      .head { font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", Arial, sans-serif; font-size: 20px; font-weight: 800; fill: #253247; }
+      .text { font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", Arial, sans-serif; font-size: 17px; fill: #253247; }
+      .small { font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", Arial, sans-serif; font-size: 15px; fill: #5f6f82; }
+      .ok { fill: #eaf7ef; stroke: #78b88f; stroke-width: 2; rx: 10; }
+      .add { fill: #eaf3ff; stroke: #91b9e8; stroke-width: 2; rx: 8; }
+      .modify { fill: #fff7e8; stroke: #dfb45f; stroke-width: 2; rx: 8; }
+      .line { stroke: #d8e1ec; stroke-width: 2; }
+    </style>
+  </defs>
+  <rect class="bg" width="1500" height="900"/>
+  <text class="title" x="70" y="72">Lab10 Single Stack Update Result</text>
+  <text class="subtitle" x="70" y="105">Actual AWS CLI flow: create stack -> create change set -> execute update -> delete stack</text>
+
+  <rect class="panel" x="65" y="145" width="420" height="245"/>
+  <text class="head" x="95" y="186">Stack Lifecycle</text>
+  <rect class="ok" x="95" y="220" width="330" height="44"/>
+  <text class="text" x="118" y="248">test-all-stack CREATE_COMPLETE</text>
+  <rect class="ok" x="95" y="282" width="330" height="44"/>
+  <text class="text" x="118" y="310">Change Set CREATE_COMPLETE</text>
+  <rect class="ok" x="95" y="344" width="330" height="44"/>
+  <text class="text" x="118" y="372">test-all-stack UPDATE_COMPLETE</text>
+
+  <rect class="panel" x="525" y="145" width="910" height="620"/>
+  <text class="head" x="555" y="186">Change Set Summary</text>
+  <text class="small" x="555" y="216">The update template added the private tier and NAT path. Existing EC2 instances were modified without replacement.</text>
+
+  <line class="line" x1="555" y1="250" x2="1405" y2="250"/>
+  <text class="head" x="575" y="282">Action</text>
+  <text class="head" x="735" y="282">Logical Resource</text>
+  <text class="head" x="1095" y="282">Resource Type</text>
+  <line class="line" x1="555" y1="302" x2="1405" y2="302"/>
+
+  <rect class="modify" x="575" y="324" width="110" height="34"/><text class="text" x="602" y="347">Modify</text>
+  <text class="text" x="735" y="347">EC2Instance1, EC2Instance2</text>
+  <text class="text" x="1095" y="347">AWS::EC2::Instance</text>
+
+  <rect class="add" x="575" y="382" width="110" height="34"/><text class="text" x="615" y="405">Add</text>
+  <text class="text" x="735" y="405">ElasticIP</text>
+  <text class="text" x="1095" y="405">AWS::EC2::EIP</text>
+
+  <rect class="add" x="575" y="440" width="110" height="34"/><text class="text" x="615" y="463">Add</text>
+  <text class="text" x="735" y="463">NatGateway</text>
+  <text class="text" x="1095" y="463">AWS::EC2::NatGateway</text>
+
+  <rect class="add" x="575" y="498" width="110" height="34"/><text class="text" x="615" y="521">Add</text>
+  <text class="text" x="735" y="521">PrivateSubnet1, PrivateSubnet2</text>
+  <text class="text" x="1095" y="521">AWS::EC2::Subnet</text>
+
+  <rect class="add" x="575" y="556" width="110" height="34"/><text class="text" x="615" y="579">Add</text>
+  <text class="text" x="735" y="579">PrivateRouteTable, PrivateRoute</text>
+  <text class="text" x="1095" y="579">AWS::EC2::RouteTable / Route</text>
+
+  <rect class="add" x="575" y="614" width="110" height="34"/><text class="text" x="615" y="637">Add</text>
+  <text class="text" x="735" y="637">SubnetRouteTableAssociationPrivate1/2</text>
+  <text class="text" x="1095" y="637">AWS::EC2::SubnetRouteTableAssociation</text>
+
+  <rect class="ok" x="70" y="690" width="415" height="74"/>
+  <text class="head" x="100" y="724">Cleanup</text>
+  <text class="small" x="100" y="750">test-all-stack deletion completed after verification.</text>
+
+  <rect class="panel" x="65" y="800" width="1370" height="54"/>
+  <text class="text" x="95" y="834">Final check: Lab10 CloudFormation active stacks and exports were empty after cleanup.</text>
+</svg>
