@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Route 53 Health Check Result</title>
+  <desc id="desc">Route 53 health check observed ALB HTTP 200 success from multiple checker regions</desc>
+  <defs>
+    <style>
+      .bg { fill: #f6f8fb; }
+      .panel { fill: #ffffff; stroke: #d8e0ee; stroke-width: 2; }
+      .ok { fill: #ecfdf3; stroke: #30a46c; stroke-width: 2; }
+      .dns { fill: #eef4ff; stroke: #4e7bd9; stroke-width: 2; }
+      .title { font: 700 30px Arial, sans-serif; fill: #172033; }
+      .subtitle { font: 15px Arial, sans-serif; fill: #536178; }
+      .label { font: 700 17px Arial, sans-serif; fill: #172033; }
+      .small { font: 14px Arial, sans-serif; fill: #4f5d73; }
+      .tiny { font: 12px Arial, sans-serif; fill: #64748b; }
+      .mono { font: 13px Menlo, Consolas, monospace; fill: #243044; }
+      .line { stroke: #d8e0ee; stroke-width: 1; }
+    </style>
+  </defs>
+  <rect class="bg" width="1280" height="720"/>
+  <text class="title" x="56" y="62">Route 53 Health Check</text>
+  <text class="subtitle" x="56" y="91">my-web-status checks the Lab3 ALB over HTTP port 80</text>
+
+  <rect class="panel" x="72" y="130" width="1136" height="460" rx="8"/>
+  <rect class="dns" x="112" y="174" width="260" height="118" rx="16"/>
+  <text class="label" x="242" y="218" text-anchor="middle">Route 53</text>
+  <text class="small" x="242" y="246" text-anchor="middle">global health checkers</text>
+  <text class="tiny" x="242" y="270" text-anchor="middle">multiple AWS regions</text>
+
+  <rect class="ok" x="508" y="174" width="260" height="118" rx="16"/>
+  <text class="label" x="638" y="218" text-anchor="middle">my-alb</text>
+  <text class="small" x="638" y="246" text-anchor="middle">HTTP status code 200</text>
+  <text class="tiny" x="638" y="270" text-anchor="middle">primary web endpoint</text>
+
+  <rect class="ok" x="904" y="174" width="224" height="118" rx="16"/>
+  <text class="label" x="1016" y="218" text-anchor="middle">Result</text>
+  <text class="small" x="1016" y="246" text-anchor="middle">healthy</text>
+  <text class="tiny" x="1016" y="270" text-anchor="middle">ready for failover record</text>
+
+  <line class="line" x1="112" y1="340" x2="1128" y2="340"/>
+  <text class="label" x="132" y="382">Sanitized observation summary</text>
+  <text class="mono" x="132" y="424">ap-northeast-1  Success: HTTP Status Code 200, OK</text>
+  <text class="mono" x="132" y="456">eu-west-1       Success: HTTP Status Code 200, OK</text>
+  <text class="mono" x="132" y="488">us-west-2       Success: HTTP Status Code 200, OK</text>
+  <text class="mono" x="132" y="520">us-east-1       Success: HTTP Status Code 200, OK</text>
+  <text class="tiny" x="132" y="554">Resolved public IPs were intentionally omitted from the repository.</text>
+</svg>

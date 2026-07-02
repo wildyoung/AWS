@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="760" viewBox="0 0 1280 760" role="img" aria-labelledby="title desc">
+  <title id="title">Lab6 Domain and Traffic Architecture</title>
+  <desc id="desc">Route 53, S3 static website hosting, DNS failover, and CloudFront caching architecture</desc>
+  <defs>
+    <style>
+      .bg { fill: #f6f8fb; }
+      .title { font: 700 30px Arial, sans-serif; fill: #172033; }
+      .subtitle { font: 15px Arial, sans-serif; fill: #536178; }
+      .group { fill: #ffffff; stroke: #c8d4e8; stroke-width: 2; }
+      .aws { fill: #fff7ed; stroke: #f28c28; stroke-width: 2; }
+      .dns { fill: #eef4ff; stroke: #4e7bd9; stroke-width: 2; }
+      .cdn { fill: #f3edff; stroke: #8357d6; stroke-width: 2; }
+      .storage { fill: #ecfdf3; stroke: #30a46c; stroke-width: 2; }
+      .fail { fill: #fff1f2; stroke: #e05d6f; stroke-width: 2; }
+      .label { font: 700 16px Arial, sans-serif; fill: #172033; }
+      .small { font: 13px Arial, sans-serif; fill: #4f5d73; }
+      .tiny { font: 12px Arial, sans-serif; fill: #64748b; }
+      .arrow-blue { stroke: #4e7bd9; stroke-width: 4; fill: none; marker-end: url(#arrowBlue); }
+      .arrow-purple { stroke: #8357d6; stroke-width: 4; fill: none; marker-end: url(#arrowPurple); }
+      .arrow-green { stroke: #2f9e67; stroke-width: 4; fill: none; marker-end: url(#arrowGreen); }
+      .arrow-red { stroke: #e05d6f; stroke-width: 4; fill: none; marker-end: url(#arrowRed); }
+      .dash { stroke-dasharray: 8 8; }
+    </style>
+    <marker id="arrowBlue" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#4e7bd9"/>
+    </marker>
+    <marker id="arrowPurple" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#8357d6"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#2f9e67"/>
+    </marker>
+    <marker id="arrowRed" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#e05d6f"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" width="1280" height="760"/>
+  <text class="title" x="56" y="62">Lab6 Domain and Traffic</text>
+  <text class="subtitle" x="56" y="91">Route 53 DNS, S3 static website failover, and CloudFront edge caching</text>
+
+  <path class="arrow-blue" d="M224 186 L330 186"/>
+  <path class="arrow-blue" d="M480 186 L592 186"/>
+  <path class="arrow-green" d="M792 186 L902 186"/>
+  <path class="arrow-red dash" d="M680 250 C720 324, 822 372, 902 418"/>
+  <path class="arrow-purple" d="M224 560 L330 560"/>
+  <path class="arrow-purple" d="M480 560 L902 586"/>
+  <path class="arrow-green dash" d="M592 250 C536 338, 520 420, 520 500"/>
+
+  <rect class="group" x="72" y="128" width="152" height="116" rx="16"/>
+  <text class="label" x="148" y="174" text-anchor="middle">Client</text>
+  <text class="small" x="148" y="200" text-anchor="middle">browser request</text>
+
+  <rect class="dns" x="330" y="128" width="150" height="116" rx="16"/>
+  <text class="label" x="405" y="168" text-anchor="middle">Route 53</text>
+  <text class="small" x="405" y="194" text-anchor="middle">DNS and alias</text>
+  <text class="tiny" x="405" y="216" text-anchor="middle">domain required</text>
+
+  <rect class="aws" x="592" y="128" width="200" height="116" rx="16"/>
+  <text class="label" x="692" y="166" text-anchor="middle">my-alb</text>
+  <text class="small" x="692" y="192" text-anchor="middle">primary endpoint</text>
+  <text class="tiny" x="692" y="214" text-anchor="middle">HTTP health checked</text>
+
+  <rect class="storage" x="902" y="128" width="250" height="116" rx="16"/>
+  <text class="label" x="1027" y="166" text-anchor="middle">EC2 web fleet</text>
+  <text class="small" x="1027" y="192" text-anchor="middle">target group behind ALB</text>
+  <text class="tiny" x="1027" y="214" text-anchor="middle">normal service path</text>
+
+  <rect class="fail" x="902" y="360" width="250" height="116" rx="16"/>
+  <text class="label" x="1027" y="398" text-anchor="middle">S3 website</text>
+  <text class="small" x="1027" y="424" text-anchor="middle">secondary failover target</text>
+  <text class="tiny" x="1027" y="446" text-anchor="middle">public static content</text>
+
+  <rect class="group" x="72" y="502" width="152" height="116" rx="16"/>
+  <text class="label" x="148" y="548" text-anchor="middle">Client</text>
+  <text class="small" x="148" y="574" text-anchor="middle">large object</text>
+
+  <rect class="cdn" x="330" y="502" width="150" height="116" rx="16"/>
+  <text class="label" x="405" y="544" text-anchor="middle">CloudFront</text>
+  <text class="small" x="405" y="570" text-anchor="middle">edge cache</text>
+  <text class="tiny" x="405" y="592" text-anchor="middle">faster repeat reads</text>
+
+  <rect class="storage" x="902" y="528" width="250" height="116" rx="16"/>
+  <text class="label" x="1027" y="570" text-anchor="middle">S3 origin</text>
+  <text class="small" x="1027" y="596" text-anchor="middle">object storage</text>
+  <text class="tiny" x="1027" y="618" text-anchor="middle">direct S3 path compared</text>
+
+  <rect class="dns" x="468" y="312" width="224" height="92" rx="16"/>
+  <text class="label" x="580" y="350" text-anchor="middle">Health check</text>
+  <text class="small" x="580" y="376" text-anchor="middle">my-web-status</text>
+</svg>

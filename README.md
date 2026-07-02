@@ -9,6 +9,7 @@ AWS 개념과 실습 기록입니다.
 - [Lab3 High Availability](Lab3_high_availability/README.md)
 - [Lab4 Storage](Lab4_storage/README.md)
 - [Lab5 VPC Peering](Lab5_vpc_peering/README.md)
+- [Lab6 Domain and Traffic](Lab6_domain_traffic/README.md)
 
 ## 정리한 내용
 
@@ -33,6 +34,9 @@ AWS 개념과 실습 기록입니다.
 - VPC Peering을 통한 리전 간 프라이빗 통신
 - 라우팅 테이블과 보안 그룹이 피어링 통신에 미치는 영향
 - Transit Gateway, Site-to-Site VPN, Direct Connect, VPC Endpoint 개념
+- Route 53 hosted zone, alias record, health check, DNS failover
+- S3 정적 웹사이트 기반 장애조치 대상 구성
+- CloudFront CDN, edge cache, cache hit/miss, TTL 개념
 
 ## 읽는 순서
 
@@ -41,6 +45,7 @@ AWS 개념과 실습 기록입니다.
 3. `Lab3_high_availability`: 단일 서버 중심 구성을 ALB와 Auto Scaling 기반 고가용성 구조로 확장합니다.
 4. `Lab4_storage`: EC2가 사용하는 블록 스토리지, 여러 서버가 공유하는 파일 스토리지, 인터넷에서 접근하는 객체 스토리지를 비교합니다.
 5. `Lab5_vpc_peering`: 서로 다른 리전의 VPC를 피어링하고, 라우팅/보안그룹 조건에 따라 프라이빗 통신이 달라지는 것을 확인합니다.
+6. `Lab6_domain_traffic`: Route 53 DNS 흐름, S3 정적 웹사이트 장애조치, CloudFront 캐싱 효과를 확인합니다.
 
 ## 보안 주의사항
 
