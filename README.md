@@ -4,15 +4,15 @@ AWS 개념과 실습 기록입니다.
 
 ## 실습 목록
 
-- [Lab1 Networking](Lab1_networking/README.md)
-- [Lab2 Computing](Lab2_computing/README.md)
-- [Lab3 High Availability](Lab3_high_availability/README.md)
-- [Lab4 Storage](Lab4_storage/README.md)
-- [Lab5 VPC Peering](Lab5_vpc_peering/README.md)
-- [Lab6 Domain and Traffic](Lab6_domain_traffic/README.md)
-- [Lab7 Cloud Security](Lab7_cloud_security/README.md)
-- [Lab8 Relational Database](Lab8_relational_database/README.md)
-- [Lab9 Serverless](Lab9_serverless/README.md)
+- [Lab1 Networking](Lab01_networking/README.md)
+- [Lab2 Computing](Lab02_computing/README.md)
+- [Lab3 High Availability](Lab03_high_availability/README.md)
+- [Lab4 Storage](Lab04_storage/README.md)
+- [Lab5 VPC Peering](Lab05_vpc_peering/README.md)
+- [Lab6 Domain and Traffic](Lab06_domain_traffic/README.md)
+- [Lab7 Cloud Security](Lab07_cloud_security/README.md)
+- [Lab8 Relational Database](Lab08_relational_database/README.md)
+- [Lab9 Serverless](Lab09_serverless/README.md)
 - [Lab10 CloudFormation](Lab10_cloudformation/README.md)
 
 ## 정리한 내용
@@ -57,15 +57,15 @@ AWS 개념과 실습 기록입니다.
 
 ## 읽는 순서
 
-1. `Lab1_networking`: VPC, 서브넷, 라우팅, 인터넷 연결, 프라이빗/퍼블릭 서브넷 차이를 이해합니다.
-2. `Lab2_computing`: EC2 위에 Web-WAS-DB를 구성하고 AMI와 user data로 서버 구성을 재사용합니다.
-3. `Lab3_high_availability`: 단일 서버 중심 구성을 ALB와 Auto Scaling 기반 고가용성 구조로 확장합니다.
-4. `Lab4_storage`: EC2가 사용하는 블록 스토리지, 여러 서버가 공유하는 파일 스토리지, 인터넷에서 접근하는 객체 스토리지를 비교합니다.
-5. `Lab5_vpc_peering`: 서로 다른 리전의 VPC를 피어링하고, 라우팅/보안그룹 조건에 따라 프라이빗 통신이 달라지는 것을 확인합니다.
-6. `Lab6_domain_traffic`: Route 53 DNS 흐름, S3 정적 웹사이트 장애조치, CloudFront 캐싱 효과를 확인합니다.
-7. `Lab7_cloud_security`: IAM 권한 모델, MFA, EC2 역할 기반 S3 접근, 계정 보안 기본 원칙을 확인합니다.
-8. `Lab8_relational_database`: RDS MySQL을 구성하고 EC2에서 SQL 접속/테이블 조회를 검증합니다.
-9. `Lab9_serverless`: Lambda가 DynamoDB에 주문 데이터를 저장하는 서버리스 흐름을 검증합니다.
+1. `Lab01_networking`: VPC, 서브넷, 라우팅, 인터넷 연결, 프라이빗/퍼블릭 서브넷 차이를 이해합니다.
+2. `Lab02_computing`: EC2 위에 Web-WAS-DB를 구성하고 AMI와 user data로 서버 구성을 재사용합니다.
+3. `Lab03_high_availability`: 단일 서버 중심 구성을 ALB와 Auto Scaling 기반 고가용성 구조로 확장합니다.
+4. `Lab04_storage`: EC2가 사용하는 블록 스토리지, 여러 서버가 공유하는 파일 스토리지, 인터넷에서 접근하는 객체 스토리지를 비교합니다.
+5. `Lab05_vpc_peering`: 서로 다른 리전의 VPC를 피어링하고, 라우팅/보안그룹 조건에 따라 프라이빗 통신이 달라지는 것을 확인합니다.
+6. `Lab06_domain_traffic`: Route 53 DNS 흐름, S3 정적 웹사이트 장애조치, CloudFront 캐싱 효과를 확인합니다.
+7. `Lab07_cloud_security`: IAM 권한 모델, MFA, EC2 역할 기반 S3 접근, 계정 보안 기본 원칙을 확인합니다.
+8. `Lab08_relational_database`: RDS MySQL을 구성하고 EC2에서 SQL 접속/테이블 조회를 검증합니다.
+9. `Lab09_serverless`: Lambda가 DynamoDB에 주문 데이터를 저장하는 서버리스 흐름을 검증합니다.
 10. `Lab10_cloudformation`: CloudFormation으로 단일 스택을 생성/업데이트하고, VPC/EC2/ALB를 분리 스택으로 관리합니다.
 
 ## 보안 주의사항
