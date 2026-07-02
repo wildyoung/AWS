@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1100" height="560" viewBox="0 0 1100 560" role="img" aria-labelledby="title desc">
-  <title id="title">Ping test checkpoint capture</title>
-  <desc id="desc">Sanitized terminal-style capture showing ping timeout before Internet Gateway route configuration</desc>
+  <title id="title">인터넷 연결 전 ping 테스트 결과</title>
+  <desc id="desc">인터넷 게이트웨이 라우트 설정 전 ping timeout을 보여주는 비식별 터미널 캡처</desc>
   <defs>
     <style>
       .bg { fill: #f5f7fb; }
@@ -21,18 +21,18 @@
   </defs>
 
   <rect class="bg" width="1100" height="560"/>
-  <text class="title" x="56" y="62">Ping Test: 34페이지 체크포인트</text>
+  <text class="title" x="56" y="62">연결 테스트: 인터넷 연결 전 상태</text>
   <text class="subtitle" x="56" y="92">Internet Gateway 라우트가 없어서 EC2 퍼블릭 IP로 ping 응답이 없는 상태</text>
 
   <rect class="badge" x="56" y="118" width="220" height="34" rx="17"/>
-  <text class="badge-text" x="166" y="141" text-anchor="middle">Public IP masked</text>
+  <text class="badge-text" x="166" y="141" text-anchor="middle">퍼블릭 IP 비공개 처리</text>
 
   <rect class="window" x="56" y="178" width="988" height="302" rx="14"/>
   <rect class="bar" x="56" y="178" width="988" height="44" rx="14"/>
   <circle class="dot-red" cx="82" cy="200" r="7"/>
   <circle class="dot-yellow" cx="106" cy="200" r="7"/>
   <circle class="dot-green" cx="130" cy="200" r="7"/>
-  <text class="terminal-title" x="550" y="205" text-anchor="middle">terminal - ping checkpoint</text>
+  <text class="terminal-title" x="550" y="205" text-anchor="middle">terminal - connectivity test</text>
 
   <text class="prompt" x="88" y="260">$ ping -c 5 &lt;PUBLIC_IP&gt;</text>
   <text class="text" x="88" y="296">PING &lt;PUBLIC_IP&gt; (&lt;PUBLIC_IP&gt;): 56 data bytes</text>

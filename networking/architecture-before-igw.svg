@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="760" viewBox="0 0 1280 760" role="img" aria-labelledby="title desc">
-  <title id="title">34페이지 체크포인트 VPC 아키텍처</title>
+  <title id="title">인터넷 연결 전 VPC 아키텍처</title>
   <desc id="desc">인터넷 게이트웨이와 기본 라우트가 없는 VPC 내부 구성도</desc>
   <defs>
     <style>
@@ -31,7 +31,7 @@
   </defs>
 
   <rect class="bg" width="1280" height="760"/>
-  <text class="title" x="56" y="66">34페이지 체크포인트</text>
+  <text class="title" x="56" y="66">인터넷 연결 전 상태</text>
   <text class="subtitle" x="56" y="94">VPC 내부 구성은 완료되었지만 인터넷 게이트웨이와 0.0.0.0/0 라우트가 아직 없는 상태</text>
 
   <rect class="box" x="58" y="150" width="220" height="118" rx="14"/>
