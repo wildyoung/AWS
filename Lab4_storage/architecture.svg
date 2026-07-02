@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="760" viewBox="0 0 1280 760" role="img" aria-labelledby="title desc">
+  <title id="title">Lab4 Storage Architecture</title>
+  <desc id="desc">EBS, EBS snapshot, EFS, and S3 storage lab architecture</desc>
+  <defs>
+    <style>
+      .bg { fill: #f6f8fb; }
+      .title { font: 700 30px Arial, sans-serif; fill: #172033; }
+      .subtitle { font: 15px Arial, sans-serif; fill: #536178; }
+      .vpc { fill: #eaf2ff; stroke: #4e7bd9; stroke-width: 3; }
+      .zone { fill: #ffffff; stroke: #c8d4e8; stroke-width: 2; }
+      .box { fill: #ffffff; stroke: #cbd6e8; stroke-width: 2; }
+      .ec2 { fill: #fff3e8; stroke: #f28c28; stroke-width: 2; }
+      .ebs { fill: #edf7ff; stroke: #2086c9; stroke-width: 2; }
+      .efs { fill: #ecfdf3; stroke: #30a46c; stroke-width: 2; }
+      .s3 { fill: #fff8df; stroke: #c58a00; stroke-width: 2; }
+      .label { font: 700 16px Arial, sans-serif; fill: #172033; }
+      .small { font: 13px Arial, sans-serif; fill: #4f5d73; }
+      .tiny { font: 12px Arial, sans-serif; fill: #64748b; }
+      .arrow-blue { stroke: #4e7bd9; stroke-width: 4; fill: none; marker-end: url(#arrowBlue); }
+      .arrow-green { stroke: #2f9e67; stroke-width: 4; fill: none; marker-end: url(#arrowGreen); }
+      .arrow-orange { stroke: #d97706; stroke-width: 4; fill: none; marker-end: url(#arrowOrange); }
+      .dash { stroke-dasharray: 7 7; }
+    </style>
+    <marker id="arrowBlue" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#4e7bd9"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#2f9e67"/>
+    </marker>
+    <marker id="arrowOrange" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#d97706"/>
+    </marker>
+  </defs>
+  <rect class="bg" width="1280" height="760"/>
+  <text class="title" x="56" y="62">Lab4 Storage</text>
+  <text class="subtitle" x="56" y="91">EBS block storage, EFS shared file storage, and S3 object storage</text>
+
+  <rect class="vpc" x="62" y="126" width="760" height="548" rx="26"/>
+  <text class="label" x="100" y="166">AWS VPC : my-vpc</text>
+  <text class="small" x="100" y="190">EC2 instances use EBS and EFS inside the VPC</text>
+
+  <rect class="zone" x="100" y="234" width="310" height="340" rx="18"/>
+  <text class="label" x="130" y="270">my-sub01</text>
+  <text class="small" x="130" y="294">ap-northeast-2a</text>
+
+  <rect class="zone" x="474" y="234" width="310" height="340" rx="18"/>
+  <text class="label" x="504" y="270">my-sub02</text>
+  <text class="small" x="504" y="294">mount target for EFS</text>
+
+  <rect class="ec2" x="142" y="330" width="210" height="78" rx="14"/>
+  <text class="label" x="247" y="362" text-anchor="middle">my-web01</text>
+  <text class="small" x="247" y="386" text-anchor="middle">/data01 mounted</text>
+
+  <rect class="ebs" x="142" y="458" width="210" height="78" rx="14"/>
+  <text class="label" x="247" y="490" text-anchor="middle">EBS volume</text>
+  <text class="small" x="247" y="514" text-anchor="middle">10GB -> 20GB XFS</text>
+
+  <rect class="ec2" x="516" y="330" width="210" height="78" rx="14"/>
+  <text class="label" x="621" y="362" text-anchor="middle">my-web02</text>
+  <text class="small" x="621" y="386" text-anchor="middle">/dir1 restored volume</text>
+
+  <rect class="ebs" x="516" y="458" width="210" height="78" rx="14"/>
+  <text class="label" x="621" y="490" text-anchor="middle">Restored EBS</text>
+  <text class="small" x="621" y="514" text-anchor="middle">from snapshot</text>
+
+  <rect class="ebs" x="332" y="612" width="220" height="70" rx="14"/>
+  <text class="label" x="442" y="640" text-anchor="middle">EBS Snapshot</text>
+  <text class="small" x="442" y="664" text-anchor="middle">point-in-time backup</text>
+
+  <path class="arrow-blue" d="M247 408 L247 446"/>
+  <path class="arrow-blue dash" d="M352 497 C396 520, 412 574, 432 602"/>
+  <path class="arrow-blue dash" d="M466 602 C492 572, 526 538, 566 526"/>
+  <path class="arrow-blue" d="M621 408 L621 446"/>
+
+  <rect class="efs" x="872" y="148" width="330" height="112" rx="18"/>
+  <text class="label" x="1037" y="188" text-anchor="middle">Amazon EFS</text>
+  <text class="small" x="1037" y="214" text-anchor="middle">NFS shared file system</text>
+  <text class="tiny" x="1037" y="236" text-anchor="middle">session.log shared by my-web01 and my-web02</text>
+
+  <path class="arrow-green" d="M352 360 C520 292, 714 224, 860 204"/>
+  <path class="arrow-green" d="M726 360 C780 300, 824 244, 860 218"/>
+
+  <rect class="s3" x="872" y="334" width="330" height="112" rx="18"/>
+  <text class="label" x="1037" y="374" text-anchor="middle">S3 Object Bucket</text>
+  <text class="small" x="1037" y="400" text-anchor="middle">private 403 -> public 200</text>
+  <text class="tiny" x="1037" y="422" text-anchor="middle">object ACL public-read test</text>
+
+  <rect class="s3" x="872" y="510" width="330" height="112" rx="18"/>
+  <text class="label" x="1037" y="550" text-anchor="middle">S3 Static Website</text>
+  <text class="small" x="1037" y="576" text-anchor="middle">HTML/CSS/JS assets</text>
+  <text class="tiny" x="1037" y="598" text-anchor="middle">bucket policy allows GetObject</text>
+
+  <rect class="box" x="932" y="666" width="210" height="54" rx="12"/>
+  <text class="small" x="1037" y="698" text-anchor="middle">User Browser / HTTP</text>
+  <path class="arrow-orange" d="M1037 666 L1037 632"/>
+  <path class="arrow-orange" d="M1037 666 C1084 604, 1100 510, 1058 456"/>
+</svg>

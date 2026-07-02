@@ -7,6 +7,7 @@ AWS 개념과 실습 기록입니다.
 - [Lab1 Networking](Lab1_networking/README.md)
 - [Lab2 Computing](Lab2_computing/README.md)
 - [Lab3 High Availability](Lab3_high_availability/README.md)
+- [Lab4 Storage](Lab4_storage/README.md)
 
 ## 정리한 내용
 
@@ -24,12 +25,17 @@ AWS 개념과 실습 기록입니다.
 - CloudWatch 지표/경보와 SNS 알림
 - Launch Template과 Auto Scaling Group
 - Target Tracking Scaling을 통한 자동 증설/감설
+- 블록, 파일, 객체 스토리지의 차이
+- EBS 볼륨 생성, 마운트, 확장, 스냅샷 복구
+- EFS 공유 파일시스템과 NFS 마운트
+- S3 객체 업로드, 퍼블릭 액세스, 정적 웹사이트 호스팅
 
 ## 읽는 순서
 
 1. `Lab1_networking`: VPC, 서브넷, 라우팅, 인터넷 연결, 프라이빗/퍼블릭 서브넷 차이를 이해합니다.
 2. `Lab2_computing`: EC2 위에 Web-WAS-DB를 구성하고 AMI와 user data로 서버 구성을 재사용합니다.
 3. `Lab3_high_availability`: 단일 서버 중심 구성을 ALB와 Auto Scaling 기반 고가용성 구조로 확장합니다.
+4. `Lab4_storage`: EC2가 사용하는 블록 스토리지, 여러 서버가 공유하는 파일 스토리지, 인터넷에서 접근하는 객체 스토리지를 비교합니다.
 
 ## 보안 주의사항
 

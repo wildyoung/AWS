@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="600" viewBox="0 0 1160 600" role="img" aria-labelledby="title desc">
+  <title id="title">S3 access check</title>
+  <desc id="desc">Terminal-style capture showing S3 private, public, and website response checks</desc>
+  <defs>
+    <style>
+      .bg { fill: #f5f7fb; }
+      .title { font: 700 28px Arial, sans-serif; fill: #172033; }
+      .subtitle { font: 16px Arial, sans-serif; fill: #5a6578; }
+      .window { fill: #111827; stroke: #d6deeb; stroke-width: 2; }
+      .bar { fill: #263244; }
+      .dot-red { fill: #ff5f57; }
+      .dot-yellow { fill: #febc2e; }
+      .dot-green { fill: #28c840; }
+      .terminal-title { font: 13px Arial, sans-serif; fill: #cfd8e3; }
+      .prompt { font: 16px Menlo, Consolas, monospace; fill: #9ae6b4; }
+      .text { font: 16px Menlo, Consolas, monospace; fill: #e5e7eb; }
+      .accent { font: 700 16px Menlo, Consolas, monospace; fill: #fbbf24; }
+      .success { fill: #eaf8f1; stroke: #39a66a; stroke-width: 2; }
+      .success-text { font: 700 14px Arial, sans-serif; fill: #207849; }
+      .muted { font: 14px Arial, sans-serif; fill: #65738a; }
+    </style>
+  </defs>
+  <rect class="bg" width="1160" height="600"/>
+  <text class="title" x="56" y="62">S3 객체 / 정적 웹사이트 확인</text>
+  <text class="subtitle" x="56" y="92">기본 비공개 객체, 공개 객체, 정적 웹사이트 엔드포인트 응답 비교</text>
+  <rect class="success" x="56" y="118" width="178" height="34" rx="17"/>
+  <text class="success-text" x="145" y="141" text-anchor="middle">HTTP OK</text>
+  <rect class="window" x="56" y="178" width="1048" height="328" rx="14"/>
+  <rect class="bar" x="56" y="178" width="1048" height="44" rx="14"/>
+  <circle class="dot-red" cx="82" cy="200" r="7"/>
+  <circle class="dot-yellow" cx="106" cy="200" r="7"/>
+  <circle class="dot-green" cx="130" cy="200" r="7"/>
+  <text class="terminal-title" x="580" y="205" text-anchor="middle">terminal - Lab4 S3 test</text>
+  <text class="prompt" x="88" y="258">$ curl object URL before public ACL</text>
+  <text class="text" x="88" y="288">HTTP 403 AccessDenied</text>
+  <text class="prompt" x="88" y="330">$ put-object-acl public-read; curl object URL</text>
+  <text class="accent" x="88" y="360">HTTP 200 OK</text>
+  <text class="prompt" x="88" y="402">$ curl S3 website endpoint</text>
+  <text class="accent" x="88" y="432">HTTP 200 OK</text>
+  <text class="text" x="88" y="462">index.html served from S3 static website hosting</text>
+  <text class="muted" x="56" y="548">결과: S3 객체 기본 비공개, 객체 공개, 정적 웹사이트 호스팅을 모두 확인했습니다.</text>
+</svg>
