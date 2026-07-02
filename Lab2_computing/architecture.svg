@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="760" viewBox="0 0 1280 760" role="img" aria-labelledby="title desc">
+  <title id="title">Lab2 Computing architecture</title>
+  <desc id="desc">EC2 Web WAS DB AMI and user data lab architecture</desc>
+  <defs>
+    <style>
+      .bg { fill: #f7f9fc; }
+      .title { font: 700 30px Arial, sans-serif; fill: #172033; }
+      .subtitle { font: 16px Arial, sans-serif; fill: #5b667a; }
+      .label { font: 700 17px Arial, sans-serif; fill: #172033; }
+      .small { font: 14px Arial, sans-serif; fill: #566176; }
+      .tiny { font: 12px Arial, sans-serif; fill: #6a7284; }
+      .vpc { fill: #eef5ff; stroke: #5a8bd8; stroke-width: 3; }
+      .az { fill: #ffffff; stroke: #cad6ea; stroke-width: 2; }
+      .public { fill: #edf9f1; stroke: #45a567; stroke-width: 2; }
+      .compute { fill: #fff3e4; stroke: #f59d2a; stroke-width: 2; }
+      .db { fill: #f4edff; stroke: #8d63c7; stroke-width: 2; }
+      .service { fill: #ffffff; stroke: #d5ddeb; stroke-width: 2; }
+      .route { fill: #f3f6fb; stroke: #8797b2; stroke-width: 2; }
+      .line { stroke: #4d7fd8; stroke-width: 4; fill: none; marker-end: url(#arrow-blue); }
+      .app { stroke: #2f9b65; stroke-width: 4; fill: none; marker-end: url(#arrow-green); }
+      .dbline { stroke: #8d63c7; stroke-width: 4; fill: none; marker-end: url(#arrow-purple); }
+      .ami { stroke: #d07a19; stroke-width: 4; fill: none; marker-end: url(#arrow-orange); stroke-dasharray: 8 7; }
+    </style>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#4d7fd8"/></marker>
+    <marker id="arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#2f9b65"/></marker>
+    <marker id="arrow-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#8d63c7"/></marker>
+    <marker id="arrow-orange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#d07a19"/></marker>
+  </defs>
+
+  <rect class="bg" width="1280" height="760"/>
+  <text class="title" x="56" y="64">Lab2 Computing</text>
+  <text class="subtitle" x="56" y="92">EC2 기반 Web-WAS-DB 구성, AMI 복제, user data 자동 구성 실습</text>
+
+  <rect class="service" x="64" y="156" width="180" height="82" rx="16"/>
+  <text class="label" x="154" y="192" text-anchor="middle">User</text>
+  <text class="small" x="154" y="216" text-anchor="middle">Browser / curl</text>
+
+  <rect class="service" x="304" y="156" width="180" height="82" rx="16"/>
+  <text class="label" x="394" y="192" text-anchor="middle">Internet GW</text>
+  <text class="small" x="394" y="216" text-anchor="middle">my-igw</text>
+
+  <path class="line" d="M 244 197 L 296 197"/>
+
+  <rect class="vpc" x="64" y="286" width="1152" height="392" rx="26"/>
+  <text class="label" x="102" y="326">AWS VPC: my-vpc</text>
+  <text class="small" x="102" y="352">10.0.0.0/16 / both subnets use my-route -> Internet Gateway</text>
+
+  <rect class="route" x="810" y="316" width="336" height="62" rx="14"/>
+  <text class="label" x="834" y="342">my-route</text>
+  <text class="small" x="834" y="364">0.0.0.0/0 -> Internet Gateway</text>
+
+  <rect class="az" x="102" y="402" width="512" height="230" rx="18"/>
+  <text class="label" x="132" y="436">my-sub01</text>
+  <text class="tiny" x="132" y="458">Public subnet / ap-northeast-2a</text>
+
+  <rect class="compute" x="136" y="500" width="124" height="58" rx="12"/>
+  <text class="small" x="198" y="524" text-anchor="middle">my-web01</text>
+  <text class="tiny" x="198" y="544" text-anchor="middle">nginx</text>
+
+  <rect class="compute" x="306" y="500" width="124" height="58" rx="12"/>
+  <text class="small" x="368" y="524" text-anchor="middle">my-web02</text>
+  <text class="tiny" x="368" y="544" text-anchor="middle">from AMI</text>
+
+  <rect class="compute" x="476" y="500" width="110" height="58" rx="12"/>
+  <text class="small" x="531" y="524" text-anchor="middle">myweb03</text>
+  <text class="tiny" x="531" y="544" text-anchor="middle">user data</text>
+
+  <rect class="az" x="670" y="402" width="512" height="230" rx="18"/>
+  <text class="label" x="700" y="436">my-sub02</text>
+  <text class="tiny" x="700" y="458">Public subnet / ap-northeast-2c</text>
+
+  <rect class="compute" x="736" y="500" width="132" height="58" rx="12"/>
+  <text class="small" x="802" y="524" text-anchor="middle">my-was</text>
+  <text class="tiny" x="802" y="544" text-anchor="middle">myapp :5000</text>
+
+  <rect class="db" x="996" y="500" width="132" height="58" rx="12"/>
+  <text class="small" x="1062" y="524" text-anchor="middle">my-db</text>
+  <text class="tiny" x="1062" y="544" text-anchor="middle">MySQL :3306</text>
+
+  <path class="line" d="M 394 238 C 394 320, 260 386, 198 492"/>
+  <path class="app" d="M 260 529 C 440 456, 598 456, 728 529"/>
+  <text class="tiny" x="510" y="470" text-anchor="middle">/api/signup, /api/login</text>
+  <path class="dbline" d="M 868 529 L 988 529"/>
+  <text class="tiny" x="928" y="514" text-anchor="middle">memberdb</text>
+  <path class="ami" d="M 212 560 C 232 620, 332 620, 354 560"/>
+  <text class="tiny" x="284" y="626" text-anchor="middle">AMI image reuse</text>
+
+  <rect class="service" x="760" y="154" width="388" height="84" rx="16"/>
+  <text class="label" x="790" y="188">Security Groups</text>
+  <text class="small" x="790" y="214">Web: SSH/HTTP, WAS: SSH + VPC traffic, DB: SSH + MySQL from VPC</text>
+</svg>

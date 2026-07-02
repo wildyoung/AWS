@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="560" viewBox="0 0 1120 560" role="img" aria-labelledby="title desc">
+  <title id="title">AMI and user data checks</title>
+  <desc id="desc">Terminal-style capture showing AMI clone and user data service checks</desc>
+  <defs>
+    <style>
+      .bg { fill: #f5f7fb; }
+      .title { font: 700 28px Arial, sans-serif; fill: #172033; }
+      .subtitle { font: 16px Arial, sans-serif; fill: #5a6578; }
+      .window { fill: #111827; stroke: #d6deeb; stroke-width: 2; }
+      .bar { fill: #263244; }
+      .dot-red { fill: #ff5f57; }
+      .dot-yellow { fill: #febc2e; }
+      .dot-green { fill: #28c840; }
+      .terminal-title { font: 13px Arial, sans-serif; fill: #cfd8e3; }
+      .prompt { font: 16px Menlo, Consolas, monospace; fill: #9ae6b4; }
+      .text { font: 16px Menlo, Consolas, monospace; fill: #e5e7eb; }
+      .success { fill: #eaf8f1; stroke: #39a66a; stroke-width: 2; }
+      .success-text { font: 700 14px Arial, sans-serif; fill: #207849; }
+      .muted { font: 14px Arial, sans-serif; fill: #65738a; }
+    </style>
+  </defs>
+  <rect class="bg" width="1120" height="560"/>
+  <text class="title" x="56" y="62">AMI / User Data 확인</text>
+  <text class="subtitle" x="56" y="92">my-web02는 AMI로 복제했고, myweb03은 user data로 자동 구성했습니다.</text>
+  <rect class="success" x="56" y="118" width="178" height="34" rx="17"/>
+  <text class="success-text" x="145" y="141" text-anchor="middle">SUCCESS</text>
+  <rect class="window" x="56" y="178" width="1008" height="300" rx="14"/>
+  <rect class="bar" x="56" y="178" width="1008" height="44" rx="14"/>
+  <circle class="dot-red" cx="82" cy="200" r="7"/>
+  <circle class="dot-yellow" cx="106" cy="200" r="7"/>
+  <circle class="dot-green" cx="130" cy="200" r="7"/>
+  <text class="terminal-title" x="560" y="205" text-anchor="middle">terminal - Lab2 image automation test</text>
+  <text class="prompt" x="88" y="258">$ my-web01 service check</text>
+  <text class="text" x="88" y="288">hostname=web01  nginx=active  http=200</text>
+  <text class="prompt" x="88" y="328">$ my-web02 AMI clone check</text>
+  <text class="text" x="88" y="358">hostname=web02  nginx=active  http=200</text>
+  <text class="prompt" x="88" y="398">$ myweb03 userdata check</text>
+  <text class="text" x="88" y="428">httpd=active  http=200  mysql 8.0.46  stress 1.0.7</text>
+  <text class="muted" x="56" y="524">결과: 서버 이미지 복제와 user data 기반 초기 구성이 모두 정상 동작했습니다.</text>
+</svg>

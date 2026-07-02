@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="660" viewBox="0 0 1160 660" role="img" aria-labelledby="title desc">
+  <title id="title">WEB WAS DB integration test</title>
+  <desc id="desc">Terminal-style capture showing signup login and database query results</desc>
+  <defs>
+    <style>
+      .bg { fill: #f5f7fb; }
+      .title { font: 700 28px Arial, sans-serif; fill: #172033; }
+      .subtitle { font: 16px Arial, sans-serif; fill: #5a6578; }
+      .window { fill: #111827; stroke: #d6deeb; stroke-width: 2; }
+      .bar { fill: #263244; }
+      .dot-red { fill: #ff5f57; }
+      .dot-yellow { fill: #febc2e; }
+      .dot-green { fill: #28c840; }
+      .terminal-title { font: 13px Arial, sans-serif; fill: #cfd8e3; }
+      .prompt { font: 16px Menlo, Consolas, monospace; fill: #9ae6b4; }
+      .text { font: 16px Menlo, Consolas, monospace; fill: #e5e7eb; }
+      .success { fill: #eaf8f1; stroke: #39a66a; stroke-width: 2; }
+      .success-text { font: 700 14px Arial, sans-serif; fill: #207849; }
+      .muted { font: 14px Arial, sans-serif; fill: #65738a; }
+    </style>
+  </defs>
+  <rect class="bg" width="1160" height="660"/>
+  <text class="title" x="56" y="62">WEB-WAS-DB 연동 확인</text>
+  <text class="subtitle" x="56" y="92">web01 API 요청이 WAS를 거쳐 DB에 저장되는지 확인</text>
+  <rect class="success" x="56" y="118" width="178" height="34" rx="17"/>
+  <text class="success-text" x="145" y="141" text-anchor="middle">SUCCESS</text>
+  <rect class="window" x="56" y="178" width="1048" height="402" rx="14"/>
+  <rect class="bar" x="56" y="178" width="1048" height="44" rx="14"/>
+  <circle class="dot-red" cx="82" cy="200" r="7"/>
+  <circle class="dot-yellow" cx="106" cy="200" r="7"/>
+  <circle class="dot-green" cx="130" cy="200" r="7"/>
+  <text class="terminal-title" x="580" y="205" text-anchor="middle">terminal - Lab2 integration test</text>
+  <text class="prompt" x="88" y="258">$ curl -X POST http://my-web01/api/signup ...</text>
+  <text class="text" x="88" y="288">{"message":"회원가입 성공!"}</text>
+  <text class="prompt" x="88" y="328">$ curl -X POST http://my-web01/api/login ...</text>
+  <text class="text" x="88" y="358">{"message":"user3님 환영합니다!","success":true}</text>
+  <text class="prompt" x="88" y="398">$ mysql -h my-db -u member -p memberdb -e "SELECT * FROM member;"</text>
+  <text class="text" x="88" y="430">userid  password  username    email</text>
+  <text class="text" x="88" y="460">test    ******    테스트      testuser@example.com</text>
+  <text class="text" x="88" y="490">user1   ******    홍길동      hkd@example.com</text>
+  <text class="text" x="88" y="520">user2   ******    김클라우드  cloud@example.com</text>
+  <text class="text" x="88" y="550">user3   ******    실습사용자  labuser@example.com</text>
+  <text class="muted" x="56" y="626">결과: Web -> WAS -> DB 흐름으로 회원가입/로그인 API와 DB 저장을 확인했습니다.</text>
+</svg>

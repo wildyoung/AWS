@@ -4,7 +4,8 @@ AWS 개념과 실습 기록입니다.
 
 ## 실습 목록
 
-- [VPC 네트워킹 실습](networking/README.md)
+- [Lab1 Networking](Lab1_networking/README.md)
+- [Lab2 Computing](Lab2_computing/README.md)
 
 ## 정리한 내용
 
@@ -14,6 +15,9 @@ AWS 개념과 실습 기록입니다.
 - 보안 그룹과 네트워크 ACL의 차이
 - 배스천 호스트를 통한 프라이빗 EC2 접속
 - EC2 SSH 접속 및 네트워크 연결 확인 명령어
+- EC2 기반 Web-WAS-DB 구성
+- AMI 생성과 인스턴스 복제
+- User data를 활용한 EC2 초기 구성
 
 ## 보안 주의사항
 
