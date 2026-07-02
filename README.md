@@ -11,6 +11,7 @@ AWS 개념과 실습 기록입니다.
 - [Lab5 VPC Peering](Lab5_vpc_peering/README.md)
 - [Lab6 Domain and Traffic](Lab6_domain_traffic/README.md)
 - [Lab7 Cloud Security](Lab7_cloud_security/README.md)
+- [Lab8 Relational Database](Lab8_relational_database/README.md)
 
 ## 정리한 내용
 
@@ -41,6 +42,9 @@ AWS 개념과 실습 기록입니다.
 - AWS 공동 책임 모델과 IAM 사용자, 역할, 정책
 - MFA, 루트 사용자 보안, CloudTrail, KMS, Organizations 개념
 - EC2 인스턴스 프로파일을 통한 임시 자격증명 기반 S3 접근
+- 관계형 데이터베이스와 비관계형 데이터베이스 비교
+- Amazon RDS MySQL 생성, DB subnet group, RDS 보안 그룹
+- DynamoDB, Redshift, Aurora, DMS 데이터베이스 서비스 개념
 
 ## 읽는 순서
 
@@ -51,6 +55,7 @@ AWS 개념과 실습 기록입니다.
 5. `Lab5_vpc_peering`: 서로 다른 리전의 VPC를 피어링하고, 라우팅/보안그룹 조건에 따라 프라이빗 통신이 달라지는 것을 확인합니다.
 6. `Lab6_domain_traffic`: Route 53 DNS 흐름, S3 정적 웹사이트 장애조치, CloudFront 캐싱 효과를 확인합니다.
 7. `Lab7_cloud_security`: IAM 권한 모델, MFA, EC2 역할 기반 S3 접근, 계정 보안 기본 원칙을 확인합니다.
+8. `Lab8_relational_database`: RDS MySQL을 구성하고 EC2에서 SQL 접속/테이블 조회를 검증합니다.
 
 ## 보안 주의사항
 

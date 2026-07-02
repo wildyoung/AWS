@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="760" viewBox="0 0 1280 760" role="img" aria-labelledby="title desc">
+  <title id="title">Lab8 Relational Database Architecture</title>
+  <desc id="desc">EC2 client connects to a private Amazon RDS MySQL database through security groups in a two-AZ VPC</desc>
+  <defs>
+    <style>
+      .bg { fill: #f6f8fb; }
+      .title { font: 700 30px Arial, sans-serif; fill: #172033; }
+      .subtitle { font: 15px Arial, sans-serif; fill: #536178; }
+      .vpc { fill: #ffffff; stroke: #c8d4e8; stroke-width: 2; }
+      .subnet-a { fill: #eef4ff; stroke: #4e7bd9; stroke-width: 2; }
+      .subnet-c { fill: #fff7ed; stroke: #f28c28; stroke-width: 2; }
+      .ec2 { fill: #fff3e8; stroke: #f28c28; stroke-width: 2; }
+      .rds { fill: #ecfdf3; stroke: #30a46c; stroke-width: 2; }
+      .sg { fill: #f3edff; stroke: #8357d6; stroke-width: 2; }
+      .audit { fill: #f8fafc; stroke: #94a3b8; stroke-width: 2; }
+      .label { font: 700 16px Arial, sans-serif; fill: #172033; }
+      .small { font: 13px Arial, sans-serif; fill: #4f5d73; }
+      .tiny { font: 12px Arial, sans-serif; fill: #64748b; }
+      .arrow-green { stroke: #2f9e67; stroke-width: 4; fill: none; marker-end: url(#arrowGreen); }
+      .arrow-purple { stroke: #8357d6; stroke-width: 4; fill: none; marker-end: url(#arrowPurple); }
+      .arrow-gray { stroke: #94a3b8; stroke-width: 3; fill: none; marker-end: url(#arrowGray); }
+      .dash { stroke-dasharray: 8 8; }
+    </style>
+    <marker id="arrowGreen" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#2f9e67"/>
+    </marker>
+    <marker id="arrowPurple" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#8357d6"/>
+    </marker>
+    <marker id="arrowGray" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#94a3b8"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" width="1280" height="760"/>
+  <text class="title" x="56" y="62">Lab8 Relational Database</text>
+  <text class="subtitle" x="56" y="91">Amazon RDS MySQL in my-vpc with EC2 client access over port 3306</text>
+
+  <rect class="vpc" x="58" y="128" width="1128" height="540" rx="24"/>
+  <text class="label" x="94" y="170">my-vpc / 10.0.0.0/16</text>
+  <text class="small" x="94" y="194">RDS is private; access is allowed only from the web security group</text>
+
+  <rect class="subnet-a" x="104" y="246" width="430" height="300" rx="18"/>
+  <text class="label" x="136" y="286">my-sub01 / ap-northeast-2a</text>
+  <text class="small" x="136" y="310">public subnet with web client</text>
+
+  <rect class="subnet-c" x="714" y="246" width="430" height="300" rx="18"/>
+  <text class="label" x="746" y="286">my-sub02 / ap-northeast-2c</text>
+  <text class="small" x="746" y="310">subnet included in DB subnet group</text>
+
+  <rect class="ec2" x="178" y="368" width="230" height="92" rx="16"/>
+  <text class="label" x="293" y="406" text-anchor="middle">my-web01</text>
+  <text class="small" x="293" y="432" text-anchor="middle">MySQL client</text>
+
+  <rect class="rds" x="788" y="352" width="282" height="128" rx="18"/>
+  <text class="label" x="929" y="392" text-anchor="middle">rds01</text>
+  <text class="small" x="929" y="418" text-anchor="middle">Amazon RDS for MySQL 8.0</text>
+  <text class="tiny" x="929" y="444" text-anchor="middle">DB name: product</text>
+  <text class="tiny" x="929" y="466" text-anchor="middle">storage encrypted, public access off</text>
+
+  <rect class="sg" x="192" y="566" width="210" height="70" rx="14"/>
+  <text class="label" x="297" y="594" text-anchor="middle">my-web-sg</text>
+  <text class="small" x="297" y="618" text-anchor="middle">client source SG</text>
+
+  <rect class="sg" x="824" y="566" width="210" height="70" rx="14"/>
+  <text class="label" x="929" y="594" text-anchor="middle">my-rds-sg</text>
+  <text class="small" x="929" y="618" text-anchor="middle">3306 from my-web-sg</text>
+
+  <rect class="audit" x="510" y="154" width="260" height="86" rx="16"/>
+  <text class="label" x="640" y="190" text-anchor="middle">DB subnet group</text>
+  <text class="small" x="640" y="216" text-anchor="middle">my-sub01 + my-sub02</text>
+
+  <path class="arrow-green" d="M408 414 C510 396, 658 396, 788 414"/>
+  <text class="tiny" x="560" y="384">mysql -h RDS_ENDPOINT -u admin -p</text>
+  <path class="arrow-purple dash" d="M402 600 C520 640, 704 640, 824 600"/>
+  <path class="arrow-gray dash" d="M534 306 C580 270, 620 242, 640 240"/>
+  <path class="arrow-gray dash" d="M914 352 C840 288, 760 250, 700 222"/>
+
+  <text class="tiny" x="94" y="706">The database password and endpoint details are omitted from the repository. Results are summarized with sanitized screenshots.</text>
+</svg>

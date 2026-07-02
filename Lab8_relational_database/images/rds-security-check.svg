@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">RDS Security Check</title>
+  <desc id="desc">Security summary for private RDS MySQL instance with encrypted storage and scoped security group access</desc>
+  <defs>
+    <style>
+      .bg { fill: #f6f8fb; }
+      .panel { fill: #ffffff; stroke: #d8e0ee; stroke-width: 2; }
+      .head { fill: #eef4ff; }
+      .ok { fill: #ecfdf3; }
+      .warn { fill: #fff7ed; }
+      .title { font: 700 30px Arial, sans-serif; fill: #172033; }
+      .subtitle { font: 15px Arial, sans-serif; fill: #536178; }
+      .label { font: 700 15px Arial, sans-serif; fill: #172033; }
+      .cell { font: 14px Arial, sans-serif; fill: #243044; }
+      .tiny { font: 12px Arial, sans-serif; fill: #64748b; }
+    </style>
+  </defs>
+  <rect class="bg" width="1280" height="720"/>
+  <text class="title" x="56" y="62">RDS Security Check</text>
+  <text class="subtitle" x="56" y="91">Private RDS setup with scoped network access and encrypted storage</text>
+
+  <rect class="panel" x="72" y="128" width="1136" height="438" rx="8"/>
+  <rect class="head" x="92" y="156" width="1096" height="48" rx="6"/>
+  <text class="label" x="132" y="186">Control</text>
+  <text class="label" x="520" y="186">Result</text>
+  <text class="label" x="822" y="186">Meaning</text>
+
+  <rect class="ok" x="92" y="222" width="1096" height="64" rx="6"/>
+  <text class="cell" x="132" y="260">Public accessibility</text>
+  <text class="cell" x="520" y="260">False</text>
+  <text class="cell" x="822" y="260">No direct internet exposure</text>
+
+  <rect class="ok" x="92" y="306" width="1096" height="64" rx="6"/>
+  <text class="cell" x="132" y="344">Security group</text>
+  <text class="cell" x="520" y="344">3306 from my-web-sg</text>
+  <text class="cell" x="822" y="344">Only web clients can reach MySQL</text>
+
+  <rect class="ok" x="92" y="390" width="1096" height="64" rx="6"/>
+  <text class="cell" x="132" y="428">Storage encryption</text>
+  <text class="cell" x="520" y="428">Enabled</text>
+  <text class="cell" x="822" y="428">Data at rest is encrypted</text>
+
+  <rect class="warn" x="92" y="474" width="1096" height="64" rx="6"/>
+  <text class="cell" x="132" y="512">Deployment mode</text>
+  <text class="cell" x="520" y="512">Single-AZ</text>
+  <text class="cell" x="822" y="512">Lower cost for lab; Multi-AZ is better for production</text>
+
+  <text class="tiny" x="92" y="620">The lab used a small db.t3.micro instance and disabled public access to keep the database private.</text>
+</svg>
