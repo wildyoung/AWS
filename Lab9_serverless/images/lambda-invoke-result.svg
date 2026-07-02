@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Lambda Invoke Result</title>
+  <desc id="desc">Lambda function invocation result and DynamoDB insert validation</desc>
+  <defs>
+    <style>
+      .bg { fill: #f6f8fb; }
+      .panel { fill: #ffffff; stroke: #d8e0ee; stroke-width: 2; }
+      .head { fill: #eef4ff; }
+      .ok { fill: #ecfdf3; }
+      .row { fill: #f8fafc; }
+      .title { font: 700 30px Arial, sans-serif; fill: #172033; }
+      .subtitle { font: 15px Arial, sans-serif; fill: #536178; }
+      .label { font: 700 15px Arial, sans-serif; fill: #172033; }
+      .cell { font: 14px Arial, sans-serif; fill: #243044; }
+      .mono { font: 13px Menlo, Consolas, monospace; fill: #243044; }
+      .tiny { font: 12px Arial, sans-serif; fill: #64748b; }
+    </style>
+  </defs>
+  <rect class="bg" width="1280" height="720"/>
+  <text class="title" x="56" y="62">Lambda Invoke Result</text>
+  <text class="subtitle" x="56" y="91">my-orders-insert returned HTTP-style status 200 and wrote order items</text>
+
+  <rect class="panel" x="72" y="128" width="1136" height="438" rx="8"/>
+  <rect class="head" x="92" y="156" width="1096" height="48" rx="6"/>
+  <text class="label" x="132" y="186">Check</text>
+  <text class="label" x="520" y="186">Result</text>
+  <text class="label" x="822" y="186">Meaning</text>
+
+  <rect class="ok" x="92" y="222" width="1096" height="64" rx="6"/>
+  <text class="cell" x="132" y="260">Lambda invoke</text>
+  <text class="cell" x="520" y="260">StatusCode 200</text>
+  <text class="cell" x="822" y="260">Function executed successfully</text>
+
+  <rect class="ok" x="92" y="306" width="1096" height="64" rx="6"/>
+  <text class="cell" x="132" y="344">FunctionError</text>
+  <text class="cell" x="520" y="344">null</text>
+  <text class="cell" x="822" y="344">No runtime exception</text>
+
+  <rect class="ok" x="92" y="390" width="1096" height="64" rx="6"/>
+  <text class="cell" x="132" y="428">DynamoDB scan</text>
+  <text class="cell" x="520" y="428">6 items</text>
+  <text class="cell" x="822" y="428">Orders ORD1001 through ORD1006 inserted</text>
+
+  <rect class="row" x="92" y="488" width="1096" height="56" rx="6"/>
+  <text class="mono" x="132" y="522">body: "Additional order data added successfully!"</text>
+  <text class="tiny" x="92" y="620">The scan count is used for validation because DynamoDB Table.ItemCount is eventually updated.</text>
+</svg>

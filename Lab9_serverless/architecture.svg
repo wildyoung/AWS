@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="760" viewBox="0 0 1280 760" role="img" aria-labelledby="title desc">
+  <title id="title">Lab9 Serverless Architecture</title>
+  <desc id="desc">Lambda function inserts sample order documents into a DynamoDB table using an IAM execution role and writes logs to CloudWatch</desc>
+  <defs>
+    <style>
+      .bg { fill: #f6f8fb; }
+      .title { font: 700 30px Arial, sans-serif; fill: #172033; }
+      .subtitle { font: 15px Arial, sans-serif; fill: #536178; }
+      .zone { fill: #ffffff; stroke: #c8d4e8; stroke-width: 2; }
+      .event { fill: #eef4ff; stroke: #4e7bd9; stroke-width: 2; }
+      .lambda { fill: #fff7ed; stroke: #f28c28; stroke-width: 2; }
+      .iam { fill: #f3edff; stroke: #8357d6; stroke-width: 2; }
+      .ddb { fill: #ecfdf3; stroke: #30a46c; stroke-width: 2; }
+      .log { fill: #f8fafc; stroke: #94a3b8; stroke-width: 2; }
+      .label { font: 700 16px Arial, sans-serif; fill: #172033; }
+      .small { font: 13px Arial, sans-serif; fill: #4f5d73; }
+      .tiny { font: 12px Arial, sans-serif; fill: #64748b; }
+      .arrow-blue { stroke: #4e7bd9; stroke-width: 4; fill: none; marker-end: url(#arrowBlue); }
+      .arrow-green { stroke: #2f9e67; stroke-width: 4; fill: none; marker-end: url(#arrowGreen); }
+      .arrow-purple { stroke: #8357d6; stroke-width: 4; fill: none; marker-end: url(#arrowPurple); }
+      .arrow-gray { stroke: #94a3b8; stroke-width: 3; fill: none; marker-end: url(#arrowGray); }
+      .dash { stroke-dasharray: 8 8; }
+    </style>
+    <marker id="arrowBlue" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#4e7bd9"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#2f9e67"/>
+    </marker>
+    <marker id="arrowPurple" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#8357d6"/>
+    </marker>
+    <marker id="arrowGray" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#94a3b8"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" width="1280" height="760"/>
+  <text class="title" x="56" y="62">Lab9 Serverless</text>
+  <text class="subtitle" x="56" y="91">AWS Lambda writes flexible order documents into Amazon DynamoDB</text>
+
+  <rect class="zone" x="72" y="128" width="1136" height="522" rx="24"/>
+  <text class="label" x="108" y="170">Serverless application flow</text>
+  <text class="small" x="108" y="194">No EC2 server is provisioned for the insert logic</text>
+
+  <rect class="event" x="128" y="304" width="188" height="116" rx="16"/>
+  <text class="label" x="222" y="346" text-anchor="middle">Test event</text>
+  <text class="small" x="222" y="372" text-anchor="middle">my-order-event</text>
+  <text class="tiny" x="222" y="396" text-anchor="middle">manual invocation</text>
+
+  <rect class="lambda" x="464" y="274" width="240" height="176" rx="18"/>
+  <text class="label" x="584" y="320" text-anchor="middle">my-orders-insert</text>
+  <text class="small" x="584" y="348" text-anchor="middle">Python Lambda function</text>
+  <text class="tiny" x="584" y="374" text-anchor="middle">generates 6 order items</text>
+  <text class="tiny" x="584" y="396" text-anchor="middle">calls DynamoDB PutItem</text>
+
+  <rect class="ddb" x="876" y="274" width="236" height="176" rx="18"/>
+  <text class="label" x="994" y="318" text-anchor="middle">my-orders</text>
+  <text class="small" x="994" y="346" text-anchor="middle">DynamoDB table</text>
+  <text class="tiny" x="994" y="372" text-anchor="middle">PK: OrderID</text>
+  <text class="tiny" x="994" y="394" text-anchor="middle">SK: CustomerID</text>
+
+  <rect class="iam" x="464" y="518" width="240" height="82" rx="16"/>
+  <text class="label" x="584" y="552" text-anchor="middle">my-dynamodb-role</text>
+  <text class="small" x="584" y="578" text-anchor="middle">PutItem + logs permission</text>
+
+  <rect class="log" x="876" y="518" width="236" height="82" rx="16"/>
+  <text class="label" x="994" y="552" text-anchor="middle">CloudWatch Logs</text>
+  <text class="small" x="994" y="578" text-anchor="middle">Lambda execution logs</text>
+
+  <path class="arrow-blue" d="M316 362 L464 362"/>
+  <path class="arrow-green" d="M704 362 L876 362"/>
+  <path class="arrow-purple dash" d="M584 518 L584 450"/>
+  <path class="arrow-gray dash" d="M704 410 C770 484, 830 530, 876 556"/>
+
+  <text class="tiny" x="108" y="690">API Gateway is not part of this lab PDF. The function was invoked by Lambda test event and AWS CLI.</text>
+</svg>

@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">DynamoDB Items Result</title>
+  <desc id="desc">Sanitized scan result from my-orders DynamoDB table after Lambda invocation</desc>
+  <defs>
+    <style>
+      .bg { fill: #f6f8fb; }
+      .panel { fill: #ffffff; stroke: #d8e0ee; stroke-width: 2; }
+      .head { fill: #eef4ff; }
+      .row { fill: #f8fafc; }
+      .alt { fill: #ecfdf3; }
+      .title { font: 700 30px Arial, sans-serif; fill: #172033; }
+      .subtitle { font: 15px Arial, sans-serif; fill: #536178; }
+      .label { font: 700 15px Arial, sans-serif; fill: #172033; }
+      .cell { font: 14px Arial, "Apple SD Gothic Neo", sans-serif; fill: #243044; }
+      .tiny { font: 12px Arial, sans-serif; fill: #64748b; }
+    </style>
+  </defs>
+  <rect class="bg" width="1280" height="720"/>
+  <text class="title" x="56" y="62">DynamoDB Items</text>
+  <text class="subtitle" x="56" y="91">my-orders table stores flexible order documents with different optional attributes</text>
+
+  <rect class="panel" x="72" y="128" width="1136" height="486" rx="8"/>
+  <rect class="head" x="92" y="156" width="1096" height="48" rx="6"/>
+  <text class="label" x="132" y="186">OrderID</text>
+  <text class="label" x="318" y="186">CustomerID</text>
+  <text class="label" x="520" y="186">Optional attributes</text>
+  <text class="label" x="922" y="186">Example</text>
+
+  <rect class="row" x="92" y="218" width="1096" height="52" rx="6"/>
+  <text class="cell" x="132" y="250">ORD1001</text>
+  <text class="cell" x="318" y="250">고객003</text>
+  <text class="cell" x="520" y="250">GiftMessage, DeliveryInstructions</text>
+  <text class="cell" x="922" y="250">single item order</text>
+
+  <rect class="alt" x="92" y="280" width="1096" height="52" rx="6"/>
+  <text class="cell" x="132" y="312">ORD1002</text>
+  <text class="cell" x="318" y="312">고객004</text>
+  <text class="cell" x="520" y="312">DiscountCode, DeliveryInstructions</text>
+  <text class="cell" x="922" y="312">multi item order</text>
+
+  <rect class="row" x="92" y="342" width="1096" height="52" rx="6"/>
+  <text class="cell" x="132" y="374">ORD1003</text>
+  <text class="cell" x="318" y="374">고객005</text>
+  <text class="cell" x="520" y="374">GiftMessage</text>
+  <text class="cell" x="922" y="374">gift order</text>
+
+  <rect class="alt" x="92" y="404" width="1096" height="52" rx="6"/>
+  <text class="cell" x="132" y="436">ORD1004</text>
+  <text class="cell" x="318" y="436">고객006</text>
+  <text class="cell" x="520" y="436">DiscountCode</text>
+  <text class="cell" x="922" y="436">no shipping address</text>
+
+  <rect class="row" x="92" y="466" width="1096" height="52" rx="6"/>
+  <text class="cell" x="132" y="498">ORD1005</text>
+  <text class="cell" x="318" y="498">고객007</text>
+  <text class="cell" x="520" y="498">minimal attributes</text>
+  <text class="cell" x="922" y="498">simple order</text>
+
+  <rect class="alt" x="92" y="528" width="1096" height="52" rx="6"/>
+  <text class="cell" x="132" y="560">ORD1006</text>
+  <text class="cell" x="318" y="560">고객008</text>
+  <text class="cell" x="520" y="560">GiftMessage, PriorityDelivery</text>
+  <text class="cell" x="922" y="560">priority delivery</text>
+
+  <text class="tiny" x="92" y="644">DynamoDB items do not need every row to share the exact same optional attributes.</text>
+</svg>

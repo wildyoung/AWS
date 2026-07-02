@@ -12,6 +12,7 @@ AWS 개념과 실습 기록입니다.
 - [Lab6 Domain and Traffic](Lab6_domain_traffic/README.md)
 - [Lab7 Cloud Security](Lab7_cloud_security/README.md)
 - [Lab8 Relational Database](Lab8_relational_database/README.md)
+- [Lab9 Serverless](Lab9_serverless/README.md)
 
 ## 정리한 내용
 
@@ -45,6 +46,9 @@ AWS 개념과 실습 기록입니다.
 - 관계형 데이터베이스와 비관계형 데이터베이스 비교
 - Amazon RDS MySQL 생성, DB subnet group, RDS 보안 그룹
 - DynamoDB, Redshift, Aurora, DMS 데이터베이스 서비스 개념
+- 서버리스 아키텍처와 AWS Lambda 실행 모델
+- DynamoDB 테이블 설계와 유연한 NoSQL 항목 구조
+- Lambda 실행 역할, CloudWatch Logs, 이벤트 기반 처리
 
 ## 읽는 순서
 
@@ -56,6 +60,7 @@ AWS 개념과 실습 기록입니다.
 6. `Lab6_domain_traffic`: Route 53 DNS 흐름, S3 정적 웹사이트 장애조치, CloudFront 캐싱 효과를 확인합니다.
 7. `Lab7_cloud_security`: IAM 권한 모델, MFA, EC2 역할 기반 S3 접근, 계정 보안 기본 원칙을 확인합니다.
 8. `Lab8_relational_database`: RDS MySQL을 구성하고 EC2에서 SQL 접속/테이블 조회를 검증합니다.
+9. `Lab9_serverless`: Lambda가 DynamoDB에 주문 데이터를 저장하는 서버리스 흐름을 검증합니다.
 
 ## 보안 주의사항
 
