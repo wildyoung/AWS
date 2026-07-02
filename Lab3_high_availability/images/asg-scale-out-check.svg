@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="640" viewBox="0 0 1160 640" role="img" aria-labelledby="title desc">
+  <title id="title">Auto Scaling scale out check</title>
+  <desc id="desc">Terminal-style capture showing Auto Scaling desired capacity increased from two to four</desc>
+  <defs>
+    <style>
+      .bg { fill: #f5f7fb; }
+      .title { font: 700 28px Arial, sans-serif; fill: #172033; }
+      .subtitle { font: 16px Arial, sans-serif; fill: #5a6578; }
+      .window { fill: #111827; stroke: #d6deeb; stroke-width: 2; }
+      .bar { fill: #263244; }
+      .dot-red { fill: #ff5f57; }
+      .dot-yellow { fill: #febc2e; }
+      .dot-green { fill: #28c840; }
+      .terminal-title { font: 13px Arial, sans-serif; fill: #cfd8e3; }
+      .prompt { font: 16px Menlo, Consolas, monospace; fill: #9ae6b4; }
+      .text { font: 16px Menlo, Consolas, monospace; fill: #e5e7eb; }
+      .accent { font: 700 16px Menlo, Consolas, monospace; fill: #fbbf24; }
+      .success { fill: #eaf8f1; stroke: #39a66a; stroke-width: 2; }
+      .success-text { font: 700 14px Arial, sans-serif; fill: #207849; }
+      .muted { font: 14px Arial, sans-serif; fill: #65738a; }
+    </style>
+  </defs>
+  <rect class="bg" width="1160" height="640"/>
+  <text class="title" x="56" y="62">Auto Scaling 증설 확인</text>
+  <text class="subtitle" x="56" y="92">CPU 부하 후 Target Tracking 정책으로 인스턴스 수 증가</text>
+  <rect class="success" x="56" y="118" width="178" height="34" rx="17"/>
+  <text class="success-text" x="145" y="141" text-anchor="middle">SCALE OUT</text>
+  <rect class="window" x="56" y="178" width="1048" height="382" rx="14"/>
+  <rect class="bar" x="56" y="178" width="1048" height="44" rx="14"/>
+  <circle class="dot-red" cx="82" cy="200" r="7"/>
+  <circle class="dot-yellow" cx="106" cy="200" r="7"/>
+  <circle class="dot-green" cx="130" cy="200" r="7"/>
+  <text class="terminal-title" x="580" y="205" text-anchor="middle">terminal - Lab3 Auto Scaling test</text>
+  <text class="prompt" x="88" y="258">$ web-asg before stress</text>
+  <text class="text" x="88" y="288">desired=2  in_service=2  min=1  max=5</text>
+  <text class="prompt" x="88" y="330">$ stress --cpu 4 --timeout 480</text>
+  <text class="text" x="88" y="360">CPU load generated on the initial ASG instances</text>
+  <text class="prompt" x="88" y="402">$ web-asg after CloudWatch target tracking</text>
+  <text class="accent" x="88" y="432">desired=4  in_service=4  min=1  max=5</text>
+  <text class="prompt" x="88" y="474">$ latest scaling activities</text>
+  <text class="text" x="88" y="504">Launching a new EC2 instance: asg-instance-03</text>
+  <text class="text" x="88" y="532">Launching a new EC2 instance: asg-instance-04</text>
+  <text class="muted" x="56" y="604">결과: 평균 CPU 부하가 높아진 뒤 Auto Scaling Group이 Desired capacity를 2에서 4로 늘렸습니다.</text>
+</svg>

@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="760" viewBox="0 0 1280 760" role="img" aria-labelledby="title desc">
+  <title id="title">Lab3 High Availability Architecture</title>
+  <desc id="desc">Application Load Balancer, target group, Auto Scaling group, CloudWatch and SNS architecture</desc>
+  <defs>
+    <style>
+      .bg { fill: #f6f8fb; }
+      .title { font: 700 30px Arial, sans-serif; fill: #172033; }
+      .subtitle { font: 15px Arial, sans-serif; fill: #536178; }
+      .vpc { fill: #eaf2ff; stroke: #4e7bd9; stroke-width: 3; }
+      .zone { fill: #ffffff; stroke: #c8d4e8; stroke-width: 2; }
+      .box { fill: #ffffff; stroke: #cbd6e8; stroke-width: 2; }
+      .alb { fill: #fff3e8; stroke: #f28c28; stroke-width: 2; }
+      .asg { fill: #ecfdf3; stroke: #30a46c; stroke-width: 2; }
+      .web { fill: #ffffff; stroke: #30a46c; stroke-width: 2; }
+      .obs { fill: #f3edff; stroke: #8357d6; stroke-width: 2; }
+      .label { font: 700 16px Arial, sans-serif; fill: #172033; }
+      .small { font: 13px Arial, sans-serif; fill: #4f5d73; }
+      .tiny { font: 12px Arial, sans-serif; fill: #64748b; }
+      .arrow-blue { stroke: #4e7bd9; stroke-width: 4; fill: none; marker-end: url(#arrowBlue); }
+      .arrow-green { stroke: #2f9e67; stroke-width: 4; fill: none; marker-end: url(#arrowGreen); }
+      .arrow-purple { stroke: #8357d6; stroke-width: 3; fill: none; marker-end: url(#arrowPurple); }
+      .dash { stroke-dasharray: 7 7; }
+    </style>
+    <marker id="arrowBlue" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#4e7bd9"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#2f9e67"/>
+    </marker>
+    <marker id="arrowPurple" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#8357d6"/>
+    </marker>
+  </defs>
+  <rect class="bg" width="1280" height="760"/>
+  <text class="title" x="56" y="62">Lab3 High Availability</text>
+  <text class="subtitle" x="56" y="91">ALB + Target Group + Auto Scaling + CloudWatch/SNS</text>
+
+  <rect class="box" x="62" y="150" width="170" height="78" rx="15"/>
+  <text class="label" x="147" y="190" text-anchor="middle">User</text>
+  <text class="small" x="147" y="214" text-anchor="middle">Browser / curl</text>
+
+  <rect class="alb" x="330" y="138" width="270" height="102" rx="16"/>
+  <text class="label" x="465" y="178" text-anchor="middle">my-alb</text>
+  <text class="small" x="465" y="202" text-anchor="middle">Application Load Balancer</text>
+  <text class="tiny" x="465" y="222" text-anchor="middle">HTTP listener : 80</text>
+
+  <rect class="box" x="718" y="138" width="250" height="102" rx="16"/>
+  <text class="label" x="843" y="178" text-anchor="middle">webserver-tg</text>
+  <text class="small" x="843" y="202" text-anchor="middle">Target Group</text>
+  <text class="tiny" x="843" y="222" text-anchor="middle">health check /</text>
+
+  <path class="arrow-blue" d="M232 189 L318 189"/>
+  <path class="arrow-green" d="M600 189 L706 189"/>
+
+  <rect class="vpc" x="64" y="286" width="1152" height="382" rx="26"/>
+  <text class="label" x="102" y="326">AWS VPC : my-vpc</text>
+  <text class="small" x="102" y="350">10.0.0.0/16 / two public subnets</text>
+
+  <rect class="zone" x="102" y="402" width="500" height="204" rx="18"/>
+  <text class="label" x="132" y="438">my-sub01</text>
+  <text class="small" x="132" y="462">Availability Zone A</text>
+
+  <rect class="zone" x="678" y="402" width="500" height="204" rx="18"/>
+  <text class="label" x="708" y="438">my-sub02</text>
+  <text class="small" x="708" y="462">Availability Zone C</text>
+
+  <rect class="asg" x="290" y="316" width="700" height="64" rx="15"/>
+  <text class="label" x="640" y="342" text-anchor="middle">web-asg</text>
+  <text class="small" x="640" y="364" text-anchor="middle">Desired 2 -> 4 during load / Min 1 / Max 5 / ELB health check</text>
+
+  <rect class="web" x="154" y="496" width="164" height="70" rx="14"/>
+  <text class="label" x="236" y="526" text-anchor="middle">web instance</text>
+  <text class="small" x="236" y="550" text-anchor="middle">healthy</text>
+
+  <rect class="web" x="376" y="496" width="164" height="70" rx="14"/>
+  <text class="label" x="458" y="526" text-anchor="middle">web instance</text>
+  <text class="small" x="458" y="550" text-anchor="middle">scale-out</text>
+
+  <rect class="web" x="730" y="496" width="164" height="70" rx="14"/>
+  <text class="label" x="812" y="526" text-anchor="middle">web instance</text>
+  <text class="small" x="812" y="550" text-anchor="middle">healthy</text>
+
+  <rect class="web" x="952" y="496" width="164" height="70" rx="14"/>
+  <text class="label" x="1034" y="526" text-anchor="middle">web instance</text>
+  <text class="small" x="1034" y="550" text-anchor="middle">scale-out</text>
+
+  <path class="arrow-green" d="M843 240 C845 308, 500 390, 236 486"/>
+  <path class="arrow-green" d="M843 240 C810 326, 596 410, 458 486"/>
+  <path class="arrow-green" d="M843 240 C854 326, 824 414, 812 486"/>
+  <path class="arrow-green" d="M843 240 C934 326, 1018 414, 1034 486"/>
+
+  <rect class="obs" x="1018" y="132" width="178" height="72" rx="15"/>
+  <text class="label" x="1107" y="162" text-anchor="middle">CloudWatch</text>
+  <text class="small" x="1107" y="186" text-anchor="middle">CPU alarms</text>
+
+  <rect class="obs" x="1018" y="224" width="178" height="72" rx="15"/>
+  <text class="label" x="1107" y="254" text-anchor="middle">SNS</text>
+  <text class="small" x="1107" y="278" text-anchor="middle">admin-topic</text>
+
+  <path class="arrow-purple dash" d="M990 348 C1058 336, 1102 260, 1107 212"/>
+  <path class="arrow-purple" d="M1107 204 L1107 214"/>
+
+  <rect class="box" x="96" y="628" width="1088" height="1" rx="0"/>
+  <text class="tiny" x="102" y="648">Security groups: Internet -> my-alb-sg:80, my-alb-sg -> my-web-sg:80</text>
+</svg>

@@ -6,6 +6,7 @@ AWS 개념과 실습 기록입니다.
 
 - [Lab1 Networking](Lab1_networking/README.md)
 - [Lab2 Computing](Lab2_computing/README.md)
+- [Lab3 High Availability](Lab3_high_availability/README.md)
 
 ## 정리한 내용
 
@@ -18,6 +19,17 @@ AWS 개념과 실습 기록입니다.
 - EC2 기반 Web-WAS-DB 구성
 - AMI 생성과 인스턴스 복제
 - User data를 활용한 EC2 초기 구성
+- 고가용성 아키텍처와 Multi-AZ 구성
+- Application Load Balancer, 대상 그룹, 상태 확인
+- CloudWatch 지표/경보와 SNS 알림
+- Launch Template과 Auto Scaling Group
+- Target Tracking Scaling을 통한 자동 증설/감설
+
+## 읽는 순서
+
+1. `Lab1_networking`: VPC, 서브넷, 라우팅, 인터넷 연결, 프라이빗/퍼블릭 서브넷 차이를 이해합니다.
+2. `Lab2_computing`: EC2 위에 Web-WAS-DB를 구성하고 AMI와 user data로 서버 구성을 재사용합니다.
+3. `Lab3_high_availability`: 단일 서버 중심 구성을 ALB와 Auto Scaling 기반 고가용성 구조로 확장합니다.
 
 ## 보안 주의사항
 
