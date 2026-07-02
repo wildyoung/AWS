@@ -1,0 +1,129 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="820" viewBox="0 0 1280 820" role="img" aria-labelledby="title desc">
+  <title id="title">VPC 네트워킹 최종 실습 아키텍처</title>
+  <desc id="desc">인터넷 게이트웨이, 퍼블릭 서브넷, 프라이빗 서브넷, 배스천 호스트, NAT Gateway가 포함된 VPC 구성도</desc>
+  <defs>
+    <style>
+      .bg { fill: #f7f9fc; }
+      .title { font: 700 30px Arial, sans-serif; fill: #172033; }
+      .subtitle { font: 16px Arial, sans-serif; fill: #5b667a; }
+      .label { font: 700 17px Arial, sans-serif; fill: #172033; }
+      .small { font: 14px Arial, sans-serif; fill: #566176; }
+      .tiny { font: 12px Arial, sans-serif; fill: #6a7284; }
+      .aws { fill: #eef5ff; stroke: #5a8bd8; stroke-width: 3; }
+      .az { fill: #ffffff; stroke: #cad6ea; stroke-width: 2; }
+      .public { fill: #edf9f1; stroke: #45a567; stroke-width: 2; }
+      .private { fill: #fff7e8; stroke: #d99b29; stroke-width: 2; }
+      .service { fill: #ffffff; stroke: #d5ddeb; stroke-width: 2; }
+      .ec2 { fill: #fff3e4; stroke: #f59d2a; stroke-width: 2; }
+      .route { fill: #f3f6fb; stroke: #8797b2; stroke-width: 2; }
+      .sg { fill: #eaf8f1; stroke: #49a26d; stroke-width: 2; }
+      .nacl { fill: #f7edff; stroke: #9365c8; stroke-width: 2; }
+      .internet { fill: #edf1f7; stroke: #9aa8bd; stroke-width: 2; }
+      .inbound { stroke: #4d7fd8; stroke-width: 4; fill: none; marker-end: url(#arrow-blue); }
+      .outbound { stroke: #2f9b65; stroke-width: 4; fill: none; marker-end: url(#arrow-green); }
+      .ssh { stroke: #d07a19; stroke-width: 4; fill: none; marker-end: url(#arrow-orange); }
+      .thin { stroke: #9aa8bd; stroke-width: 2; fill: none; }
+    </style>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#4d7fd8"/>
+    </marker>
+    <marker id="arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2f9b65"/>
+    </marker>
+    <marker id="arrow-orange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#d07a19"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" width="1280" height="820"/>
+  <text class="title" x="56" y="64">VPC 네트워킹 최종 구조</text>
+  <text class="subtitle" x="56" y="92">Public Subnet은 외부 접속, Private Subnet은 배스천과 NAT Gateway를 통해 제한적으로 통신</text>
+
+  <rect class="service internet" x="72" y="154" width="180" height="88" rx="16"/>
+  <text class="label" x="162" y="192" text-anchor="middle">내 PC</text>
+  <text class="small" x="162" y="218" text-anchor="middle">SSH Client</text>
+
+  <rect class="service internet" x="312" y="154" width="180" height="88" rx="16"/>
+  <text class="label" x="402" y="192" text-anchor="middle">Internet</text>
+  <text class="small" x="402" y="218" text-anchor="middle">0.0.0.0/0</text>
+
+  <rect class="service" x="552" y="154" width="190" height="88" rx="16"/>
+  <text class="label" x="647" y="192" text-anchor="middle">Internet GW</text>
+  <text class="small" x="647" y="218" text-anchor="middle">my-igw</text>
+
+  <rect class="service" x="804" y="154" width="352" height="88" rx="16"/>
+  <text class="label" x="832" y="188">핵심 라우트</text>
+  <text class="small" x="832" y="216">Public: 0.0.0.0/0 -> IGW</text>
+  <text class="small" x="832" y="238">Private: 0.0.0.0/0 -> NAT Gateway</text>
+
+  <path class="inbound" d="M 252 198 L 304 198"/>
+  <path class="inbound" d="M 492 198 L 544 198"/>
+
+  <rect class="aws" x="70" y="300" width="1140" height="456" rx="26"/>
+  <text class="label" x="104" y="340">AWS VPC</text>
+  <text class="small" x="104" y="366">my-vpc / 10.0.0.0/16 / ap-northeast-2</text>
+
+  <rect class="sg" x="488" y="322" width="300" height="42" rx="10"/>
+  <text class="small" x="638" y="349" text-anchor="middle">Security Group: my-web-sg</text>
+
+  <rect class="service" x="826" y="322" width="244" height="42" rx="10"/>
+  <text class="small" x="948" y="349" text-anchor="middle">Key Pair: my-key / 접속 인증</text>
+
+  <rect class="az" x="104" y="404" width="508" height="268" rx="18"/>
+  <text class="label" x="132" y="438">Availability Zone A</text>
+  <text class="tiny" x="132" y="461">ap-northeast-2a</text>
+
+  <rect class="public" x="130" y="490" width="456" height="152" rx="16"/>
+  <text class="label" x="158" y="522">Public Subnet: my-sub01</text>
+  <text class="small" x="158" y="548">10.0.1.0/24</text>
+
+  <rect class="ec2" x="158" y="582" width="116" height="44" rx="10"/>
+  <text class="small" x="216" y="610" text-anchor="middle">my-vm01</text>
+
+  <rect class="ec2" x="300" y="582" width="116" height="44" rx="10"/>
+  <text class="small" x="358" y="610" text-anchor="middle">my-vm03</text>
+
+  <rect class="service" x="448" y="560" width="112" height="56" rx="12"/>
+  <text class="small" x="504" y="582" text-anchor="middle">NAT</text>
+  <text class="small" x="504" y="602" text-anchor="middle">Gateway</text>
+
+  <rect class="az" x="668" y="404" width="508" height="268" rx="18"/>
+  <text class="label" x="696" y="438">Availability Zone C</text>
+  <text class="tiny" x="696" y="461">ap-northeast-2c</text>
+
+  <rect class="private" x="694" y="490" width="456" height="152" rx="16"/>
+  <text class="label" x="722" y="522">Private Subnet: my-sub02</text>
+  <text class="small" x="722" y="548">10.0.2.0/24</text>
+
+  <rect class="ec2" x="864" y="582" width="116" height="44" rx="10"/>
+  <text class="small" x="922" y="610" text-anchor="middle">my-vm02</text>
+
+  <rect class="nacl" x="548" y="408" width="104" height="42" rx="10"/>
+  <text class="small" x="600" y="435" text-anchor="middle">NACL</text>
+
+  <rect class="nacl" x="1100" y="408" width="76" height="42" rx="10"/>
+  <text class="small" x="1138" y="435" text-anchor="middle">NACL</text>
+
+  <rect class="route" x="104" y="696" width="398" height="66" rx="14"/>
+  <text class="label" x="130" y="724">my-route</text>
+  <text class="small" x="130" y="748">10.0.0.0/16 -> local, 0.0.0.0/0 -> IGW</text>
+
+  <rect class="route" x="722" y="696" width="426" height="66" rx="14"/>
+  <text class="label" x="748" y="724">my-nat-route</text>
+  <text class="small" x="748" y="748">10.0.0.0/16 -> local, 0.0.0.0/0 -> NAT Gateway</text>
+
+  <path class="inbound" d="M 656 242 C 700 330, 662 420, 586 492"/>
+
+  <path class="ssh" d="M 216 626 C 360 684, 742 684, 922 626"/>
+  <text class="tiny" x="566" y="681" text-anchor="middle">배스천 호스트에서 프라이빗 IP로 SSH</text>
+
+  <path class="outbound" d="M 864 592 C 760 554, 650 552, 560 584"/>
+
+  <path class="outbound" d="M 504 560 C 520 430, 574 314, 628 242"/>
+
+  <path class="thin" d="M 304 696 L 304 650"/>
+  <path class="thin" d="M 936 696 L 936 650"/>
+
+  <rect class="service" x="72" y="770" width="438" height="32" rx="8"/>
+  <text class="tiny" x="291" y="791" text-anchor="middle">파란색: 인터넷 인바운드 / 주황색: 배스천 SSH / 초록색: NAT 아웃바운드</text>
+</svg>

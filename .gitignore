@@ -1,0 +1,14 @@
+*.pem
+*.key
+*.ppk
+.env
+.env.*
+.DS_Store
+tmp/
+.aws/
+.terraform/
+*.tfstate
+*.tfstate.*
+credentials.csv
+accessKeys.csv
+*credentials*.csv
