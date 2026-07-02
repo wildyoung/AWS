@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="540" viewBox="0 0 1120 540" role="img" aria-labelledby="title desc">
+  <title id="title">my-vm03 to my-vm02 ping test</title>
+  <desc id="desc">Terminal-style capture showing expected ping failure from my-vm03 to my-vm02 because private security group only allows my-vm01</desc>
+  <defs>
+    <style>
+      .bg { fill: #f5f7fb; }
+      .title { font: 700 28px Arial, sans-serif; fill: #172033; }
+      .subtitle { font: 16px Arial, sans-serif; fill: #5a6578; }
+      .window { fill: #111827; stroke: #d6deeb; stroke-width: 2; }
+      .bar { fill: #263244; }
+      .dot-red { fill: #ff5f57; }
+      .dot-yellow { fill: #febc2e; }
+      .dot-green { fill: #28c840; }
+      .terminal-title { font: 13px Arial, sans-serif; fill: #cfd8e3; }
+      .prompt { font: 17px Menlo, Consolas, monospace; fill: #9ae6b4; }
+      .text { font: 17px Menlo, Consolas, monospace; fill: #e5e7eb; }
+      .fail { fill: #fff7e8; stroke: #d99b29; stroke-width: 2; }
+      .fail-text { font: 700 14px Arial, sans-serif; fill: #8a5a00; }
+      .muted { font: 14px Arial, sans-serif; fill: #65738a; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1120" height="540"/>
+  <text class="title" x="56" y="62">Ping Test: my-vm03 -> my-vm02</text>
+  <text class="subtitle" x="56" y="92">my-vm02 보안그룹이 my-vm01만 허용하는지 확인하는 제한 테스트</text>
+
+  <rect class="fail" x="56" y="118" width="208" height="34" rx="17"/>
+  <text class="fail-text" x="160" y="141" text-anchor="middle">BLOCKED / expected</text>
+
+  <rect class="window" x="56" y="178" width="1008" height="286" rx="14"/>
+  <rect class="bar" x="56" y="178" width="1008" height="44" rx="14"/>
+  <circle class="dot-red" cx="82" cy="200" r="7"/>
+  <circle class="dot-yellow" cx="106" cy="200" r="7"/>
+  <circle class="dot-green" cx="130" cy="200" r="7"/>
+  <text class="terminal-title" x="560" y="205" text-anchor="middle">terminal - final ping test</text>
+
+  <text class="prompt" x="88" y="260">$ my-vm03 ping -c 5 10.0.2.227</text>
+  <text class="text" x="88" y="292">PING 10.0.2.227 (10.0.2.227) 56(84) bytes of data.</text>
+  <text class="text" x="88" y="342">--- 10.0.2.227 ping statistics ---</text>
+  <text class="text" x="88" y="372">5 packets transmitted, 0 received, 100% packet loss, time 4133ms</text>
+  <text class="text" x="88" y="402">exit_code=1</text>
+
+  <text class="muted" x="56" y="508">결과: my-private-sg가 my-vm03의 프라이빗 IP를 허용하지 않기 때문에 차단됨.</text>
+</svg>

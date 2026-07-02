@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="620" viewBox="0 0 1120 620" role="img" aria-labelledby="title desc">
+  <title id="title">my-vm01 to my-vm02 ping test</title>
+  <desc id="desc">Terminal-style capture showing successful ping from my-vm01 to my-vm02 private IP</desc>
+  <defs>
+    <style>
+      .bg { fill: #f5f7fb; }
+      .title { font: 700 28px Arial, sans-serif; fill: #172033; }
+      .subtitle { font: 16px Arial, sans-serif; fill: #5a6578; }
+      .window { fill: #111827; stroke: #d6deeb; stroke-width: 2; }
+      .bar { fill: #263244; }
+      .dot-red { fill: #ff5f57; }
+      .dot-yellow { fill: #febc2e; }
+      .dot-green { fill: #28c840; }
+      .terminal-title { font: 13px Arial, sans-serif; fill: #cfd8e3; }
+      .prompt { font: 17px Menlo, Consolas, monospace; fill: #9ae6b4; }
+      .text { font: 17px Menlo, Consolas, monospace; fill: #e5e7eb; }
+      .success { fill: #eaf8f1; stroke: #39a66a; stroke-width: 2; }
+      .success-text { font: 700 14px Arial, sans-serif; fill: #207849; }
+      .muted { font: 14px Arial, sans-serif; fill: #65738a; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1120" height="620"/>
+  <text class="title" x="56" y="62">Ping Test: my-vm01 -> my-vm02</text>
+  <text class="subtitle" x="56" y="92">배스천 호스트 역할의 my-vm01에서 프라이빗 EC2인 my-vm02로 ICMP 통신 확인</text>
+
+  <rect class="success" x="56" y="118" width="188" height="34" rx="17"/>
+  <text class="success-text" x="150" y="141" text-anchor="middle">SUCCESS / expected</text>
+
+  <rect class="window" x="56" y="178" width="1008" height="366" rx="14"/>
+  <rect class="bar" x="56" y="178" width="1008" height="44" rx="14"/>
+  <circle class="dot-red" cx="82" cy="200" r="7"/>
+  <circle class="dot-yellow" cx="106" cy="200" r="7"/>
+  <circle class="dot-green" cx="130" cy="200" r="7"/>
+  <text class="terminal-title" x="560" y="205" text-anchor="middle">terminal - final ping test</text>
+
+  <text class="prompt" x="88" y="260">$ my-vm01 ping -c 5 10.0.2.227</text>
+  <text class="text" x="88" y="292">PING 10.0.2.227 (10.0.2.227) 56(84) bytes of data.</text>
+  <text class="text" x="88" y="322">64 bytes from 10.0.2.227: icmp_seq=1 ttl=127 time=0.994 ms</text>
+  <text class="text" x="88" y="352">64 bytes from 10.0.2.227: icmp_seq=2 ttl=127 time=1.00 ms</text>
+  <text class="text" x="88" y="382">64 bytes from 10.0.2.227: icmp_seq=3 ttl=127 time=1.03 ms</text>
+  <text class="text" x="88" y="412">64 bytes from 10.0.2.227: icmp_seq=4 ttl=127 time=1.02 ms</text>
+  <text class="text" x="88" y="442">64 bytes from 10.0.2.227: icmp_seq=5 ttl=127 time=1.02 ms</text>
+  <text class="text" x="88" y="472">--- 10.0.2.227 ping statistics ---</text>
+  <text class="text" x="88" y="502">5 packets transmitted, 5 received, 0% packet loss, time 4005ms</text>
+  <text class="text" x="88" y="532">rtt min/avg/max/mdev = 0.994/1.012/1.030/0.013 ms</text>
+
+  <text class="muted" x="56" y="586">결과: my-private-sg에서 my-vm01의 프라이빗 IP 대역을 허용했기 때문에 통신 성공.</text>
+</svg>
