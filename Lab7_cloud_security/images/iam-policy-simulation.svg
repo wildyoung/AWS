@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">IAM Policy Simulation Result</title>
+  <desc id="desc">Policy simulation results for dev01 and my-admin without exposing account identifiers</desc>
+  <defs>
+    <style>
+      .bg { fill: #f6f8fb; }
+      .panel { fill: #ffffff; stroke: #d8e0ee; stroke-width: 2; }
+      .head { fill: #eef4ff; }
+      .allow { fill: #ecfdf3; }
+      .deny { fill: #fff1f2; }
+      .neutral { fill: #f8fafc; }
+      .title { font: 700 30px Arial, sans-serif; fill: #172033; }
+      .subtitle { font: 15px Arial, sans-serif; fill: #536178; }
+      .label { font: 700 15px Arial, sans-serif; fill: #172033; }
+      .cell { font: 14px Arial, sans-serif; fill: #243044; }
+      .tiny { font: 12px Arial, sans-serif; fill: #64748b; }
+    </style>
+  </defs>
+  <rect class="bg" width="1280" height="720"/>
+  <text class="title" x="56" y="62">IAM Policy Simulation</text>
+  <text class="subtitle" x="56" y="91">dev01 has EC2-only access; my-admin has administrator access but no login credentials</text>
+
+  <rect class="panel" x="72" y="128" width="1136" height="448" rx="8"/>
+  <rect class="head" x="92" y="156" width="1096" height="48" rx="6"/>
+  <text class="label" x="132" y="186">Principal</text>
+  <text class="label" x="338" y="186">Action</text>
+  <text class="label" x="716" y="186">Decision</text>
+  <text class="label" x="922" y="186">Meaning</text>
+
+  <rect class="allow" x="92" y="218" width="1096" height="52" rx="6"/>
+  <text class="cell" x="132" y="250">dev01</text>
+  <text class="cell" x="338" y="250">ec2:DescribeInstances</text>
+  <text class="cell" x="716" y="250">allowed</text>
+  <text class="cell" x="922" y="250">EC2 dashboard/API can be used</text>
+
+  <rect class="allow" x="92" y="280" width="1096" height="52" rx="6"/>
+  <text class="cell" x="132" y="312">dev01</text>
+  <text class="cell" x="338" y="312">ec2:StartInstances</text>
+  <text class="cell" x="716" y="312">allowed</text>
+  <text class="cell" x="922" y="312">EC2 full access policy applies</text>
+
+  <rect class="deny" x="92" y="342" width="1096" height="52" rx="6"/>
+  <text class="cell" x="132" y="374">dev01</text>
+  <text class="cell" x="338" y="374">s3:ListAllMyBuckets</text>
+  <text class="cell" x="716" y="374">implicitDeny</text>
+  <text class="cell" x="922" y="374">S3 is outside the granted policy</text>
+
+  <rect class="deny" x="92" y="404" width="1096" height="52" rx="6"/>
+  <text class="cell" x="132" y="436">dev01</text>
+  <text class="cell" x="338" y="436">iam:ListUsers</text>
+  <text class="cell" x="716" y="436">implicitDeny</text>
+  <text class="cell" x="922" y="436">IAM administration is blocked</text>
+
+  <rect class="allow" x="92" y="466" width="1096" height="52" rx="6"/>
+  <text class="cell" x="132" y="498">my-admin</text>
+  <text class="cell" x="338" y="498">EC2, S3, IAM actions</text>
+  <text class="cell" x="716" y="498">allowed</text>
+  <text class="cell" x="922" y="498">AdministratorAccess policy applies</text>
+
+  <rect class="neutral" x="92" y="536" width="1096" height="74" rx="6"/>
+  <text class="cell" x="132" y="574">Credential check</text>
+  <text class="cell" x="338" y="574">dev01 and my-admin</text>
+  <text class="cell" x="716" y="574">none</text>
+  <text class="cell" x="922" y="574">no password or access key exists</text>
+  <text class="tiny" x="92" y="648">Account identifiers and console passwords were intentionally omitted.</text>
+</svg>

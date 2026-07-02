@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">EC2 S3 Role Test Result</title>
+  <desc id="desc">EC2 instances used myS3AccessRole temporary credentials to upload and download S3 objects</desc>
+  <defs>
+    <style>
+      .bg { fill: #f6f8fb; }
+      .panel { fill: #ffffff; stroke: #d8e0ee; stroke-width: 2; }
+      .head { fill: #eef4ff; }
+      .ok { fill: #ecfdf3; }
+      .warn { fill: #fff7ed; }
+      .title { font: 700 30px Arial, sans-serif; fill: #172033; }
+      .subtitle { font: 15px Arial, sans-serif; fill: #536178; }
+      .label { font: 700 15px Arial, sans-serif; fill: #172033; }
+      .cell { font: 14px Arial, sans-serif; fill: #243044; }
+      .tiny { font: 12px Arial, sans-serif; fill: #64748b; }
+    </style>
+  </defs>
+  <rect class="bg" width="1280" height="720"/>
+  <text class="title" x="56" y="62">EC2 to S3 with Temporary Credentials</text>
+  <text class="subtitle" x="56" y="91">my-web01 and my-web02 used myS3AccessRole through an instance profile</text>
+
+  <rect class="panel" x="72" y="128" width="1136" height="438" rx="8"/>
+  <rect class="head" x="92" y="156" width="1096" height="48" rx="6"/>
+  <text class="label" x="132" y="186">Instance</text>
+  <text class="label" x="320" y="186">Role</text>
+  <text class="label" x="566" y="186">S3 upload</text>
+  <text class="label" x="746" y="186">S3 download</text>
+  <text class="label" x="946" y="186">List all buckets</text>
+
+  <rect class="ok" x="92" y="222" width="1096" height="64" rx="6"/>
+  <text class="cell" x="132" y="260">my-web01</text>
+  <text class="cell" x="320" y="260">myS3AccessRole</text>
+  <text class="cell" x="566" y="260">ok</text>
+  <text class="cell" x="746" y="260">ok</text>
+  <text class="cell" x="946" y="260">AccessDenied expected</text>
+
+  <rect class="ok" x="92" y="306" width="1096" height="64" rx="6"/>
+  <text class="cell" x="132" y="344">my-web02</text>
+  <text class="cell" x="320" y="344">myS3AccessRole</text>
+  <text class="cell" x="566" y="344">ok</text>
+  <text class="cell" x="746" y="344">ok</text>
+  <text class="cell" x="946" y="344">AccessDenied expected</text>
+
+  <rect class="warn" x="92" y="402" width="1096" height="94" rx="6"/>
+  <text class="cell" x="132" y="440">S3 bucket control</text>
+  <text class="cell" x="320" y="440">Lab7 private bucket</text>
+  <text class="cell" x="566" y="440">Block Public Access: on</text>
+  <text class="cell" x="746" y="440">SSE-S3: AES256</text>
+  <text class="cell" x="946" y="440">Scoped role policy</text>
+
+  <text class="tiny" x="92" y="620">The role can read and write the Lab7 bucket prefix but cannot enumerate every bucket in the account.</text>
+</svg>
