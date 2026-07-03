@@ -1,0 +1,30 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - export AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+      - export AWS_DEFAULT_REGION=ap-northeast-2
+      - export IMAGE_REPO_NAME=to-do-app
+      - export IMAGE_TAG=$(echo "$CODEBUILD_RESOLVED_SOURCE_VERSION" | cut -c 1-7)
+      - echo "Using IMAGE_TAG=$IMAGE_TAG"
+      - aws ecr get-login-password --region "$AWS_DEFAULT_REGION" | docker login --username AWS --password-stdin "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com"
+  build:
+    commands:
+      - echo "Build started"
+      - "docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG ."
+      - "docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG"
+  post_build:
+    commands:
+      - "docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG"
+      - "sed -i 's|image: .*to-do-app:.*|image: '$AWS_ACCOUNT_ID'.dkr.ecr.'$AWS_DEFAULT_REGION'.amazonaws.com/'$IMAGE_REPO_NAME':'$IMAGE_TAG'|g' to_do_app.yaml"
+      - git config user.email "codebuild@ci.local"
+      - git config user.name "CodeBuild CI"
+      - git remote set-url origin "https://$GITHUB_TOKEN@github.com/$GITHUB_USERNAME/to-do-app.git"
+      - git add to_do_app.yaml
+      - "git commit -m 'ci: update image to '$IMAGE_TAG' [skip ci]' || echo 'No changes to commit'"
+      - git push origin HEAD:main
+
+artifacts:
+  files:
+    - to_do_app.yaml

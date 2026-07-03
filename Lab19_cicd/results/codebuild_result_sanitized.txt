@@ -1,0 +1,68 @@
+# Lab19 CI/CD AWS CLI Result (sanitized)
+
+검증일: 2026-07-04
+리전: ap-northeast-2
+
+## CodeBuild 결과
+
+project: lab19-cicd-build
+buildStatus: SUCCEEDED
+buildId: lab19-cicd-build:9a75065a-006c-42d2-8af9-8c04d74765d0
+startedAt: 2026-07-04 02:45:58 KST
+endedAt: 2026-07-04 02:46:36 KST
+
+phases:
+- SUBMITTED          SUCCEEDED    0s
+- QUEUED             SUCCEEDED    0s
+- PROVISIONING       SUCCEEDED    6s
+- DOWNLOAD_SOURCE    SUCCEEDED    1s
+- INSTALL            SUCCEEDED    0s
+- PRE_BUILD          SUCCEEDED   13s
+- BUILD              SUCCEEDED    8s
+- POST_BUILD         SUCCEEDED    6s
+- UPLOAD_ARTIFACTS   SUCCEEDED    0s
+- FINALIZING         SUCCEEDED    0s
+
+## ECR 이미지 결과
+
+repository: lab19-to-do-app
+tag: cli-lab
+digest: sha256:124a63363d7af8d2c8182ca77b077a16e0971013e94e5641084221f6ed5e7b35
+sizeBytes: 49320063
+imageUri: <AWS_ACCOUNT_ID>.dkr.ecr.ap-northeast-2.amazonaws.com/lab19-to-do-app:cli-lab
+
+## 핵심 빌드 로그
+
+[Container] Phase complete: PRE_BUILD State: SUCCEEDED
+[Container] Phase complete: BUILD State: SUCCEEDED
+[Container] Phase complete: POST_BUILD State: SUCCEEDED
+The push refers to repository [<AWS_ACCOUNT_ID>.dkr.ecr.ap-northeast-2.amazonaws.com/lab19-to-do-app]
+cli-lab: digest: sha256:124a63363d7af8d2c8182ca77b077a16e0971013e94e5641084221f6ed5e7b35 size: 2200
+imageUri=<AWS_ACCOUNT_ID>.dkr.ecr.ap-northeast-2.amazonaws.com/lab19-to-do-app:cli-lab
+
+## 정리 결과
+
+cleanup start
+{
+    "repository": {
+        "repositoryArn": "arn:aws:ecr:ap-northeast-2:<AWS_ACCOUNT_ID>:repository/lab19-to-do-app",
+        "registryId": "<AWS_ACCOUNT_ID>",
+        "repositoryName": "lab19-to-do-app",
+        "repositoryUri": "<AWS_ACCOUNT_ID>.dkr.ecr.ap-northeast-2.amazonaws.com/lab19-to-do-app",
+        "createdAt": 1783100739.018,
+        "imageTagMutability": "MUTABLE"
+    }
+}
+empty bucket <LAB_BUCKET>
+delete: s3://<LAB_BUCKET>/source.zip
+delete bucket <LAB_BUCKET>
+empty bucket <LAB_BUCKET>
+delete: s3://<LAB_BUCKET>/source.zip
+delete bucket <LAB_BUCKET>
+cleanup verification
+
+An error occurred (RepositoryNotFoundException) when calling the DescribeRepositories operation: The repository with name 'lab19-to-do-app' does not exist in the registry with id '<AWS_ACCOUNT_ID>'
+
+An error occurred (NoSuchEntity) when calling the GetRole operation: The role with name lab19-codebuild-service-role cannot be found.
+cleanup complete
+

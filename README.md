@@ -22,6 +22,7 @@ AWS 개념과 실습 기록입니다.
 - [Lab16 Kubernetes Network](Lab16_kubernetes_network/README.md)
 - [Lab17 Kubernetes Etc](Lab17_kubernetes_etc/README.md)
 - [Lab18 Amazon EKS](Lab18_amazon_eks/README.md)
+- [Lab19 CI/CD](Lab19_cicd/README.md)
 - [Part2 Docker](Part2_Docker/README.md)
 
 ## 정리한 내용
@@ -99,6 +100,10 @@ AWS 개념과 실습 기록입니다.
 - Amazon EKS 관리형 Control Plane과 Managed Node Group
 - Amazon VPC CNI 기반 Pod IP 할당과 VPC 네트워크 통합
 - EKS Service LoadBalancer와 AWS Network Load Balancer 연동
+- CI/CD 파이프라인, Continuous Integration, Continuous Delivery/Deployment
+- AWS CodeBuild buildspec 단계와 privileged Docker build
+- Amazon ECR 이미지 태그, digest, 컨테이너 이미지 저장 흐름
+- Argo CD 기반 GitOps와 `[skip ci]`를 통한 빌드 루프 방지
 - EKS Endpoint, IAM 인증, Kubernetes RBAC 연계 개념
 
 ## 읽는 순서
@@ -122,6 +127,7 @@ AWS 개념과 실습 기록입니다.
 17. `Lab16_kubernetes_network`: Pod IP, ClusterIP Service, Endpoints, LoadBalancer, Ingress 네트워크 흐름을 실습합니다.
 18. `Lab17_kubernetes_etc`: emptyDir, PV/PVC, ConfigMap, Secret을 통해 데이터 저장과 설정 분리 방식을 실습합니다.
 19. `Lab18_amazon_eks`: AWS 관리형 Kubernetes인 EKS에서 Managed Node Group, VPC CNI, Service/NLB 흐름을 실습합니다.
+20. `Lab19_cicd`: CodeBuild가 Docker 이미지를 빌드해 ECR에 push하고, Argo CD GitOps로 EKS 배포가 이어지는 CI/CD 흐름을 정리합니다.
 
 ## 보안 주의사항
 

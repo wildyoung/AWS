@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My To-do List</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <main class="container">
+        <h1>My To-do List</h1>
+        <p class="success">애플리케이션 업데이트가 완료되었습니다.</p>
+        <form action="{{ url_for('add') }}" method="POST">
+            <input type="time" name="time" required>
+            <input type="text" name="task" placeholder="Add New Task" required>
+            <button type="submit">ADD</button>
+        </form>
+
+        <ul>
+            {% for time, task in tasks.items() %}
+                <li>
+                    <span><strong>{{ time }}</strong> - {{ task }}</span>
+                    <a href="{{ url_for('delete', time=time) }}" class="delete-btn">Delete</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </main>
+
+    <div class="image-container">
+        <img src="{{ url_for('static', filename='bg.png') }}" alt="To-do List Illustration">
+    </div>
+</body>
+</html>

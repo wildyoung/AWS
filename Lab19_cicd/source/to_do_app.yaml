@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: to-do-app
+  labels:
+    app: to-do-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: to-do-app
+  template:
+    metadata:
+      labels:
+        app: to-do-app
+    spec:
+      containers:
+        - name: to-do-app
+          image: 123456789012.dkr.ecr.ap-northeast-2.amazonaws.com/to-do-app:latest
+          ports:
+            - containerPort: 5000
