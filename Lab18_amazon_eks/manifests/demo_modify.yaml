@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: demo-app
+  labels:
+    app: demo-app
+    version: v2
+    managed-by: kubectl-apply
+spec:
+  containers:
+    - name: nginx-container
+      image: nginx:1.25
+      ports:
+        - containerPort: 80

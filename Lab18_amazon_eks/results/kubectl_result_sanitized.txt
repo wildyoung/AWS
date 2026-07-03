@@ -1,0 +1,298 @@
+
+===== 00 Preflight =====
+{
+    "Account": "<account-id>",
+    "Arn": "<aws-arn>
+}
+1.36	1.35	1.34	1.33	1.32	1.31	1.30
+--------------
+|ListClusters|
++------------+
+
+===== 01 Create VPC and IAM base stack =====
+-----------------------------------------------------------------------------------------------------------------------------
+|                                                      DescribeStacks                                                       |
++------------------+--------------------------------------------------------------------------------------------------------+
+|        Key       |                                                 Value                                                  |
++------------------+--------------------------------------------------------------------------------------------------------+
+|  PrivateSubnetIds|  <private-subnet-a>,<private-subnet-c>                                                     |
+|  PublicSubnetIds |  <public-subnet-a>,<public-subnet-c>                                                     |
+|  AllSubnetIds    |  <public-subnet-a>,<public-subnet-c>,<private-subnet-a>,<private-subnet-c>   |
+|  VpcId           |  <vpc-id>                                                                                 |
+|  NodeRoleArn     |  <aws-arn>                                   |
+|  ClusterRoleArn  |  <aws-arn>                                |
++------------------+--------------------------------------------------------------------------------------------------------+
+
+===== 02 Create EKS cluster and managed nodegroup =====
+------------------------------------------------------------------------------------------------------
+|                                           DescribeCluster                                          |
++-----------------+----------------------------------------------------------------------------------+
+|  AuthMode       |  API_AND_CONFIG_MAP                                                              |
+|  Endpoint       |  <eks-api-endpoint>   |
+|  EndpointPrivate|  True                                                                            |
+|  EndpointPublic |  True                                                                            |
+|  Name           |  lab18-eks                                                                       |
+|  Platform       |  eks.18                                                                          |
+|  Status         |  ACTIVE                                                                          |
+|  Version        |  1.35                                                                            |
++-----------------+----------------------------------------------------------------------------------+
+||                                              Subnets                                             ||
+|+--------------------------------------------------------------------------------------------------+|
+||  <public-subnet-a>                                                                        ||
+||  <public-subnet-c>                                                                        ||
+||  <private-subnet-a>                                                                        ||
+||  <private-subnet-c>                                                                        ||
+|+--------------------------------------------------------------------------------------------------+|
+Updated context lab18-eks in <local-kubeconfig>
+--------------------------------------------------------
+|                   DescribeNodegroup                  |
++---------+------+------+-------------------+----------+
+| Desired | Max  | Min  |       Name        | Status   |
++---------+------+------+-------------------+----------+
+|  2      |  2   |  1   |  lab18-nodegroup  |  ACTIVE  |
++---------+------+------+-------------------+----------+
+||                    InstanceTypes                   ||
+|+----------------------------------------------------+|
+||  t3.small                                          ||
+|+----------------------------------------------------+|
+||                       Subnets                      ||
+|+----------------------------------------------------+|
+||  <public-subnet-a>                          ||
+||  <public-subnet-c>                          ||
+|+----------------------------------------------------+|
+node/eks-node-a condition met
+node/eks-node-c condition met
+
+===== 03 EKS cluster basic checks =====
+NAME                                              STATUS   ROLES    AGE   VERSION               INTERNAL-IP    EXTERNAL-IP      OS-IMAGE                        KERNEL-VERSION                    CONTAINER-RUNTIME
+eks-node-a   Ready    <none>   62s   v1.35.6-eks-7d6f6ec   <node-private-ip-a>   <node-public-ip-a>   Amazon Linux 2023.12.20260622   6.12.92-122.166.amzn2023.x86_64   containerd://2.2.4+unknown
+eks-node-c   Ready    <none>   61s   v1.35.6-eks-7d6f6ec   <node-private-ip-c>   <node-public-ip-c>      Amazon Linux 2023.12.20260622   6.12.92-122.166.amzn2023.x86_64   containerd://2.2.4+unknown
+NAME              STATUS   AGE
+default           Active   5m2s
+kube-node-lease   Active   5m2s
+kube-public       Active   5m2s
+kube-system       Active   5m2s
+NAME         TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+kubernetes   ClusterIP   10.100.0.1   <none>        443/TCP   5m2s
+NAME         ENDPOINTS                            AGE
+kubernetes   <control-plane-eni-a>:443,<control-plane-eni-c>:443   5m2s
+NAME                      READY   STATUS    RESTARTS   AGE
+aws-node-9v9wt            2/2     Running   0          62s
+aws-node-bm4bt            2/2     Running   0          62s
+coredns-9b9d6dc59-gphkm   1/1     Running   0          3m47s
+coredns-9b9d6dc59-lpgsm   1/1     Running   0          3m47s
+kube-proxy-d6ddm          1/1     Running   0          62s
+kube-proxy-sgb5p          1/1     Running   0          62s
+metrics-server is not installed by default in this EKS run
+metrics-server deployment not found
+
+===== 04 Pod IP uses VPC CIDR =====
+pod/nginx-web created
+pod/nginx-web condition met
+NAME        READY   STATUS    RESTARTS   AGE   IP              NODE                                              NOMINATED NODE   READINESS GATES
+nginx-web   1/1     Running   0          8s    <pod-vpc-ip-1>   eks-node-c   <none>           <none>
+pod "nginx-web" deleted from default namespace
+pod/nginx-web created
+pod/nginx-web condition met
+NAME        READY   STATUS    RESTARTS   AGE   IP              NODE                                              NOMINATED NODE   READINESS GATES
+nginx-web   1/1     Running   0          2s    <pod-vpc-ip-2>   eks-node-c   <none>           <none>
+NAME                                              STATUS   ROLES    AGE   VERSION               INTERNAL-IP    EXTERNAL-IP      OS-IMAGE                        KERNEL-VERSION                    CONTAINER-RUNTIME
+eks-node-a   Ready    <none>   77s   v1.35.6-eks-7d6f6ec   <node-private-ip-a>   <node-public-ip-a>   Amazon Linux 2023.12.20260622   6.12.92-122.166.amzn2023.x86_64   containerd://2.2.4+unknown
+eks-node-c   Ready    <none>   76s   v1.35.6-eks-7d6f6ec   <node-private-ip-c>   <node-public-ip-c>      Amazon Linux 2023.12.20260622   6.12.92-122.166.amzn2023.x86_64   containerd://2.2.4+unknown
+pod "nginx-web" deleted from default namespace
+
+===== 05 kubectl apply, Pod-to-Pod, and multi-container Pod =====
+pod/demo-app created
+pod/demo-app condition met
+NAME       READY   STATUS    RESTARTS   AGE   LABELS
+demo-app   1/1     Running   0          2s    app=demo-app,topology.kubernetes.io/region=ap-northeast-2,topology.kubernetes.io/zone=ap-northeast-2c,version=v1
+pod/demo-app configured
+NAME       READY   STATUS    RESTARTS   AGE   LABELS
+demo-app   1/1     Running   0          2s    app=demo-app,managed-by=kubectl-apply,topology.kubernetes.io/region=ap-northeast-2,topology.kubernetes.io/zone=ap-northeast-2c,version=v2
+pod/nginx-pod created
+pod/apache-pod created
+pod/nginx-pod condition met
+pod/apache-pod condition met
+NAME         READY   STATUS    RESTARTS   AGE   IP              NODE                                              NOMINATED NODE   READINESS GATES
+apache-pod   1/1     Running   0          9s    <pod-vpc-ip-3>   eks-node-c   <none>           <none>
+demo-app     1/1     Running   0          12s   <pod-vpc-ip-4>   eks-node-c   <none>           <none>
+nginx-pod    1/1     Running   0          9s    <pod-vpc-ip-5>    eks-node-a   <none>           <none>
+curl apache-pod from nginx-pod by Pod IP: <pod-vpc-ip-3>
+HTTP/1.1 200 OK
+Date: Fri, 03 Jul 2026 17:15:05 GMT
+Server: Apache/2.4.68 (Unix)
+Last-Modified: Fri, 07 Nov 2025 08:23:08 GMT
+ETag: "bf-642fce432f300"
+pod/multi-pod created
+pod/multi-pod condition met
+NAME        READY   STATUS    RESTARTS   AGE   IP             NODE                                              NOMINATED NODE   READINESS GATES
+multi-pod   2/2     Running   0          5s    <pod-vpc-ip-6>   eks-node-a   <none>           <none>
+HTTP/1.1 200 OK
+Server: nginx/1.25.5
+Date: Fri, 03 Jul 2026 17:15:11 GMT
+Content-Type: text/html
+Content-Length: 615
+pod "demo-app" deleted from default namespace
+pod "nginx-pod" deleted from default namespace
+pod "apache-pod" deleted from default namespace
+pod "multi-pod" deleted from default namespace
+
+===== 06 ReplicaSet and Deployment =====
+replicaset.apps/my-rs created
+pod/my-rs-dn9wx condition met
+pod/my-rs-fsg45 condition met
+pod/my-rs-nhz9w condition met
+NAME    DESIRED   CURRENT   READY   AGE
+my-rs   3         3         3       2s
+NAME          READY   STATUS    RESTARTS   AGE   IP              NODE                                              NOMINATED NODE   READINESS GATES
+my-rs-dn9wx   1/1     Running   0          2s    <pod-vpc-ip-5>    eks-node-a   <none>           <none>
+my-rs-fsg45   1/1     Running   0          2s    <pod-vpc-ip-1>   eks-node-c   <none>           <none>
+my-rs-nhz9w   1/1     Running   0          2s    <pod-vpc-ip-2>   eks-node-c   <none>           <none>
+delete one ReplicaSet Pod: my-rs-dn9wx
+pod "my-rs-dn9wx" deleted from default namespace
+pod/my-rs-fsg45 condition met
+pod/my-rs-nhz9w condition met
+pod/my-rs-nr42j condition met
+NAME          READY   STATUS    RESTARTS   AGE   IP              NODE                                              NOMINATED NODE   READINESS GATES
+my-rs-fsg45   1/1     Running   0          5s    <pod-vpc-ip-1>   eks-node-c   <none>           <none>
+my-rs-nhz9w   1/1     Running   0          5s    <pod-vpc-ip-2>   eks-node-c   <none>           <none>
+my-rs-nr42j   1/1     Running   0          2s    <pod-vpc-ip-7>    eks-node-a   <none>           <none>
+replicaset.apps "my-rs" deleted from default namespace
+deployment.apps/my-deploy created
+Waiting for deployment "my-deploy" rollout to finish: 0 of 3 updated replicas are available...
+Waiting for deployment "my-deploy" rollout to finish: 1 of 3 updated replicas are available...
+Waiting for deployment "my-deploy" rollout to finish: 2 of 3 updated replicas are available...
+deployment "my-deploy" successfully rolled out
+NAME        READY   UP-TO-DATE   AVAILABLE   AGE
+my-deploy   3/3     3            3           17s
+NAME                  DESIRED   CURRENT   READY   AGE
+my-deploy-8b6c68bf9   3         3         3       17s
+NAME                        READY   STATUS    RESTARTS   AGE   IP              NODE                                              NOMINATED NODE   READINESS GATES
+my-deploy-8b6c68bf9-2sd6p   1/1     Running   0          17s   <pod-vpc-ip-8>   eks-node-a   <none>           <none>
+my-deploy-8b6c68bf9-4gvrh   1/1     Running   0          17s   <pod-vpc-ip-9>   eks-node-c   <none>           <none>
+my-deploy-8b6c68bf9-rxgg7   1/1     Running   0          17s   <pod-vpc-ip-4>   eks-node-c   <none>           <none>
+nginx:1.19
+delete one Deployment Pod: my-deploy-8b6c68bf9-2sd6p
+pod "my-deploy-8b6c68bf9-2sd6p" deleted from default namespace
+Waiting for deployment "my-deploy" rollout to finish: 2 of 3 updated replicas are available...
+deployment "my-deploy" successfully rolled out
+NAME                        READY   STATUS    RESTARTS   AGE   IP              NODE                                              NOMINATED NODE   READINESS GATES
+my-deploy-8b6c68bf9-4gvrh   1/1     Running   0          20s   <pod-vpc-ip-9>   eks-node-c   <none>           <none>
+my-deploy-8b6c68bf9-m5zjh   1/1     Running   0          2s    <pod-vpc-ip-10>    eks-node-a   <none>           <none>
+my-deploy-8b6c68bf9-rxgg7   1/1     Running   0          20s   <pod-vpc-ip-4>   eks-node-c   <none>           <none>
+deployment.apps/my-deploy configured
+Waiting for deployment "my-deploy" rollout to finish: 2 out of 4 new replicas have been updated...
+Waiting for deployment "my-deploy" rollout to finish: 2 out of 4 new replicas have been updated...
+Waiting for deployment "my-deploy" rollout to finish: 2 out of 4 new replicas have been updated...
+Waiting for deployment "my-deploy" rollout to finish: 2 out of 4 new replicas have been updated...
+Waiting for deployment "my-deploy" rollout to finish: 3 out of 4 new replicas have been updated...
+Waiting for deployment "my-deploy" rollout to finish: 3 out of 4 new replicas have been updated...
+Waiting for deployment "my-deploy" rollout to finish: 3 out of 4 new replicas have been updated...
+Waiting for deployment "my-deploy" rollout to finish: 3 out of 4 new replicas have been updated...
+Waiting for deployment "my-deploy" rollout to finish: 3 out of 4 new replicas have been updated...
+Waiting for deployment "my-deploy" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "my-deploy" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "my-deploy" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "my-deploy" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "my-deploy" rollout to finish: 3 of 4 updated replicas are available...
+Waiting for deployment "my-deploy" rollout to finish: 3 of 4 updated replicas are available...
+deployment "my-deploy" successfully rolled out
+NAME                                   DESIRED   CURRENT   READY   AGE
+replicaset.apps/my-deploy-7bf78678d8   4         4         4       2s
+replicaset.apps/my-deploy-8b6c68bf9    0         0         0       23s
+
+NAME                             READY   STATUS    RESTARTS   AGE
+pod/my-deploy-7bf78678d8-4jq97   1/1     Running   0          2s
+pod/my-deploy-7bf78678d8-6dn4x   1/1     Running   0          1s
+pod/my-deploy-7bf78678d8-8tvmb   1/1     Running   0          1s
+pod/my-deploy-7bf78678d8-w2mgl   1/1     Running   0          2s
+NAME                   DESIRED   CURRENT   READY   AGE   CONTAINERS        IMAGES       SELECTOR
+my-deploy-7bf78678d8   4         4         4       2s    nginx-container   nginx:1.25   app=my-deploy,pod-template-hash=7bf78678d8
+my-deploy-8b6c68bf9    0         0         0       23s   nginx-container   nginx:1.19   app=my-deploy,pod-template-hash=8b6c68bf9
+deployment.apps "my-deploy" deleted from default namespace
+
+===== 07 ClusterIP Service and Endpoints =====
+deployment.apps/deploy-hello created
+Waiting for deployment "deploy-hello" rollout to finish: 0 of 2 updated replicas are available...
+Waiting for deployment "deploy-hello" rollout to finish: 1 of 2 updated replicas are available...
+deployment "deploy-hello" successfully rolled out
+service/hello-svc created
+NAME         TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE
+hello-svc    ClusterIP   10.100.104.56   <none>        80/TCP    0s
+kubernetes   ClusterIP   10.100.0.1      <none>        443/TCP   6m54s
+NAME        ENDPOINTS                          AGE
+hello-svc   <pod-vpc-ip-6>:80,<pod-vpc-ip-1>:80   1s
+NAME                            READY   STATUS    RESTARTS   AGE   IP              NODE                                              NOMINATED NODE   READINESS GATES
+deploy-hello-75cf7f6d4d-7j964   1/1     Running   0          15s   <pod-vpc-ip-6>    eks-node-a   <none>           <none>
+deploy-hello-75cf7f6d4d-98kff   1/1     Running   0          15s   <pod-vpc-ip-1>   eks-node-c   <none>           <none>
+deployment.apps/ubuntu-deployment created
+Waiting for deployment "ubuntu-deployment" rollout to finish: 0 of 1 updated replicas are available...
+deployment "ubuntu-deployment" successfully rolled out
+curl hello-svc from client Pod: ubuntu-deployment-7d97fbc6bc-8b5s9
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+pod "deploy-hello-75cf7f6d4d-7j964" deleted from default namespace
+pod "deploy-hello-75cf7f6d4d-98kff" deleted from default namespace
+Waiting for deployment "deploy-hello" rollout to finish: 1 of 2 updated replicas are available...
+deployment "deploy-hello" successfully rolled out
+NAME                            READY   STATUS    RESTARTS   AGE   IP              NODE                                              NOMINATED NODE   READINESS GATES
+deploy-hello-75cf7f6d4d-b2cbv   1/1     Running   0          15s   <pod-vpc-ip-5>    eks-node-a   <none>           <none>
+deploy-hello-75cf7f6d4d-rj6js   1/1     Running   0          15s   <pod-vpc-ip-4>   eks-node-c   <none>           <none>
+NAME        ENDPOINTS                          AGE
+hello-svc   <pod-vpc-ip-5>:80,<pod-vpc-ip-4>:80   23s
+<!DOCTYPE html>
+<html>
+<head>
+
+===== 08 LoadBalancer Service creates AWS load balancer =====
+service "hello-svc" deleted from default namespace
+service/hello-svc created
+LoadBalancer DNS: <nlb-dns-name>
+NAME        TYPE           CLUSTER-IP      EXTERNAL-IP                                                                          PORT(S)          AGE
+hello-svc   LoadBalancer   10.100.128.39   <nlb-dns-name>   8020:30280/TCP   11s
+---------------------------------------------------------------------------------------------------
+|                                      DescribeLoadBalancers                                      |
++---------+---------------------------------------------------------------------------------------+
+|  DNSName|  <nlb-dns-name>   |
+|  Scheme |  internet-facing                                                                      |
+|  State  |  provisioning                                                                         |
+|  Type   |  network                                                                              |
++---------+---------------------------------------------------------------------------------------+
+External curl to LoadBalancer succeeded
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+
+===== 09 Ingress Controller note =====
+AWS Load Balancer Controller requires IAM policy, OIDC provider, IRSA service account, and Helm installation.
+Ingress YAML is included as an optional reference but was not installed in this cost-focused run.
+
+===== 90 Kubernetes cleanup =====
+service "hello-svc" deleted from default namespace
+deployment.apps "deploy-hello" deleted from default namespace
+deployment.apps "ubuntu-deployment" deleted from default namespace
+NAME                                     READY   STATUS        RESTARTS   AGE
+pod/ubuntu-deployment-7d97fbc6bc-8b5s9   1/1     Terminating   0          3m35s
+
+NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+service/kubernetes   ClusterIP   10.100.0.1   <none>        443/TCP   10m
+LoadBalancer DNS removed: <deleted>
+
+===== 91 AWS cleanup =====
+Deleting EKS nodegroup: lab18-nodegroup
+Nodegroup deleted
+Deleting EKS cluster: lab18-eks
+Cluster deleted
+Deleting CloudFormation stack: lab18-eks-base
+Stack deleted
+
+===== 92 Final AWS resource check =====
+--------------
+|ListClusters|
++------------+
+CloudFormation stack lab18-eks-base not found

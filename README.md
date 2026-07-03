@@ -21,6 +21,7 @@ AWS 개념과 실습 기록입니다.
 - [Lab15 Kubernetes Controller](Lab15_kubernetes_controller/README.md)
 - [Lab16 Kubernetes Network](Lab16_kubernetes_network/README.md)
 - [Lab17 Kubernetes Etc](Lab17_kubernetes_etc/README.md)
+- [Lab18 Amazon EKS](Lab18_amazon_eks/README.md)
 - [Part2 Docker](Part2_Docker/README.md)
 
 ## 정리한 내용
@@ -95,6 +96,10 @@ AWS 개념과 실습 기록입니다.
 - emptyDir과 PersistentVolume/PersistentVolumeClaim의 차이
 - PV reclaim policy와 hostPath 학습 환경의 한계
 - ConfigMap과 Secret을 이용한 설정/민감값 분리
+- Amazon EKS 관리형 Control Plane과 Managed Node Group
+- Amazon VPC CNI 기반 Pod IP 할당과 VPC 네트워크 통합
+- EKS Service LoadBalancer와 AWS Network Load Balancer 연동
+- EKS Endpoint, IAM 인증, Kubernetes RBAC 연계 개념
 
 ## 읽는 순서
 
@@ -116,6 +121,7 @@ AWS 개념과 실습 기록입니다.
 16. `Lab15_kubernetes_controller`: RC, ReplicaSet, Deployment, DaemonSet, Job, CronJob, StatefulSet의 Controller 동작을 실습합니다.
 17. `Lab16_kubernetes_network`: Pod IP, ClusterIP Service, Endpoints, LoadBalancer, Ingress 네트워크 흐름을 실습합니다.
 18. `Lab17_kubernetes_etc`: emptyDir, PV/PVC, ConfigMap, Secret을 통해 데이터 저장과 설정 분리 방식을 실습합니다.
+19. `Lab18_amazon_eks`: AWS 관리형 Kubernetes인 EKS에서 Managed Node Group, VPC CNI, Service/NLB 흐름을 실습합니다.
 
 ## 보안 주의사항
 

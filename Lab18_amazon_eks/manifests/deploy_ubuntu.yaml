@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ubuntu-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ubuntu-client
+  template:
+    metadata:
+      labels:
+        app: ubuntu-client
+    spec:
+      containers:
+        - name: curl-container
+          image: curlimages/curl:8.10.1
+          command: ["sh", "-c", "sleep 3600"]
