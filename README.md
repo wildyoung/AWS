@@ -16,6 +16,7 @@ AWS 개념과 실습 기록입니다.
 - [Lab10 CloudFormation](Lab10_cloudformation/README.md)
 - [Lab11 Cost Management and Support](Lab11_cost_management_support/README.md)
 - [Lab12 Disaster Recovery](Lab12_disaster_recovery/README.md)
+- [Part2 Docker](Part2_Docker/README.md)
 
 ## 정리한 내용
 
@@ -60,6 +61,15 @@ AWS 개념과 실습 기록입니다.
 - AWS Support 플랜, 지원 케이스 심각도, Trusted Advisor
 - RPO/RTO와 재해 복구 전략
 - Backup and Restore, Pilot Light, Warm Standby, Multi-site DR 패턴
+- 클라우드 네이티브, MSA, DevOps, CI/CD 개념
+- 컨테이너와 VM의 차이, Docker Engine 구조
+- Docker 이미지, 컨테이너, Dockerfile, Registry 개념
+- Docker 컨테이너 생명주기와 기본 명령
+- Docker bridge/host/none 네트워크와 포트 매핑
+- Docker volume, bind mount, tmpfs 데이터 저장 방식
+- Dockerfile 지시어, 이미지 빌드, CMD와 ENTRYPOINT 차이
+- 이미지 레이어, 태그, save/load, Docker Hub, Amazon ECR 흐름
+- Docker Compose를 이용한 WordPress와 MySQL 멀티 컨테이너 구성
 
 ## 읽는 순서
 
@@ -75,6 +85,7 @@ AWS 개념과 실습 기록입니다.
 10. `Lab10_cloudformation`: CloudFormation으로 단일 스택을 생성/업데이트하고, VPC/EC2/ALB를 분리 스택으로 관리합니다.
 11. `Lab11_cost_management_support`: AWS 비용 구조, 비용 분석 도구, 예산 관리, 지원 플랜을 정리합니다.
 12. `Lab12_disaster_recovery`: RPO/RTO를 기준으로 재해 복구 패턴과 서비스별 복구 전략을 비교합니다.
+13. `Part2_Docker`: 클라우드 네이티브 개념에서 Docker 기본 명령, 네트워크/볼륨, Dockerfile, 이미지 관리, Compose까지 정리합니다.
 
 ## 보안 주의사항
 

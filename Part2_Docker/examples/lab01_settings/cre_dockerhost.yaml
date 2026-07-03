@@ -1,0 +1,46 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "Optional EC2 Docker host for Docker labs"
+
+Parameters:
+  KeyName:
+    Type: AWS::EC2::KeyPair::KeyName
+    Description: "EC2 KeyPair name for SSH login"
+
+  LatestAmiId:
+    Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
+    Default: /aws/service/ami-amazon-linux-latest/al2023-ami-kernel-6.1-x86_64
+
+Resources:
+  DockerHost:
+    Type: "AWS::EC2::Instance"
+    Properties:
+      InstanceType: "t3.micro"
+      ImageId: !Ref LatestAmiId
+      KeyName: !Ref KeyName
+      SubnetId: !ImportValue "DockerLabSubnetId01"
+      SecurityGroupIds:
+        - !ImportValue "DockerLabSecurityGroupId"
+      BlockDeviceMappings:
+        - DeviceName: "/dev/xvda"
+          Ebs:
+            VolumeSize: 20
+            VolumeType: "gp3"
+            DeleteOnTermination: true
+      Tags:
+        - Key: "Name"
+          Value: "docker-lab-host"
+      UserData:
+        Fn::Base64: |
+          #!/bin/bash
+          dnf update -y
+          dnf install -y dnf-plugins-core curl unzip git docker
+          systemctl enable docker
+          systemctl start docker
+          usermod -aG docker ec2-user
+
+Outputs:
+  InstanceId:
+    Description: "Docker Host EC2 Instance ID"
+    Value: !Ref DockerHost
+    Export:
+      Name: "DockerLabHostInstanceId"
