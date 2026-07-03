@@ -19,6 +19,7 @@ AWS 개념과 실습 기록입니다.
 - [Lab13 Kubernetes Basic](Lab13_kubernetes_basic/README.md)
 - [Lab14 Kubernetes Pod](Lab14_kubernetes_pod/README.md)
 - [Lab15 Kubernetes Controller](Lab15_kubernetes_controller/README.md)
+- [Lab16 Kubernetes Network](Lab16_kubernetes_network/README.md)
 - [Part2 Docker](Part2_Docker/README.md)
 
 ## 정리한 내용
@@ -86,6 +87,9 @@ AWS 개념과 실습 기록입니다.
 - ReplicationController와 ReplicaSet의 Pod 복제본 유지 방식
 - Deployment rolling update, rollout history, rollback
 - DaemonSet, Job, CronJob, StatefulSet의 목적과 동작 차이
+- Kubernetes Pod IP, CNI, Pod-to-Pod 통신 구조
+- Service selector, Endpoints, kube-proxy, ClusterIP 동작
+- LoadBalancer Service와 Ingress path routing 차이
 
 ## 읽는 순서
 
@@ -105,6 +109,7 @@ AWS 개념과 실습 기록입니다.
 14. `Lab13_kubernetes_basic`: EC2 단일 노드 k3s 환경에서 Kubernetes 구조, kubectl, namespace, YAML manifest, Service 흐름을 실습합니다.
 15. `Lab14_kubernetes_pod`: Pod IP, 단일/멀티 컨테이너 Pod, livenessProbe, init container, 환경 변수 전달을 실습합니다.
 16. `Lab15_kubernetes_controller`: RC, ReplicaSet, Deployment, DaemonSet, Job, CronJob, StatefulSet의 Controller 동작을 실습합니다.
+17. `Lab16_kubernetes_network`: Pod IP, ClusterIP Service, Endpoints, LoadBalancer, Ingress 네트워크 흐름을 실습합니다.
 
 ## 보안 주의사항
 

@@ -1,0 +1,161 @@
+===== main lab =====
+
+
+===== 00 Cluster network ready =====
+NAME                                            STATUS   ROLES           AGE   VERSION        INTERNAL-IP   EXTERNAL-IP   OS-IMAGE                        KERNEL-VERSION                            CONTAINER-RUNTIME
+lab16-k3s-node   Ready    control-plane   72s   v1.36.2+k3s1   <node-private-ip>    <none>        Amazon Linux 2023.12.20260629   6.1.175-219.359.amzn2023.x86_64 (amd64)   containerd://<runtime-version>
+NAMESPACE     NAME                                      READY   STATUS      RESTARTS      AGE   IP          NODE                                            NOMINATED NODE   READINESS GATES
+kube-system   coredns-5f5694d56b-dfhj9                  1/1     Running     0             67s   10.42.0.4   lab16-k3s-node   <none>           <none>
+kube-system   helm-install-traefik-crd-8qffr            0/1     Completed   0             61s   10.42.0.3   lab16-k3s-node   <none>           <none>
+kube-system   helm-install-traefik-j8p7v                0/1     Completed   2 (46s ago)   61s   10.42.0.2   lab16-k3s-node   <none>           <none>
+kube-system   local-path-provisioner-58d557dc48-p49pr   1/1     Running     0             67s   10.42.0.5   lab16-k3s-node   <none>           <none>
+kube-system   metrics-server-7c86f97b8d-8l4m5           1/1     Running     0             65s   10.42.0.6   lab16-k3s-node   <none>           <none>
+kube-system   svclb-traefik-f8aca7d9-5vfgd              2/2     Running     0             32s   10.42.0.7   lab16-k3s-node   <none>           <none>
+kube-system   traefik-6cd8c7cd89-t2k95                  1/1     Running     0             32s   10.42.0.8   lab16-k3s-node   <none>           <none>
+NAMESPACE     NAME             TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)                      AGE
+default       kubernetes       ClusterIP      10.43.0.1       <none>        443/TCP                      74s
+kube-system   kube-dns         ClusterIP      10.43.0.10      <none>        53/UDP,53/TCP,9153/TCP       69s
+kube-system   metrics-server   ClusterIP      10.43.250.244   <none>        443/TCP                      65s
+kube-system   traefik          LoadBalancer   10.43.12.8      <node-private-ip>    80:32018/TCP,443:31024/TCP   32s
+
+
+===== 01 Pod IP allocation changes after recreation =====
+first nginx-web1 Pod IP: 10.42.0.9
+NAME         READY   STATUS    RESTARTS   AGE   IP          NODE                                            NOMINATED NODE   READINESS GATES
+nginx-web1   1/1     Running   0          8s    10.42.0.9   lab16-k3s-node   <none>           <none>
+recreated nginx-web1 Pod IP: 10.42.0.10
+NAME         READY   STATUS    RESTARTS   AGE   IP           NODE                                            NOMINATED NODE   READINESS GATES
+nginx-web1   1/1     Running   0          2s    10.42.0.10   lab16-k3s-node   <none>           <none>
+nginx-web2   1/1     Running   0          1s    10.42.0.11   lab16-k3s-node   <none>           <none>
+
+
+===== 02 Single and multi-container Pod network =====
+single-pod IP: 10.42.0.12
+<!DOCTYPE html>
+<html>
+<head>
+multi-pod IP: 10.42.0.13
+NAME         READY   STATUS    RESTARTS   AGE   IP           NODE                                            NOMINATED NODE   READINESS GATES
+single-pod   1/1     Running   0          7s    10.42.0.12   lab16-k3s-node   <none>           <none>
+multi-pod    2/2     Running   0          6s    10.42.0.13   lab16-k3s-node   <none>           <none>
+Hello My Web from multi-pod
+PING 10.42.0.12 (10.42.0.12) 56(84) bytes of data.
+64 bytes from 10.42.0.12: icmp_seq=1 ttl=127 time=0.112 ms
+64 bytes from 10.42.0.12: icmp_seq=2 ttl=127 time=0.180 ms
+
+--- 10.42.0.12 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1066ms
+rtt min/avg/max/mdev = 0.112/0.146/0.180/0.034 ms
+Hello My Web from multi-pod
+
+
+===== 03 ClusterIP Service and Endpoints =====
+service before matching Pods
+NAME        TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+hello-svc   ClusterIP   10.43.227.171   <none>        8020/TCP   0s
+NAME        ENDPOINTS   AGE
+hello-svc   <none>      1s
+service after hello-app Pods
+NAME                            READY   STATUS    RESTARTS   AGE   IP           NODE                                            NOMINATED NODE   READINESS GATES
+deploy-hello-5d67cb97c7-cz5rd   1/1     Running   0          7s    10.42.0.15   lab16-k3s-node   <none>           <none>
+deploy-hello-5d67cb97c7-hm2tn   1/1     Running   0          7s    10.42.0.14   lab16-k3s-node   <none>           <none>
+NAME        ENDPOINTS                     AGE
+hello-svc   10.42.0.14:80,10.42.0.15:80   9s
+endpoints after hello-app Pods were recreated
+NAME                            READY   STATUS    RESTARTS   AGE   IP           NODE                                            NOMINATED NODE   READINESS GATES
+deploy-hello-5d67cb97c7-7wb6f   1/1     Running   0          3s    10.42.0.16   lab16-k3s-node   <none>           <none>
+deploy-hello-5d67cb97c7-fkf9w   1/1     Running   0          3s    10.42.0.17   lab16-k3s-node   <none>           <none>
+NAME        ENDPOINTS                     AGE
+hello-svc   10.42.0.16:80,10.42.0.17:80   12s
+curl from ubuntu Pod to ClusterIP DNS hello-svc:8020
+<title>Theory by TEMPLATED
+
+
+===== 04 LoadBalancer Service =====
+NAME        TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+hello-svc   LoadBalancer   10.43.227.171   <node-private-ip>    8020:31611/TCP   42s
+<title>Theory by TEMPLATED
+NAME        TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+hello-svc   LoadBalancer   10.43.227.171   <node-private-ip>    8020:31611/TCP   51s
+world-svc   LoadBalancer   10.43.175.155   <node-private-ip>    8050:30869/TCP   8s
+<title>Stellar by HTML5 UP
+
+
+===== 05 Ingress path routing =====
+NAME        TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE
+hello-svc   ClusterIP   10.43.165.180   <none>        80/TCP    1s
+world-svc   ClusterIP   10.43.82.226    <none>        80/TCP    1s
+NAME         CLASS     HOSTS   ADDRESS      PORTS   AGE
+my-ingress   traefik   *       <node-private-ip>   80      1s
+local node curl via Traefik Ingress
+<title>Theory by TEMPLATED
+<title>Stellar by HTML5 UP
+
+
+===== 06 Resources left for external checks =====
+NAME                                        READY   STATUS        RESTARTS   AGE   IP           NODE                                            NOMINATED NODE   READINESS GATES
+pod/deploy-hello-5d67cb97c7-7wb6f           1/1     Running       0          44s   10.42.0.16   lab16-k3s-node   <none>           <none>
+pod/deploy-hello-5d67cb97c7-fkf9w           1/1     Running       0          44s   10.42.0.17   lab16-k3s-node   <none>           <none>
+pod/multi-pod                               2/2     Running       0          74s   10.42.0.13   lab16-k3s-node   <none>           <none>
+pod/nginx-web1                              1/1     Running       0          78s   10.42.0.10   lab16-k3s-node   <none>           <none>
+pod/nginx-web2                              1/1     Running       0          77s   10.42.0.11   lab16-k3s-node   <none>           <none>
+pod/single-pod                              1/1     Running       0          75s   10.42.0.12   lab16-k3s-node   <none>           <none>
+pod/ubuntu-deployment-744d59774f-njkhh      1/1     Terminating   0          41s   10.42.0.18   lab16-k3s-node   <none>           <none>
+pod/ubuntu-deployment-744d59774f-q652m      1/1     Terminating   0          41s   10.42.0.19   lab16-k3s-node   <none>           <none>
+pod/world-app-deployment-756c65b669-qmcb4   1/1     Running       0          10s   10.42.0.23   lab16-k3s-node   <none>           <none>
+pod/world-app-deployment-756c65b669-v78rb   1/1     Running       0          10s   10.42.0.22   lab16-k3s-node   <none>           <none>
+pod/world-app-deployment-756c65b669-wwm4d   1/1     Running       0          10s   10.42.0.24   lab16-k3s-node   <none>           <none>
+
+NAME                 TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE     SELECTOR
+service/hello-svc    ClusterIP   10.43.165.180   <none>        80/TCP    1s      app=hello-app
+service/kubernetes   ClusterIP   10.43.0.1       <none>        443/TCP   2m44s   <none>
+service/world-svc    ClusterIP   10.43.82.226    <none>        80/TCP    1s      app=world-app
+
+NAME                                   CLASS     HOSTS   ADDRESS      PORTS   AGE
+ingress.networking.k8s.io/my-ingress   traefik   *       <node-private-ip>   80      2s
+
+
+===== loadbalancer recheck =====
+NAME        TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+hello-svc   LoadBalancer   10.43.165.180   <node-private-ip>    8020:30597/TCP   68s
+world-svc   LoadBalancer   10.43.82.226    <node-private-ip>    8050:32509/TCP   68s
+local-loadbalancer-hello
+<title>Theory by TEMPLATED
+local-loadbalancer-world
+<title>Stellar by HTML5 UP
+
+
+===== external loadbalancer =====
+external-loadbalancer-hello
+<title>Theory by TEMPLATED
+external-loadbalancer-world
+<title>Stellar by HTML5 UP
+
+
+===== ingress reapply =====
+NAME        TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE
+hello-svc   ClusterIP   10.43.165.180   <none>        80/TCP    93s
+world-svc   ClusterIP   10.43.82.226    <none>        80/TCP    93s
+NAME         CLASS     HOSTS   ADDRESS      PORTS   AGE
+my-ingress   traefik   *       <node-private-ip>   80      94s
+
+
+===== external ingress =====
+external-ingress-hello
+<title>Theory by TEMPLATED
+external-ingress-world
+<title>Stellar by HTML5 UP
+
+
+===== cleanup =====
+ingress.networking.k8s.io "my-ingress" deleted from default namespace
+service "hello-svc" deleted from default namespace
+service "world-svc" deleted from default namespace
+deployment.apps "deploy-hello" deleted from default namespace
+deployment.apps "world-app-deployment" deleted from default namespace
+pod "nginx-web1" deleted from default namespace
+pod "nginx-web2" deleted from default namespace
+pod "single-pod" deleted from default namespace
+pod "multi-pod" deleted from default namespace
+NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE     SELECTOR
+service/kubernetes   ClusterIP   10.43.0.1    <none>        443/TCP   5m14s   <none>
