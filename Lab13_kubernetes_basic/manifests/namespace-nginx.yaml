@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: lab13
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ns-nginx
+  namespace: lab13
+  labels:
+    app: ns-nginx
+spec:
+  containers:
+    - name: nginx
+      image: nginx:1.25
+      ports:
+        - containerPort: 80

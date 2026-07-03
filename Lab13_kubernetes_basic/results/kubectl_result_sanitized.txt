@@ -1,0 +1,229 @@
+
+===== Cluster status =====
+
+$ kubectl get nodes -o wide
+NAME                                             STATUS   ROLES           AGE   VERSION        INTERNAL-IP   EXTERNAL-IP   OS-IMAGE                        KERNEL-VERSION                            CONTAINER-RUNTIME
+lab13-k3s-node   Ready    control-plane   94s   v1.36.2+k3s1   <node-private-ip>   <none>        Amazon Linux 2023.12.20260629   6.1.175-219.359.amzn2023.x86_64 (amd64)   containerd://2.3.2-k3s2
+
+$ kubectl get pods -A -o wide
+NAMESPACE     NAME                                      READY   STATUS      RESTARTS      AGE   IP          NODE                                             NOMINATED NODE   READINESS GATES
+kube-system   coredns-5f5694d56b-kz4f2                  1/1     Running     0             88s   10.42.0.4   lab13-k3s-node   <none>           <none>
+kube-system   helm-install-traefik-crd-85tp8            0/1     Completed   0             85s   10.42.0.3   lab13-k3s-node   <none>           <none>
+kube-system   helm-install-traefik-t4cnp                0/1     Completed   2 (72s ago)   85s   10.42.0.2   lab13-k3s-node   <none>           <none>
+kube-system   local-path-provisioner-58d557dc48-r8znl   1/1     Running     0             88s   10.42.0.6   lab13-k3s-node   <none>           <none>
+kube-system   metrics-server-7c86f97b8d-54nnq           1/1     Running     0             88s   10.42.0.5   lab13-k3s-node   <none>           <none>
+kube-system   svclb-traefik-f7d24841-t2cqt              2/2     Running     0             58s   10.42.0.7   lab13-k3s-node   <none>           <none>
+kube-system   traefik-6cd8c7cd89-q9djd                  1/1     Running     0             58s   10.42.0.8   lab13-k3s-node   <none>           <none>
+
+===== Deployment create/delete =====
+
+$ kubectl create deployment nginx --image=nginx:1.25
+deployment.apps/nginx created
+
+$ kubectl rollout status deployment/nginx --timeout=180s
+Waiting for deployment "nginx" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "nginx" rollout to finish: 0 of 1 updated replicas are available...
+deployment "nginx" successfully rolled out
+
+$ kubectl get deployments,pods -o wide
+NAME                    READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES       SELECTOR
+deployment.apps/nginx   1/1     1            1           9s    nginx        nginx:1.25   app=nginx
+
+NAME                         READY   STATUS    RESTARTS   AGE   IP          NODE                                             NOMINATED NODE   READINESS GATES
+pod/nginx-7cd5cff77d-hwk57   1/1     Running   0          8s    10.42.0.9   lab13-k3s-node   <none>           <none>
+
+$ kubectl delete deployment nginx
+deployment.apps "nginx" deleted from default namespace
+
+===== kubectl run pod =====
+
+$ kubectl run webserver --image=nginx:1.14 --port=80
+pod/webserver created
+
+$ kubectl wait --for=condition=Ready pod/webserver --timeout=180s
+pod/webserver condition met
+
+$ kubectl get pods -o wide
+NAME        READY   STATUS    RESTARTS   AGE   IP           NODE                                             NOMINATED NODE   READINESS GATES
+webserver   1/1     Running   0          6s    10.42.0.10   lab13-k3s-node   <none>           <none>
+
+$ kubectl describe pod webserver
+Name:             webserver
+Namespace:        default
+Priority:         0
+Service Account:  default
+Node:             lab13-k3s-node/<node-private-ip>
+Start Time:       Fri, 03 Jul 2026 13:57:44 +0000
+Labels:           run=webserver
+Annotations:      <none>
+Status:           Running
+IP:               10.42.0.10
+IPs:
+  IP:  10.42.0.10
+Containers:
+  webserver:
+    Container ID:   containerd://<container-id>
+    Image:          nginx:1.14
+    Image ID:       docker.io/library/nginx@sha256:<image-digest>
+    Port:           80/TCP
+    Host Port:      0/TCP
+    State:          Running
+      Started:      Fri, 03 Jul 2026 13:57:50 +0000
+    Ready:          True
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-xxxxx (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True
+  Initialized                 True
+  Ready                       True
+  ContainersReady             True
+  PodScheduled                True
+Volumes:
+  kube-api-access-jhq4c:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type    Reason     Age   From               Message
+  ----    ------     ----  ----               -------
+  Normal  Scheduled  6s    default-scheduler  Successfully assigned default/webserver to lab13-k3s-node
+  Normal  Pulling    6s    kubelet            spec.containers{webserver}: Pulling image "nginx:1.14"
+  Normal  Pulled     0s    kubelet            spec.containers{webserver}: Successfully pulled image "nginx:1.14" in 5.054s (5.054s including waiting). Image size: 44710204 bytes.
+  Normal  Created    0s    kubelet            spec.containers{webserver}: Container created
+  Normal  Started    0s    kubelet            spec.containers{webserver}: Container started
+
+$ kubectl logs webserver --tail=20
+
+$ kubectl delete pod webserver
+pod "webserver" deleted from default namespace
+
+===== Namespace practice =====
+
+$ kubectl get namespace
+NAME              STATUS   AGE
+default           Active   115s
+kube-node-lease   Active   115s
+kube-public       Active   116s
+kube-system       Active   116s
+
+$ kubectl create namespace lab13
+namespace/lab13 created
+
+$ kubectl run ns-nginx --image=nginx:1.25 --port=80 --namespace=lab13
+pod/ns-nginx created
+
+$ kubectl wait --for=condition=Ready pod/ns-nginx --namespace=lab13 --timeout=180s
+pod/ns-nginx condition met
+
+$ kubectl get pods --namespace=lab13 -o wide
+NAME       READY   STATUS    RESTARTS   AGE   IP           NODE                                             NOMINATED NODE   READINESS GATES
+ns-nginx   1/1     Running   0          1s    10.42.0.11   lab13-k3s-node   <none>           <none>
+
+$ kubectl config set-context --current --namespace=lab13
+Context "default" modified.
+
+$ sh -lc kubectl config view --minify | grep namespace || true
+    namespace: lab13
+
+$ kubectl config set-context --current --namespace=default
+Context "default" modified.
+
+$ kubectl delete namespace lab13
+namespace "lab13" deleted
+
+===== YAML apply and Service test =====
+
+$ kubectl apply -f /tmp/nginx-deployment-service.yaml
+deployment.apps/my-deployment created
+service/my-service created
+
+$ kubectl rollout status deployment/my-deployment --timeout=180s
+Waiting for deployment "my-deployment" rollout to finish: 0 of 3 updated replicas are available...
+Waiting for deployment "my-deployment" rollout to finish: 1 of 3 updated replicas are available...
+Waiting for deployment "my-deployment" rollout to finish: 2 of 3 updated replicas are available...
+deployment "my-deployment" successfully rolled out
+
+$ kubectl get deployment my-deployment
+NAME            READY   UP-TO-DATE   AVAILABLE   AGE
+my-deployment   3/3     3            3           1s
+
+$ kubectl get pods -l app=myapp -o wide
+NAME                             READY   STATUS    RESTARTS   AGE   IP           NODE                                             NOMINATED NODE   READINESS GATES
+my-deployment-5fb5555856-6477x   1/1     Running   0          2s    10.42.0.13   lab13-k3s-node   <none>           <none>
+my-deployment-5fb5555856-m2zf5   1/1     Running   0          2s    10.42.0.12   lab13-k3s-node   <none>           <none>
+my-deployment-5fb5555856-sq5nx   1/1     Running   0          2s    10.42.0.14   lab13-k3s-node   <none>           <none>
+
+$ kubectl get service my-service
+NAME         TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)   AGE
+my-service   ClusterIP   10.43.6.137   <none>        80/TCP    2s
+
+$ curl -s http://10.43.6.137 | sed -n 1,6p
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+html { color-scheme: light dark; }
+
+$ kubectl delete -f /tmp/nginx-deployment-service.yaml
+deployment.apps "my-deployment" deleted from default namespace
+service "my-service" deleted from default namespace
+
+===== Final resource check =====
+
+$ kubectl get pods,deployments,services --all-namespaces
+NAMESPACE     NAME                                          READY   STATUS        RESTARTS       AGE
+default       pod/my-deployment-5fb5555856-6477x            1/1     Terminating   0              2s
+default       pod/my-deployment-5fb5555856-m2zf5            1/1     Terminating   0              2s
+default       pod/my-deployment-5fb5555856-sq5nx            1/1     Terminating   0              2s
+kube-system   pod/coredns-5f5694d56b-kz4f2                  1/1     Running       0              2m7s
+kube-system   pod/helm-install-traefik-crd-85tp8            0/1     Completed     0              2m4s
+kube-system   pod/helm-install-traefik-t4cnp                0/1     Completed     2 (111s ago)   2m4s
+kube-system   pod/local-path-provisioner-58d557dc48-r8znl   1/1     Running       0              2m7s
+kube-system   pod/metrics-server-7c86f97b8d-54nnq           1/1     Running       0              2m7s
+kube-system   pod/svclb-traefik-f7d24841-t2cqt              2/2     Running       0              97s
+kube-system   pod/traefik-6cd8c7cd89-q9djd                  1/1     Running       0              97s
+
+NAMESPACE     NAME                                     READY   UP-TO-DATE   AVAILABLE   AGE
+kube-system   deployment.apps/coredns                  1/1     1            1           2m10s
+kube-system   deployment.apps/local-path-provisioner   1/1     1            1           2m10s
+kube-system   deployment.apps/metrics-server           1/1     1            1           2m8s
+kube-system   deployment.apps/traefik                  1/1     1            1           98s
+
+NAMESPACE     NAME                     TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)                      AGE
+default       service/kubernetes       ClusterIP      10.43.0.1       <none>        443/TCP                      2m15s
+kube-system   service/kube-dns         ClusterIP      10.43.0.10      <none>        53/UDP,53/TCP,9153/TCP       2m10s
+kube-system   service/metrics-server   ClusterIP      10.43.146.27    <none>        443/TCP                      2m7s
+kube-system   service/traefik          LoadBalancer   10.43.115.129   <node-private-ip>   80:32596/TCP,443:30508/TCP   98s
+
+
+===== Post-cleanup Kubernetes check =====
+NAMESPACE     NAME                                          READY   STATUS      RESTARTS        AGE
+kube-system   pod/coredns-5f5694d56b-kz4f2                  1/1     Running     0               2m36s
+kube-system   pod/helm-install-traefik-crd-85tp8            0/1     Completed   0               2m33s
+kube-system   pod/helm-install-traefik-t4cnp                0/1     Completed   2 (2m20s ago)   2m33s
+kube-system   pod/local-path-provisioner-58d557dc48-r8znl   1/1     Running     0               2m36s
+kube-system   pod/metrics-server-7c86f97b8d-54nnq           1/1     Running     0               2m36s
+kube-system   pod/svclb-traefik-f7d24841-t2cqt              2/2     Running     0               2m6s
+kube-system   pod/traefik-6cd8c7cd89-q9djd                  1/1     Running     0               2m6s
+
+NAMESPACE     NAME                                     READY   UP-TO-DATE   AVAILABLE   AGE
+kube-system   deployment.apps/coredns                  1/1     1            1           2m38s
+kube-system   deployment.apps/local-path-provisioner   1/1     1            1           2m38s
+kube-system   deployment.apps/metrics-server           1/1     1            1           2m36s
+kube-system   deployment.apps/traefik                  1/1     1            1           2m6s
+
+NAMESPACE     NAME                     TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)                      AGE
+default       service/kubernetes       ClusterIP      10.43.0.1       <none>        443/TCP                      2m43s
+kube-system   service/kube-dns         ClusterIP      10.43.0.10      <none>        53/UDP,53/TCP,9153/TCP       2m38s
+kube-system   service/metrics-server   ClusterIP      10.43.146.27    <none>        443/TCP                      2m35s
+kube-system   service/traefik          LoadBalancer   10.43.115.129   <node-private-ip>   80:32596/TCP,443:30508/TCP   2m6s

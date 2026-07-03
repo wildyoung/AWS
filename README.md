@@ -16,6 +16,7 @@ AWS 개념과 실습 기록입니다.
 - [Lab10 CloudFormation](Lab10_cloudformation/README.md)
 - [Lab11 Cost Management and Support](Lab11_cost_management_support/README.md)
 - [Lab12 Disaster Recovery](Lab12_disaster_recovery/README.md)
+- [Lab13 Kubernetes Basic](Lab13_kubernetes_basic/README.md)
 - [Part2 Docker](Part2_Docker/README.md)
 
 ## 정리한 내용
@@ -70,6 +71,12 @@ AWS 개념과 실습 기록입니다.
 - Dockerfile 지시어, 이미지 빌드, CMD와 ENTRYPOINT 차이
 - 이미지 레이어, 태그, save/load, Docker Hub, Amazon ECR 흐름
 - Docker Compose를 이용한 WordPress와 MySQL 멀티 컨테이너 구성
+- 컨테이너 오케스트레이션과 Kubernetes 필요성
+- Kubernetes Control Plane, Worker Node, kubelet, kube-proxy, containerd 구조
+- Pod, Deployment, ReplicaSet, Service, Namespace, Ingress, Volume 개념
+- Desired State, 선언형 구성, Kubernetes YAML manifest
+- k3s 단일 노드 클러스터 구성과 kubectl 기본 명령
+- Namespace 분리와 ClusterIP Service 접속 확인
 
 ## 읽는 순서
 
@@ -86,6 +93,7 @@ AWS 개념과 실습 기록입니다.
 11. `Lab11_cost_management_support`: AWS 비용 구조, 비용 분석 도구, 예산 관리, 지원 플랜을 정리합니다.
 12. `Lab12_disaster_recovery`: RPO/RTO를 기준으로 재해 복구 패턴과 서비스별 복구 전략을 비교합니다.
 13. `Part2_Docker`: 클라우드 네이티브 개념에서 Docker 기본 명령, 네트워크/볼륨, Dockerfile, 이미지 관리, Compose까지 정리합니다.
+14. `Lab13_kubernetes_basic`: EC2 단일 노드 k3s 환경에서 Kubernetes 구조, kubectl, namespace, YAML manifest, Service 흐름을 실습합니다.
 
 ## 보안 주의사항
 
