@@ -1,0 +1,495 @@
+
+===== Cluster and Pod IP allocation =====
+
+$ kubectl get nodes -o wide
+NAME                                            STATUS   ROLES           AGE   VERSION        INTERNAL-IP   EXTERNAL-IP   OS-IMAGE                        KERNEL-VERSION                            CONTAINER-RUNTIME
+lab14-k3s-node   Ready    control-plane   86s   v1.36.2+k3s1   <node-private-ip>    <none>        Amazon Linux 2023.12.20260629   6.1.175-219.359.amzn2023.x86_64 (amd64)   containerd://2.3.2-k3s2
+
+$ kubectl run nginx-web1 --image=nginx:1.14
+pod/nginx-web1 created
+
+$ kubectl wait --for=condition=Ready pod/nginx-web1 --timeout=180s
+pod/nginx-web1 condition met
+
+$ kubectl get pods nginx-web1 -o wide
+NAME         READY   STATUS    RESTARTS   AGE   IP          NODE                                            NOMINATED NODE   READINESS GATES
+nginx-web1   1/1     Running   0          6s    10.42.0.9   lab14-k3s-node   <none>           <none>
+
+$ kubectl delete pod nginx-web1
+pod "nginx-web1" deleted from default namespace
+
+$ kubectl run nginx-web1 --image=nginx:1.14
+pod/nginx-web1 created
+
+$ kubectl wait --for=condition=Ready pod/nginx-web1 --timeout=180s
+pod/nginx-web1 condition met
+
+$ kubectl get pods nginx-web1 -o wide
+NAME         READY   STATUS    RESTARTS   AGE   IP           NODE                                            NOMINATED NODE   READINESS GATES
+nginx-web1   1/1     Running   0          0s    10.42.0.10   lab14-k3s-node   <none>           <none>
+
+$ kubectl run nginx-web2 --image=nginx:1.14
+pod/nginx-web2 created
+
+$ kubectl wait --for=condition=Ready pod/nginx-web2 --timeout=180s
+pod/nginx-web2 condition met
+
+$ kubectl get pods -o wide
+NAME         READY   STATUS    RESTARTS   AGE   IP           NODE                                            NOMINATED NODE   READINESS GATES
+nginx-web1   1/1     Running   0          2s    10.42.0.10   lab14-k3s-node   <none>           <none>
+nginx-web2   1/1     Running   0          1s    10.42.0.11   lab14-k3s-node   <none>           <none>
+Pod IP summary: first=10.42.0.9 recreated=10.42.0.10 second-pod=10.42.0.11
+
+===== Single Container Pod =====
+
+$ cat /tmp/single-pod.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: single-pod
+spec:
+  containers:
+    - name: nginx-container
+      image: nginx:1.14
+      ports:
+        - containerPort: 80
+          protocol: TCP
+
+$ kubectl create -f /tmp/single-pod.yaml
+pod/single-pod created
+
+$ kubectl wait --for=condition=Ready pod/single-pod --timeout=180s
+pod/single-pod condition met
+
+$ kubectl get pods single-pod -o wide
+NAME         READY   STATUS    RESTARTS   AGE   IP           NODE                                            NOMINATED NODE   READINESS GATES
+single-pod   1/1     Running   0          1s    10.42.0.12   lab14-k3s-node   <none>           <none>
+
+$ curl -s http://10.42.0.12 | sed -n 1,6p
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+    body {
+
+===== Multi Container Pod =====
+
+$ cat /tmp/multi-pod.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: multi-pod
+spec:
+  containers:
+    - name: nginx-container
+      image: nginx:1.14
+      ports:
+        - containerPort: 80
+    - name: ubuntu-container
+      image: ubuntu:22.04
+      command:
+        - sleep
+        - "10000"
+
+$ kubectl create -f /tmp/multi-pod.yaml
+pod/multi-pod created
+
+$ kubectl wait --for=condition=Ready pod/multi-pod --timeout=240s
+pod/multi-pod condition met
+
+$ kubectl get pods multi-pod -o wide
+NAME        READY   STATUS    RESTARTS   AGE   IP           NODE                                            NOMINATED NODE   READINESS GATES
+multi-pod   2/2     Running   0          6s    10.42.0.13   lab14-k3s-node   <none>           <none>
+
+$ kubectl describe pod multi-pod
+Name:             multi-pod
+Namespace:        default
+Priority:         0
+Service Account:  default
+Node:             lab14-k3s-node/<node-private-ip>
+Start Time:       Fri, 03 Jul 2026 14:23:49 +0000
+Labels:           <none>
+Annotations:      <none>
+Status:           Running
+IP:               10.42.0.13
+IPs:
+  IP:  10.42.0.13
+Containers:
+  nginx-container:
+    Container ID:   containerd://<container-id>
+    Image:          nginx:1.14
+    Image ID:       docker.io/library/nginx@sha256:<image-digest>
+    Port:           80/TCP
+    Host Port:      0/TCP
+    State:          Running
+      Started:      Fri, 03 Jul 2026 14:23:50 +0000
+    Ready:          True
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-xxxxx (ro)
+  ubuntu-container:
+    Container ID:  containerd://<container-id>
+    Image:         ubuntu:22.04
+    Image ID:      docker.io/library/ubuntu@sha256:<image-digest>
+    Port:          <none>
+    Host Port:     <none>
+    Command:
+      sleep
+      10000
+    State:          Running
+      Started:      Fri, 03 Jul 2026 14:23:55 +0000
+    Ready:          True
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-xxxxx (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True
+  Initialized                 True
+  Ready                       True
+  ContainersReady             True
+  PodScheduled                True
+Volumes:
+  kube-api-access-xxxxx:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type    Reason     Age   From               Message
+  ----    ------     ----  ----               -------
+  Normal  Scheduled  6s    default-scheduler  Successfully assigned default/multi-pod to lab14-k3s-node
+  Normal  Pulled     6s    kubelet            spec.containers{nginx-container}: Container image "nginx:1.14" already present on machine and can be accessed by the pod
+  Normal  Created    6s    kubelet            spec.containers{nginx-container}: Container created
+  Normal  Started    6s    kubelet            spec.containers{nginx-container}: Container started
+  Normal  Pulling    6s    kubelet            spec.containers{ubuntu-container}: Pulling image "ubuntu:22.04"
+  Normal  Pulled     1s    kubelet            spec.containers{ubuntu-container}: Successfully pulled image "ubuntu:22.04" in 5.091s (5.091s including waiting). Image size: 29748045 bytes.
+  Normal  Created    1s    kubelet            spec.containers{ubuntu-container}: Container created
+  Normal  Started    1s    kubelet            spec.containers{ubuntu-container}: Container started
+
+$ curl -s http://10.42.0.13 | sed -n 1,6p
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+    body {
+
+$ kubectl exec multi-pod -c nginx-container -- /bin/sh -c echo "Hello My Web" > /usr/share/nginx/html/index.html
+
+$ curl -s http://10.42.0.13
+Hello My Web
+
+$ kubectl exec multi-pod -c ubuntu-container -- /bin/sh -c apt-get update >/dev/null && apt-get install -y curl iputils-ping >/dev/null && ping -c 3 10.42.0.12 && curl -s localhost
+PING 10.42.0.12 (10.42.0.12) 56(84) bytes of data.
+64 bytes from 10.42.0.12: icmp_seq=1 ttl=127 time=0.112 ms
+64 bytes from 10.42.0.12: icmp_seq=2 ttl=127 time=0.078 ms
+64 bytes from 10.42.0.12: icmp_seq=3 ttl=127 time=0.216 ms
+
+--- 10.42.0.12 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2052ms
+rtt min/avg/max/mdev = 0.078/0.135/0.216/0.058 ms
+Hello My Web
+
+===== LivenessProbe Self-healing Pod =====
+
+$ cat /tmp/liveness-pod.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: liveness-pod
+spec:
+  containers:
+    - name: myapp-container
+      image: nginx:stable
+      livenessProbe:
+        httpGet:
+          path: /
+          port: 80
+        initialDelaySeconds: 3
+        periodSeconds: 10
+
+$ kubectl create -f /tmp/liveness-pod.yaml
+pod/liveness-pod created
+
+$ kubectl wait --for=condition=Ready pod/liveness-pod --timeout=180s
+pod/liveness-pod condition met
+
+$ kubectl get pod liveness-pod -o wide
+NAME           READY   STATUS    RESTARTS   AGE   IP           NODE                                            NOMINATED NODE   READINESS GATES
+liveness-pod   1/1     Running   0          6s    10.42.0.14   lab14-k3s-node   <none>           <none>
+
+$ kubectl exec liveness-pod -- /bin/sh -c nginx -s stop
+liveness restart count=0
+liveness restart count=1
+
+$ kubectl get pod liveness-pod -o wide
+NAME           READY   STATUS    RESTARTS     AGE   IP           NODE                                            NOMINATED NODE   READINESS GATES
+liveness-pod   1/1     Running   1 (6s ago)   12s   10.42.0.14   lab14-k3s-node   <none>           <none>
+
+$ kubectl describe pod liveness-pod
+Name:             liveness-pod
+Namespace:        default
+Priority:         0
+Service Account:  default
+Node:             lab14-k3s-node/<node-private-ip>
+Start Time:       Fri, 03 Jul 2026 14:24:11 +0000
+Labels:           <none>
+Annotations:      <none>
+Status:           Running
+IP:               10.42.0.14
+IPs:
+  IP:  10.42.0.14
+Containers:
+  myapp-container:
+    Container ID:   containerd://<container-id>
+    Image:          nginx:stable
+    Image ID:       docker.io/library/nginx@sha256:<image-digest>
+    Port:           <none>
+    Host Port:      <none>
+    State:          Running
+      Started:      Fri, 03 Jul 2026 14:24:19 +0000
+    Last State:     Terminated
+      Reason:       Completed
+      Exit Code:    0
+      Started:      Fri, 03 Jul 2026 14:24:17 +0000
+      Finished:     Fri, 03 Jul 2026 14:24:17 +0000
+    Ready:          True
+    Restart Count:  1
+    Liveness:       http-get http://:80/ delay=3s timeout=1s period=10s #success=1 #failure=3
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-xxxxx (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True
+  Initialized                 True
+  Ready                       True
+  ContainersReady             True
+  PodScheduled                True
+Volumes:
+  kube-api-access-xxxxx:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type    Reason     Age              From               Message
+  ----    ------     ----             ----               -------
+  Normal  Scheduled  12s              default-scheduler  Successfully assigned default/liveness-pod to lab14-k3s-node
+  Normal  Pulling    12s              kubelet            spec.containers{myapp-container}: Pulling image "nginx:stable"
+  Normal  Pulled     6s               kubelet            spec.containers{myapp-container}: Successfully pulled image "nginx:stable" in 5.67s (5.67s including waiting). Image size: 63111912 bytes.
+  Normal  Created    4s (x2 over 6s)  kubelet            spec.containers{myapp-container}: Container created
+  Normal  Started    4s (x2 over 6s)  kubelet            spec.containers{myapp-container}: Container started
+  Normal  Pulled     4s               kubelet            spec.containers{myapp-container}: Container image "nginx:stable" already present on machine and can be accessed by the pod
+
+===== Init Container Pod =====
+
+$ cat /tmp/init-container-pod.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: init-container-pod
+spec:
+  initContainers:
+    - name: init-myservice
+      image: busybox
+      command:
+        - sh
+        - -c
+        - echo "Init Container 실행 중..." && sleep 5 && echo "Init Container 완료"
+  containers:
+    - name: myapp-container
+      image: nginx:stable
+      command:
+        - sh
+        - -c
+        - echo "메인 컨테이너 시작" && nginx -g "daemon off;"
+
+$ kubectl create -f /tmp/init-container-pod.yaml
+pod/init-container-pod created
+
+$ kubectl wait --for=condition=Ready pod/init-container-pod --timeout=180s
+pod/init-container-pod condition met
+
+$ kubectl get pod init-container-pod -o wide
+NAME                 READY   STATUS    RESTARTS   AGE   IP           NODE                                            NOMINATED NODE   READINESS GATES
+init-container-pod   1/1     Running   0          11s   10.42.0.15   lab14-k3s-node   <none>           <none>
+
+$ kubectl logs init-container-pod -c init-myservice
+Init Container 실행 중...
+Init Container 완료
+
+$ kubectl logs init-container-pod -c myapp-container --tail=20
+메인 컨테이너 시작
+2026/07/03 14:24:33 [notice] 7#7: using the "epoll" event method
+2026/07/03 14:24:33 [notice] 7#7: nginx/1.30.3
+2026/07/03 14:24:33 [notice] 7#7: built by gcc 14.2.0 (Debian 14.2.0-19)
+2026/07/03 14:24:33 [notice] 7#7: OS: Linux 6.1.175-219.359.amzn2023.x86_64
+2026/07/03 14:24:33 [notice] 7#7: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2026/07/03 14:24:33 [notice] 7#7: start worker processes
+2026/07/03 14:24:33 [notice] 7#7: start worker process 8
+2026/07/03 14:24:33 [notice] 7#7: start worker process 9
+
+$ kubectl describe pod init-container-pod
+Name:             init-container-pod
+Namespace:        default
+Priority:         0
+Service Account:  default
+Node:             lab14-k3s-node/<node-private-ip>
+Start Time:       Fri, 03 Jul 2026 14:24:23 +0000
+Labels:           <none>
+Annotations:      <none>
+Status:           Running
+IP:               10.42.0.15
+IPs:
+  IP:  10.42.0.15
+Init Containers:
+  init-myservice:
+    Container ID:  containerd://<container-id>
+    Image:         busybox
+    Image ID:      docker.io/library/busybox@sha256:<image-digest>
+    Port:          <none>
+    Host Port:     <none>
+    Command:
+      sh
+      -c
+      echo "Init Container 실행 중..." && sleep 5 && echo "Init Container 완료"
+    State:          Terminated
+      Reason:       Completed
+      Exit Code:    0
+      Started:      Fri, 03 Jul 2026 14:24:27 +0000
+      Finished:     Fri, 03 Jul 2026 14:24:32 +0000
+    Ready:          True
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-xxxxx (ro)
+Containers:
+  myapp-container:
+    Container ID:  containerd://<container-id>
+    Image:         nginx:stable
+    Image ID:      docker.io/library/nginx@sha256:<image-digest>
+    Port:          <none>
+    Host Port:     <none>
+    Command:
+      sh
+      -c
+      echo "메인 컨테이너 시작" && nginx -g "daemon off;"
+    State:          Running
+      Started:      Fri, 03 Jul 2026 14:24:33 +0000
+    Ready:          True
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-xxxxx (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True
+  Initialized                 True
+  Ready                       True
+  ContainersReady             True
+  PodScheduled                True
+Volumes:
+  kube-api-access-xxxxx:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type    Reason     Age   From               Message
+  ----    ------     ----  ----               -------
+  Normal  Scheduled  10s   default-scheduler  Successfully assigned default/init-container-pod to lab14-k3s-node
+  Normal  Pulling    10s   kubelet            spec.initContainers{init-myservice}: Pulling image "busybox"
+  Normal  Pulled     7s    kubelet            spec.initContainers{init-myservice}: Successfully pulled image "busybox" in 3.22s (3.22s including waiting). Image size: 2236931 bytes.
+  Normal  Created    7s    kubelet            spec.initContainers{init-myservice}: Container created
+  Normal  Started    7s    kubelet            spec.initContainers{init-myservice}: Container started
+  Normal  Pulled     1s    kubelet            spec.containers{myapp-container}: Container image "nginx:stable" already present on machine and can be accessed by the pod
+  Normal  Created    1s    kubelet            spec.containers{myapp-container}: Container created
+  Normal  Started    1s    kubelet            spec.containers{myapp-container}: Container started
+===== Environment Variable Pod =====
+
+$ cat /tmp/env-pod.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: env-var-pod
+spec:
+  containers:
+    - name: myapp-container
+      image: busybox
+      command: ["sh", "-c", "echo \"환경 변수 값: $MY_ENV_VAR\" && sleep 3600"]
+      env:
+        - name: MY_ENV_VAR
+          value: "Hello, Kubernetes!"
+
+$ kubectl create -f /tmp/env-pod.yaml
+pod/env-var-pod created
+
+$ kubectl wait --for=condition=Ready pod/env-var-pod --timeout=180s
+pod/env-var-pod condition met
+
+$ kubectl logs env-var-pod
+환경 변수 값: Hello, Kubernetes!
+
+$ kubectl exec env-var-pod -- /bin/sh -c echo $MY_ENV_VAR
+Hello, Kubernetes!
+
+$ kubectl get pod env-var-pod -o wide
+NAME          READY   STATUS    RESTARTS   AGE   IP           NODE                                            NOMINATED NODE   READINESS GATES
+env-var-pod   1/1     Running   0          2s    10.42.0.16   lab14-k3s-node   <none>           <none>
+
+===== Cleanup =====
+
+$ kubectl get pods -o wide
+NAME                 READY   STATUS    RESTARTS      AGE   IP           NODE                                            NOMINATED NODE   READINESS GATES
+env-var-pod          1/1     Running   0             2s    10.42.0.16   lab14-k3s-node   <none>           <none>
+init-container-pod   1/1     Running   0             52s   10.42.0.15   lab14-k3s-node   <none>           <none>
+liveness-pod         1/1     Running   1 (58s ago)   64s   10.42.0.14   lab14-k3s-node   <none>           <none>
+multi-pod            2/2     Running   0             86s   10.42.0.13   lab14-k3s-node   <none>           <none>
+nginx-web1           1/1     Running   0             89s   10.42.0.10   lab14-k3s-node   <none>           <none>
+nginx-web2           1/1     Running   0             88s   10.42.0.11   lab14-k3s-node   <none>           <none>
+single-pod           1/1     Running   0             87s   10.42.0.12   lab14-k3s-node   <none>           <none>
+
+$ kubectl delete pod --all
+pod "env-var-pod" deleted from default namespace
+pod "init-container-pod" deleted from default namespace
+pod "liveness-pod" deleted from default namespace
+pod "multi-pod" deleted from default namespace
+pod "nginx-web1" deleted from default namespace
+pod "nginx-web2" deleted from default namespace
+pod "single-pod" deleted from default namespace
+
+$ kubectl get pods
+
+===== Final kube-system check before stack deletion =====
+NAMESPACE     NAME                                      READY   STATUS      RESTARTS        AGE     IP          NODE                                            NOMINATED NODE   READINESS GATES
+kube-system   coredns-5f5694d56b-9gcqf                  1/1     Running     0               4m3s    10.42.0.6   lab14-k3s-node   <none>           <none>
+kube-system   helm-install-traefik-crd-v4vbw            0/1     Completed   0               4m1s    10.42.0.2   lab14-k3s-node   <none>           <none>
+kube-system   helm-install-traefik-gvkdb                0/1     Completed   2 (3m48s ago)   4m1s    10.42.0.3   lab14-k3s-node   <none>           <none>
+kube-system   local-path-provisioner-58d557dc48-gq6z9   1/1     Running     0               4m3s    10.42.0.4   lab14-k3s-node   <none>           <none>
+kube-system   metrics-server-7c86f97b8d-fpb6c           1/1     Running     0               4m3s    10.42.0.5   lab14-k3s-node   <none>           <none>
+kube-system   svclb-traefik-1bf94f11-rbzvr              2/2     Running     0               3m35s   10.42.0.7   lab14-k3s-node   <none>           <none>
+kube-system   traefik-6cd8c7cd89-2gdks                  1/1     Running     0               3m35s   10.42.0.8   lab14-k3s-node   <none>           <none>
+
+===== AWS cleanup =====
+$ aws cloudformation delete-stack --stack-name lab14-kubernetes-pod --region ap-northeast-2
+stack deleted

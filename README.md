@@ -17,6 +17,7 @@ AWS 개념과 실습 기록입니다.
 - [Lab11 Cost Management and Support](Lab11_cost_management_support/README.md)
 - [Lab12 Disaster Recovery](Lab12_disaster_recovery/README.md)
 - [Lab13 Kubernetes Basic](Lab13_kubernetes_basic/README.md)
+- [Lab14 Kubernetes Pod](Lab14_kubernetes_pod/README.md)
 - [Part2 Docker](Part2_Docker/README.md)
 
 ## 정리한 내용
@@ -77,6 +78,9 @@ AWS 개념과 실습 기록입니다.
 - Desired State, 선언형 구성, Kubernetes YAML manifest
 - k3s 단일 노드 클러스터 구성과 kubectl 기본 명령
 - Namespace 분리와 ClusterIP Service 접속 확인
+- Pod IP 할당, Pod 생명주기, Single/Multi Container Pod
+- LivenessProbe 기반 Self-healing, Init Container, 환경 변수 주입
+- Pod 내부 localhost 통신과 컨테이너 간 네트워크 공유
 
 ## 읽는 순서
 
@@ -94,6 +98,7 @@ AWS 개념과 실습 기록입니다.
 12. `Lab12_disaster_recovery`: RPO/RTO를 기준으로 재해 복구 패턴과 서비스별 복구 전략을 비교합니다.
 13. `Part2_Docker`: 클라우드 네이티브 개념에서 Docker 기본 명령, 네트워크/볼륨, Dockerfile, 이미지 관리, Compose까지 정리합니다.
 14. `Lab13_kubernetes_basic`: EC2 단일 노드 k3s 환경에서 Kubernetes 구조, kubectl, namespace, YAML manifest, Service 흐름을 실습합니다.
+15. `Lab14_kubernetes_pod`: Pod IP, 단일/멀티 컨테이너 Pod, livenessProbe, init container, 환경 변수 전달을 실습합니다.
 
 ## 보안 주의사항
 

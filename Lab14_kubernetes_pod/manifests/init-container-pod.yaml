@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: init-container-pod
+spec:
+  initContainers:
+    - name: init-myservice
+      image: busybox
+      command:
+        - sh
+        - -c
+        - echo "Init Container 실행 중..." && sleep 5 && echo "Init Container 완료"
+  containers:
+    - name: myapp-container
+      image: nginx:stable
+      command:
+        - sh
+        - -c
+        - echo "메인 컨테이너 시작" && nginx -g "daemon off;"

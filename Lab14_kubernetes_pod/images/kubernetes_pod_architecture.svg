@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Lab14 Kubernetes Pod architecture</title>
+  <desc id="desc">AWS CLI creates an EC2 k3s node. kubectl practices Pod IP allocation, single container Pod, multi-container Pod, liveness probe, init container, and environment variable Pod.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7fbff"/>
+      <stop offset="1" stop-color="#edf6f4"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#12364f" flood-opacity="0.14"/>
+    </filter>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="9" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#426f82"/>
+    </marker>
+    <style>
+      .title { font: 800 38px Arial, sans-serif; fill: #153244; }
+      .subtitle { font: 500 18px Arial, sans-serif; fill: #4b6672; }
+      .h { font: 800 19px Arial, sans-serif; fill: #153244; }
+      .b { font: 500 15px Arial, sans-serif; fill: #425966; }
+      .s { font: 700 13px Arial, sans-serif; fill: #ffffff; }
+      .white { font: 800 17px Arial, sans-serif; fill: #ffffff; }
+      .line { stroke: #426f82; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+      .dash { stroke: #91aeba; stroke-width: 2; fill: none; stroke-dasharray: 7 8; }
+    </style>
+  </defs>
+
+  <rect width="1280" height="720" fill="url(#bg)"/>
+  <rect x="54" y="48" width="1172" height="624" rx="28" fill="#ffffff" stroke="#d6e6ed" filter="url(#shadow)"/>
+
+  <text x="96" y="108" class="title">Lab14 Kubernetes Pod</text>
+  <text x="96" y="142" class="subtitle">Pod IP, single/multi container, liveness probe, init container, environment variables</text>
+
+  <g transform="translate(96 202)">
+    <rect width="210" height="116" rx="16" fill="#255c73"/>
+    <text x="24" y="39" class="white">AWS CLI</text>
+    <text x="24" y="68" class="s">CloudFormation</text>
+    <text x="24" y="92" class="s">SSM Run Command</text>
+  </g>
+
+  <path class="line" d="M318 260 H398"/>
+
+  <g transform="translate(412 168)">
+    <rect width="392" height="384" rx="22" fill="#f4f9fb" stroke="#b8d2dd" stroke-width="2"/>
+    <text x="26" y="42" class="h">EC2 k3s single node</text>
+    <text x="26" y="70" class="b">Control Plane + Worker Node</text>
+
+    <g transform="translate(30 108)">
+      <rect width="150" height="58" rx="12" fill="#1f9dd8"/>
+      <text x="21" y="35" class="s">single-pod 1/1</text>
+    </g>
+    <g transform="translate(212 108)">
+      <rect width="150" height="58" rx="12" fill="#b46b3c"/>
+      <text x="18" y="35" class="s">multi-pod 2/2</text>
+    </g>
+    <g transform="translate(30 194)">
+      <rect width="150" height="58" rx="12" fill="#7f5ca8"/>
+      <text x="18" y="35" class="s">livenessProbe</text>
+    </g>
+    <g transform="translate(212 194)">
+      <rect width="150" height="58" rx="12" fill="#287d83"/>
+      <text x="18" y="35" class="s">init container</text>
+    </g>
+    <g transform="translate(121 280)">
+      <rect width="150" height="58" rx="12" fill="#5d8a3b"/>
+      <text x="21" y="35" class="s">env-var-pod</text>
+    </g>
+  </g>
+
+  <path class="line" d="M804 260 H884"/>
+
+  <g transform="translate(898 196)">
+    <rect width="274" height="300" rx="18" fill="#f8fbfd" stroke="#bdd4df"/>
+    <text x="24" y="42" class="h">Observed behavior</text>
+    <text x="24" y="78" class="b">Pod recreation changes IP</text>
+    <text x="24" y="112" class="b">Containers share Pod IP</text>
+    <text x="24" y="146" class="b">localhost works inside Pod</text>
+    <text x="24" y="180" class="b">liveness restarts container</text>
+    <text x="24" y="214" class="b">init runs before main</text>
+    <text x="24" y="248" class="b">env is injected at runtime</text>
+  </g>
+
+  <path class="dash" d="M1036 508 V562 H194 V320"/>
+
+  <g transform="translate(96 562)">
+    <rect width="1078" height="58" rx="14" fill="#f1f7f9" stroke="#d2e3eb"/>
+    <text x="24" y="36" class="b">After screenshots are saved, all Pods are deleted and the CloudFormation stack is removed.</text>
+  </g>
+</svg>
