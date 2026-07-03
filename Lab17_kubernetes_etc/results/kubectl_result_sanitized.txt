@@ -1,0 +1,135 @@
+===== 00 Cluster storage ready =====
+NAME                                             STATUS   ROLES           AGE   VERSION        INTERNAL-IP   EXTERNAL-IP   OS-IMAGE                        KERNEL-VERSION                            CONTAINER-RUNTIME
+lab17-k3s-node   Ready    control-plane   90s   v1.36.2+k3s1   <node-private-ip>   <none>        Amazon Linux 2023.12.20260629   6.1.175-219.359.amzn2023.x86_64 (amd64)   containerd://<runtime-version>
+NAME                   PROVISIONER             RECLAIMPOLICY   VOLUMEBINDINGMODE      ALLOWVOLUMEEXPANSION   AGE
+local-path (default)   rancher.io/local-path   Delete          WaitForFirstConsumer   false                  87s
+
+
+===== 01 emptyDir loses data after Pod recreation =====
+emptyDir Pod: mysql-emptydir-6cffbb7d59-gpg7b
+NAME                              READY   STATUS    RESTARTS   AGE   IP          NODE                                             NOMINATED NODE   READINESS GATES
+mysql-emptydir-6cffbb7d59-gpg7b   1/1     Running   0          34s   10.42.0.9   lab17-k3s-node   <none>           <none>
+id	name
+101	Tom
+102	Jenny
+recreated emptyDir Pod: mysql-emptydir-6cffbb7d59-2nr8r
+NAME                              READY   STATUS    RESTARTS   AGE   IP           NODE                                             NOMINATED NODE   READINESS GATES
+mysql-emptydir-6cffbb7d59-2nr8r   1/1     Running   0          17s   10.42.0.10   lab17-k3s-node   <none>           <none>
+emptyDir SHOW TABLES result: <no tables>
+
+
+===== 02 PV and PVC keep data after Pod recreation =====
+NAME                        CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM   STORAGECLASS   VOLUMEATTRIBUTESCLASS   REASON   AGE
+persistentvolume/mysql-pv   2Gi        RWO            Retain           Available           manual         <unset>                          0s
+
+NAME                              STATUS    VOLUME   CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
+persistentvolumeclaim/mysql-pvc   Pending                                      manual         <unset>                 0s
+PVC Pod: mysql-pvc-5475dcbd87-p6hnm
+NAME                         READY   STATUS    RESTARTS   AGE   IP           NODE                                             NOMINATED NODE   READINESS GATES
+mysql-pvc-5475dcbd87-p6hnm   1/1     Running   0          23s   10.42.0.11   lab17-k3s-node   <none>           <none>
+Filesystem     Type  Size  Used Avail Use% Mounted on
+/dev/nvme0n1p1 xfs    20G  4.4G   16G  22% /var/lib/mysql
+id	name
+101	Tom
+102	Jenny
+recreated PVC Pod: mysql-pvc-5475dcbd87-s4r9h
+NAME                         READY   STATUS    RESTARTS   AGE   IP           NODE                                             NOMINATED NODE   READINESS GATES
+mysql-pvc-5475dcbd87-s4r9h   1/1     Running   0          17s   10.42.0.12   lab17-k3s-node   <none>           <none>
+Tables_in_demodb
+member
+id	name
+101	Tom
+102	Jenny
+
+
+===== 03 ConfigMap injects MySQL environment variables =====
+apiVersion: v1
+data:
+  MYSQL_DATABASE: demodb
+  MYSQL_PASSWORD: <sample-password>
+  MYSQL_ROOT_PASSWORD: <sample-password>
+  MYSQL_USER: demo
+kind: ConfigMap
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","data":{"MYSQL_DATABASE":"demodb","MYSQL_PASSWORD":"<sample-password>","MYSQL_ROOT_PASSWORD":"<sample-password>","MYSQL_USER":"demo"},"kind":"ConfigMap","metadata":{"annotations":{},"name":"mysql-config","namespace":"default"}}
+  creationTimestamp: "<timestamp>"
+  name: mysql-config
+  namespace: default
+  resourceVersion: "<resource-version>"
+  uid: <resource-uid>
+ConfigMap Pod: mysql-pvc-75bfd445c7-d6p5k
+MYSQL_DATABASE=demodb
+MYSQL_MAJOR=8.0
+MYSQL_PASSWORD=<sample-password>
+MYSQL_PVC_PORT=tcp://10.43.1.54:3306
+MYSQL_PVC_PORT_3306_TCP=tcp://10.43.1.54:3306
+MYSQL_PVC_PORT_3306_TCP_ADDR=10.43.1.54
+MYSQL_PVC_PORT_3306_TCP_PORT=3306
+MYSQL_PVC_PORT_3306_TCP_PROTO=tcp
+MYSQL_PVC_SERVICE_HOST=10.43.1.54
+MYSQL_PVC_SERVICE_PORT=3306
+MYSQL_ROOT_PASSWORD=<sample-password>
+MYSQL_SHELL_VERSION=8.0.46-1.el9
+MYSQL_USER=demo
+MYSQL_VERSION=8.0.46-1.el9
+
+
+===== 04 Secret separates password from ConfigMap =====
+apiVersion: v1
+data:
+  MYSQL_PASSWORD: <base64-sample-password>
+  MYSQL_ROOT_PASSWORD: <base64-sample-password>
+kind: Secret
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","kind":"Secret","metadata":{"annotations":{},"name":"mysql-secret","namespace":"default"},"stringData":{"MYSQL_PASSWORD":"<sample-password>","MYSQL_ROOT_PASSWORD":"<sample-password>"},"type":"Opaque"}
+  creationTimestamp: "<timestamp>"
+  name: mysql-secret
+  namespace: default
+  resourceVersion: "<resource-version>"
+  uid: <resource-uid>
+type: Opaque
+apiVersion: v1
+data:
+  MYSQL_DATABASE: demodb
+  MYSQL_USER: demo
+kind: ConfigMap
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","data":{"MYSQL_DATABASE":"demodb","MYSQL_USER":"demo"},"kind":"ConfigMap","metadata":{"annotations":{},"name":"mysql-config","namespace":"default"}}
+  creationTimestamp: "<timestamp>"
+  name: mysql-config
+  namespace: default
+  resourceVersion: "<resource-version>"
+  uid: <resource-uid>
+Secret Pod: mysql-pvc-84f5bd658d-lwnwk
+MYSQL_DATABASE=demodb
+MYSQL_MAJOR=8.0
+MYSQL_PASSWORD=<sample-password>
+MYSQL_PVC_PORT=tcp://10.43.1.54:3306
+MYSQL_PVC_PORT_3306_TCP=tcp://10.43.1.54:3306
+MYSQL_PVC_PORT_3306_TCP_ADDR=10.43.1.54
+MYSQL_PVC_PORT_3306_TCP_PORT=3306
+MYSQL_PVC_PORT_3306_TCP_PROTO=tcp
+MYSQL_PVC_SERVICE_HOST=10.43.1.54
+MYSQL_PVC_SERVICE_PORT=3306
+MYSQL_ROOT_PASSWORD=<sample-password>
+MYSQL_SHELL_VERSION=8.0.46-1.el9
+MYSQL_USER=demo
+MYSQL_VERSION=8.0.46-1.el9
+Database
+demodb
+information_schema
+performance_schema
+
+
+===== 05 Cleanup check =====
+NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE    SELECTOR
+service/kubernetes   ClusterIP   10.43.0.1    <none>        443/TCP   4m1s   <none>
+
+NAME                         DATA   AGE
+configmap/kube-root-ca.crt   1      3m55s

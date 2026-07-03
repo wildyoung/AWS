@@ -20,6 +20,7 @@ AWS 개념과 실습 기록입니다.
 - [Lab14 Kubernetes Pod](Lab14_kubernetes_pod/README.md)
 - [Lab15 Kubernetes Controller](Lab15_kubernetes_controller/README.md)
 - [Lab16 Kubernetes Network](Lab16_kubernetes_network/README.md)
+- [Lab17 Kubernetes Etc](Lab17_kubernetes_etc/README.md)
 - [Part2 Docker](Part2_Docker/README.md)
 
 ## 정리한 내용
@@ -90,6 +91,10 @@ AWS 개념과 실습 기록입니다.
 - Kubernetes Pod IP, CNI, Pod-to-Pod 통신 구조
 - Service selector, Endpoints, kube-proxy, ClusterIP 동작
 - LoadBalancer Service와 Ingress path routing 차이
+- Kubernetes Volume과 컨테이너 데이터 영속성
+- emptyDir과 PersistentVolume/PersistentVolumeClaim의 차이
+- PV reclaim policy와 hostPath 학습 환경의 한계
+- ConfigMap과 Secret을 이용한 설정/민감값 분리
 
 ## 읽는 순서
 
@@ -110,6 +115,7 @@ AWS 개념과 실습 기록입니다.
 15. `Lab14_kubernetes_pod`: Pod IP, 단일/멀티 컨테이너 Pod, livenessProbe, init container, 환경 변수 전달을 실습합니다.
 16. `Lab15_kubernetes_controller`: RC, ReplicaSet, Deployment, DaemonSet, Job, CronJob, StatefulSet의 Controller 동작을 실습합니다.
 17. `Lab16_kubernetes_network`: Pod IP, ClusterIP Service, Endpoints, LoadBalancer, Ingress 네트워크 흐름을 실습합니다.
+18. `Lab17_kubernetes_etc`: emptyDir, PV/PVC, ConfigMap, Secret을 통해 데이터 저장과 설정 분리 방식을 실습합니다.
 
 ## 보안 주의사항
 

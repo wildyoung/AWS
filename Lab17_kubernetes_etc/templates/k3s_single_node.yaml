@@ -1,0 +1,141 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "Lab17 Kubernetes Etc - single-node k3s lab with SSM access"
+
+Parameters:
+  LatestAmiId:
+    Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
+    Default: /aws/service/ami-amazon-linux-latest/al2023-ami-kernel-6.1-x86_64
+
+Resources:
+  LabVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.17.0.0/16
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      Tags:
+        - Key: Name
+          Value: lab17-kubernetes-etc-vpc
+
+  LabInternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: lab17-kubernetes-etc-igw
+
+  LabVPCGatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref LabVPC
+      InternetGatewayId: !Ref LabInternetGateway
+
+  LabPublicSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref LabVPC
+      CidrBlock: 10.17.1.0/24
+      AvailabilityZone: ap-northeast-2a
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: lab17-kubernetes-etc-public-subnet
+
+  LabPublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref LabVPC
+      Tags:
+        - Key: Name
+          Value: lab17-kubernetes-etc-public-rt
+
+  LabDefaultRoute:
+    Type: AWS::EC2::Route
+    DependsOn: LabVPCGatewayAttachment
+    Properties:
+      RouteTableId: !Ref LabPublicRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref LabInternetGateway
+
+  LabPublicSubnetRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref LabPublicSubnet
+      RouteTableId: !Ref LabPublicRouteTable
+
+  LabSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: "No inbound access; SSM only"
+      VpcId: !Ref LabVPC
+      SecurityGroupEgress:
+        - IpProtocol: "-1"
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: lab17-kubernetes-etc-sg
+
+  LabInstanceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+      Tags:
+        - Key: Name
+          Value: lab17-kubernetes-etc-ssm-role
+
+  LabInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Roles:
+        - !Ref LabInstanceRole
+
+  LabK3sInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t3.small
+      ImageId: !Ref LatestAmiId
+      IamInstanceProfile: !Ref LabInstanceProfile
+      SubnetId: !Ref LabPublicSubnet
+      SecurityGroupIds:
+        - !Ref LabSecurityGroup
+      BlockDeviceMappings:
+        - DeviceName: /dev/xvda
+          Ebs:
+            VolumeSize: 20
+            VolumeType: gp3
+            DeleteOnTermination: true
+      Tags:
+        - Key: Name
+          Value: lab17-k3s-etc-node
+      UserData:
+        Fn::Base64: |
+          #!/bin/bash
+          set -euxo pipefail
+          dnf update -y
+          dnf install -y bash-completion jq
+          curl -sfL https://get.k3s.io | sh -
+          mkdir -p /home/ec2-user/.kube /home/ec2-user/data/mysql-pv
+          chown -R ec2-user:ec2-user /home/ec2-user/.kube /home/ec2-user/data
+          chmod -R 775 /home/ec2-user/data
+          cp /etc/rancher/k3s/k3s.yaml /home/ec2-user/.kube/config
+          chown ec2-user:ec2-user /home/ec2-user/.kube/config
+          chmod 600 /home/ec2-user/.kube/config
+          echo "source <(kubectl completion bash)" >> /home/ec2-user/.bashrc
+          chown ec2-user:ec2-user /home/ec2-user/.bashrc
+
+Outputs:
+  InstanceId:
+    Description: "EC2 instance ID for the k3s node"
+    Value: !Ref LabK3sInstance
+
+  VPCId:
+    Description: "VPC ID"
+    Value: !Ref LabVPC
