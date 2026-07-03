@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: simple-statefulset
+spec:
+  clusterIP: None
+  selector:
+    app: simple-statefulset
+  ports:
+    - name: web
+      port: 80
+      targetPort: 80
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: simple-statefulset
+spec:
+  serviceName: simple-statefulset
+  replicas: 3
+  selector:
+    matchLabels:
+      app: simple-statefulset
+  template:
+    metadata:
+      labels:
+        app: simple-statefulset
+    spec:
+      containers:
+        - name: busybox
+          image: busybox
+          command:
+            - sh
+            - -c
+            - |
+              echo "Hello from $(hostname)" && sleep 3600

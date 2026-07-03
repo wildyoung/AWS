@@ -1,0 +1,195 @@
+===== 00 Cluster ready =====
+NAME                                             STATUS   ROLES    AGE   VERSION        INTERNAL-IP   EXTERNAL-IP   OS-IMAGE                        KERNEL-VERSION                            CONTAINER-RUNTIME
+lab15-k3s-node   Ready    <none>   1s    v1.36.2+k3s1   <node-private-ip>   <none>        Amazon Linux 2023.12.20260629   6.1.175-219.359.amzn2023.x86_64 (amd64)   containerd://<runtime-version>
+
+
+===== 01 Deployment owns ReplicaSet and Pods =====
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE
+webui   3/3     3            3           26s
+NAME               DESIRED   CURRENT   READY   AGE
+webui-576bb7fc48   3         3         3       27s
+NAME                     READY   STATUS    RESTARTS   AGE   IP          NODE                                             NOMINATED NODE   READINESS GATES
+webui-576bb7fc48-hd456   1/1     Running   0          27s   10.42.0.9   lab15-k3s-node   <none>           <none>
+webui-576bb7fc48-js6ct   1/1     Running   0          27s   10.42.0.6   lab15-k3s-node   <none>           <none>
+webui-576bb7fc48-x9rcm   1/1     Running   0          27s   10.42.0.8   lab15-k3s-node   <none>           <none>
+
+
+===== 02 ReplicationController self-healing and scale =====
+NAME       DESIRED   CURRENT   READY   AGE
+rc-nginx   3         3         3       8s
+NAME             READY   STATUS    RESTARTS   AGE   IP           NODE                                             NOMINATED NODE   READINESS GATES   LABELS
+rc-nginx-6mm4b   1/1     Running   0          9s    10.42.0.12   lab15-k3s-node   <none>           <none>            app=webui
+rc-nginx-8kv47   1/1     Running   0          9s    10.42.0.13   lab15-k3s-node   <none>           <none>            app=webui
+rc-nginx-v6dqh   1/1     Running   0          9s    10.42.0.14   lab15-k3s-node   <none>           <none>            app=webui
+deleted pod: rc-nginx-6mm4b
+NAME       DESIRED   CURRENT   READY   AGE
+rc-nginx   3         3         3       19s
+NAME             READY   STATUS    RESTARTS   AGE   IP           NODE                                             NOMINATED NODE   READINESS GATES   LABELS
+rc-nginx-8kv47   1/1     Running   0          19s   10.42.0.13   lab15-k3s-node   <none>           <none>            app=webui
+rc-nginx-gn99l   1/1     Running   0          10s   10.42.0.15   lab15-k3s-node   <none>           <none>            app=webui
+rc-nginx-v6dqh   1/1     Running   0          19s   10.42.0.14   lab15-k3s-node   <none>           <none>            app=webui
+NAME       DESIRED   CURRENT   READY   AGE
+rc-nginx   2         2         2       27s
+NAME             READY   STATUS    RESTARTS   AGE   IP           NODE                                             NOMINATED NODE   READINESS GATES   LABELS
+rc-nginx-8kv47   1/1     Running   0          28s   10.42.0.13   lab15-k3s-node   <none>           <none>            app=webui
+rc-nginx-gn99l   1/1     Running   0          19s   10.42.0.15   lab15-k3s-node   <none>           <none>            app=webui
+redis has app=webui label, so RC selector can affect it
+NAME             READY   STATUS    RESTARTS   AGE   IP           NODE                                             NOMINATED NODE   READINESS GATES   LABELS
+rc-nginx-8kv47   1/1     Running   0          36s   10.42.0.13   lab15-k3s-node   <none>           <none>            app=webui
+rc-nginx-gn99l   1/1     Running   0          27s   10.42.0.15   lab15-k3s-node   <none>           <none>            app=webui
+
+
+===== 03 ReplicaSet matchExpressions and orphan cascade =====
+NAME       DESIRED   CURRENT   READY   AGE
+rs-exam1   3         3         3       9s
+NAME       DESIRED   CURRENT   READY   AGE
+rs-nginx   3         3         3       8s
+NAME             READY   STATUS    RESTARTS   AGE   IP           NODE                                             NOMINATED NODE   READINESS GATES   LABELS
+rs-nginx-p8t9n   1/1     Running   0          8s    10.42.0.21   lab15-k3s-node   <none>           <none>            app=webui
+rs-nginx-qkbvj   1/1     Running   0          8s    10.42.0.20   lab15-k3s-node   <none>           <none>            app=webui
+rs-nginx-xgsxw   1/1     Running   0          8s    10.42.0.19   lab15-k3s-node   <none>           <none>            app=webui
+deleted pod: rs-nginx-p8t9n
+NAME       DESIRED   CURRENT   READY   AGE
+rs-nginx   3         3         3       18s
+NAME             READY   STATUS    RESTARTS   AGE   IP           NODE                                             NOMINATED NODE   READINESS GATES   LABELS
+rs-nginx-jq9gj   1/1     Running   0          9s    10.42.0.22   lab15-k3s-node   <none>           <none>            app=webui
+rs-nginx-qkbvj   1/1     Running   0          18s   10.42.0.20   lab15-k3s-node   <none>           <none>            app=webui
+rs-nginx-xgsxw   1/1     Running   0          18s   10.42.0.19   lab15-k3s-node   <none>           <none>            app=webui
+NAME       DESIRED   CURRENT   READY   AGE
+rs-nginx   2         2         2       27s
+after deleting ReplicaSet with orphan cascade
+NAME             READY   STATUS    RESTARTS   AGE   IP           NODE                                             NOMINATED NODE   READINESS GATES   LABELS
+rs-nginx-qkbvj   1/1     Running   0          32s   10.42.0.20   lab15-k3s-node   <none>           <none>            app=webui
+rs-nginx-xgsxw   1/1     Running   0          32s   10.42.0.19   lab15-k3s-node   <none>           <none>            app=webui
+
+
+===== 04 Deployment recreates deleted Pod and ReplicaSet =====
+NAME           READY   UP-TO-DATE   AVAILABLE   AGE
+deploy-nginx   3/3     3            3           2s
+NAME                      DESIRED   CURRENT   READY   AGE
+deploy-nginx-6895588dd6   3         3         3       2s
+NAME                            READY   STATUS    RESTARTS   AGE   IP           NODE                                             NOMINATED NODE   READINESS GATES
+deploy-nginx-6895588dd6-9drfq   1/1     Running   0          2s    10.42.0.23   lab15-k3s-node   <none>           <none>
+deploy-nginx-6895588dd6-f4whf   1/1     Running   0          2s    10.42.0.25   lab15-k3s-node   <none>           <none>
+deploy-nginx-6895588dd6-nj565   1/1     Running   0          2s    10.42.0.24   lab15-k3s-node   <none>           <none>
+after deleting pod: deploy-nginx-6895588dd6-9drfq
+NAME           READY   UP-TO-DATE   AVAILABLE   AGE
+deploy-nginx   3/3     3            3           13s
+NAME                            READY   STATUS    RESTARTS   AGE   IP           NODE                                             NOMINATED NODE   READINESS GATES
+deploy-nginx-6895588dd6-88c2h   1/1     Running   0          10s   10.42.0.26   lab15-k3s-node   <none>           <none>
+deploy-nginx-6895588dd6-f4whf   1/1     Running   0          13s   10.42.0.25   lab15-k3s-node   <none>           <none>
+deploy-nginx-6895588dd6-nj565   1/1     Running   0          13s   10.42.0.24   lab15-k3s-node   <none>           <none>
+after deleting replicaset: deploy-nginx-6895588dd6
+NAME           READY   UP-TO-DATE   AVAILABLE   AGE
+deploy-nginx   3/3     3            3           26s
+NAME                      DESIRED   CURRENT   READY   AGE
+deploy-nginx-6895588dd6   3         3         3       12s
+NAME                            READY   STATUS    RESTARTS   AGE   IP           NODE                                             NOMINATED NODE   READINESS GATES
+deploy-nginx-6895588dd6-hz4gs   1/1     Running   0          13s   10.42.0.28   lab15-k3s-node   <none>           <none>
+deploy-nginx-6895588dd6-kcsqs   1/1     Running   0          13s   10.42.0.29   lab15-k3s-node   <none>           <none>
+deploy-nginx-6895588dd6-ndmrg   1/1     Running   0          13s   10.42.0.27   lab15-k3s-node   <none>           <none>
+
+
+===== 05 Deployment rolling update and rollback =====
+rolled out nginx:1.15
+rolled out nginx:1.16
+rolled out nginx:1.17
+rolled out nginx:1.18
+deployment.apps/app-deploy
+REVISION  CHANGE-CAUSE
+1         version 1.14
+2         version 1.15
+3         version 1.16
+4         version 1.17
+5         version 1.18
+
+NAME         READY   UP-TO-DATE   AVAILABLE   AGE
+app-deploy   7/7     7            7           44s
+NAME                    DESIRED   CURRENT   READY   AGE
+app-deploy-5c6974d7f5   7         7         7       12s
+app-deploy-5f79489758   0         0         0       42s
+app-deploy-65cc8fb49    0         0         0       32s
+app-deploy-6fb8cb8fcf   0         0         0       45s
+app-deploy-79b6444cfb   0         0         0       23s
+rolled back to previous revision
+deployment.apps/app-deploy
+REVISION  CHANGE-CAUSE
+1         version 1.14
+2         version 1.15
+3         version 1.16
+5         version 1.18
+6         version 1.17
+
+NAME         READY   UP-TO-DATE   AVAILABLE   AGE
+app-deploy   7/7     7            7           51s
+
+
+===== 06 Deployment rolling strategy =====
+strategy=RollingUpdate maxSurge=25% maxUnavailable=25%
+deployment.apps/deploy-nginx
+REVISION  CHANGE-CAUSE
+1         version 1.14
+2         version 1.15
+
+NAME                      DESIRED   CURRENT   READY   AGE
+deploy-nginx-5f79489758   3         3         3       4s
+deploy-nginx-6fb8cb8fcf   0         0         0       6s
+
+
+===== 07 DaemonSet one Pod per node =====
+NAME              DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE
+nginx-daemonset   1         1         1       1            1           <none>          9s
+NAME                    READY   STATUS    RESTARTS   AGE   IP           NODE                                             NOMINATED NODE   READINESS GATES
+nginx-daemonset-nqb5m   1/1     Running   0          8s    10.42.0.78   lab15-k3s-node   <none>           <none>
+NODE_NAME=lab15-k3s-node POD_NAME=nginx-daemonset-nqb5m POD_IP=10.42.0.78
+
+
+===== 08 Job completion =====
+NAME            STATUS     COMPLETIONS   DURATION   AGE
+scheduled-job   Complete   1/1           37s        37s
+NAME                  READY   STATUS      RESTARTS   AGE   IP           NODE                                             NOMINATED NODE   READINESS GATES
+scheduled-job-m5md6   0/1     Completed   0          37s   10.42.0.79   lab15-k3s-node   <none>           <none>
+Hello, Kubernetes!
+
+
+===== 09 CronJob scheduled run =====
+NAME            SCHEDULE      TIMEZONE   SUSPEND   ACTIVE   LAST SCHEDULE   AGE
+hello-cronjob   */2 * * * *   <none>     False     1        2s              113s
+NAME                     STATUS    COMPLETIONS   DURATION   AGE
+hello-cronjob-29718188   Running   0/1           3s         3s
+NAME                           READY   STATUS    RESTARTS   AGE   IP           NODE                                             NOMINATED NODE   READINESS GATES
+hello-cronjob-29718188-tb29b   1/1     Running   0          3s    10.42.0.80   lab15-k3s-node   <none>           <none>
+Hello, Kubernetes from CronJob!
+
+
+===== 10 StatefulSet stable ordinal and ordered scale =====
+NAME                 READY   AGE
+simple-statefulset   3/3     6s
+NAME                   READY   STATUS    RESTARTS   AGE   IP           NODE                                             NOMINATED NODE   READINESS GATES
+simple-statefulset-0   1/1     Running   0          6s    10.42.0.81   lab15-k3s-node   <none>           <none>
+simple-statefulset-1   1/1     Running   0          4s    10.42.0.82   lab15-k3s-node   <none>           <none>
+simple-statefulset-2   1/1     Running   0          2s    10.42.0.83   lab15-k3s-node   <none>           <none>
+Hello from simple-statefulset-0
+simple-statefulset-0 was recreated with the same ordinal
+NAME                   READY   STATUS    RESTARTS   AGE   IP           NODE                                             NOMINATED NODE   READINESS GATES
+simple-statefulset-0   1/1     Running   0          3s    10.42.0.84   lab15-k3s-node   <none>           <none>
+simple-statefulset-1   1/1     Running   0          40s   10.42.0.82   lab15-k3s-node   <none>           <none>
+simple-statefulset-2   1/1     Running   0          38s   10.42.0.83   lab15-k3s-node   <none>           <none>
+scaled out to 5 replicas
+NAME                   READY   STATUS    RESTARTS   AGE
+simple-statefulset-0   1/1     Running   0          8s
+simple-statefulset-1   1/1     Running   0          45s
+simple-statefulset-2   1/1     Running   0          43s
+simple-statefulset-3   1/1     Running   0          4s
+simple-statefulset-4   1/1     Running   0          3s
+scaled in to 2 replicas
+NAME                   READY   STATUS        RESTARTS   AGE
+simple-statefulset-0   1/1     Running       0          9s
+simple-statefulset-1   1/1     Running       0          46s
+simple-statefulset-2   1/1     Running       0          44s
+simple-statefulset-3   1/1     Running       0          5s
+simple-statefulset-4   1/1     Terminating   0          4s
+
+
+===== 11 Cleanup check =====
+No resources found in default namespace.

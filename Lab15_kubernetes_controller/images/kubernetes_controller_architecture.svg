@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="920" viewBox="0 0 1600 920" role="img" aria-labelledby="title desc">
+  <title id="title">Lab15 Kubernetes Controller Architecture</title>
+  <desc id="desc">Temporary AWS EC2 k3s lab and Kubernetes controller relationships.</desc>
+  <defs>
+    <style>
+      .bg { fill: #f8fafc; }
+      .aws { fill: #fff7ed; stroke: #fb923c; stroke-width: 2.5; }
+      .node { fill: #ffffff; stroke: #94a3b8; stroke-width: 2; }
+      .cluster { fill: #eff6ff; stroke: #3b82f6; stroke-width: 2.5; }
+      .api { fill: #e0f2fe; stroke: #0284c7; stroke-width: 2; }
+      .ctrl { fill: #ecfdf5; stroke: #10b981; stroke-width: 2; }
+      .work { fill: #f8fafc; stroke: #64748b; stroke-width: 2; }
+      .batch { fill: #fefce8; stroke: #eab308; stroke-width: 2; }
+      .state { fill: #fdf2f8; stroke: #ec4899; stroke-width: 2; }
+      .title { font: 700 36px Arial, sans-serif; fill: #0f172a; }
+      .subtitle { font: 500 19px Arial, sans-serif; fill: #475569; }
+      .h { font: 700 22px Arial, sans-serif; fill: #0f172a; }
+      .b { font: 500 16px Arial, sans-serif; fill: #334155; }
+      .s { font: 500 14px Arial, sans-serif; fill: #64748b; }
+      .code { font: 600 15px "SFMono-Regular", Consolas, monospace; fill: #1e293b; }
+      .arrow { stroke: #334155; stroke-width: 2.5; fill: none; marker-end: url(#arrow); }
+      .soft { stroke: #64748b; stroke-width: 2; fill: none; marker-end: url(#arrowSoft); }
+    </style>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#334155"/>
+    </marker>
+    <marker id="arrowSoft" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" width="1600" height="920"/>
+  <text x="70" y="70" class="title">Lab15 Kubernetes Controller</text>
+  <text x="70" y="106" class="subtitle">Controller는 Desired State와 Current State를 비교하고 필요한 리소스를 계속 맞추는 control loop입니다.</text>
+
+  <rect x="70" y="145" width="1460" height="705" rx="26" class="aws"/>
+  <text x="105" y="190" class="h">AWS 임시 실습 환경</text>
+  <text x="105" y="222" class="s">CloudFormation 단일 EC2 + SSM + k3s, 실습 후 스택 삭제</text>
+
+  <rect x="115" y="275" width="350" height="430" rx="18" class="node"/>
+  <text x="145" y="320" class="h">EC2 k3s Node</text>
+  <text x="145" y="358" class="b">단일 노드 클러스터</text>
+  <text x="145" y="392" class="code">kubectl apply</text>
+  <text x="145" y="422" class="code">kubectl get / scale</text>
+  <text x="145" y="452" class="code">kubectl rollout undo</text>
+  <text x="145" y="482" class="code">kubectl logs</text>
+  <rect x="145" y="615" width="290" height="52" rx="12" fill="#e0f2fe" stroke="#0284c7" stroke-width="2"/>
+  <text x="168" y="648" class="b">결과 로그는 마스킹 후 저장</text>
+
+  <rect x="525" y="235" width="945" height="560" rx="24" class="cluster"/>
+  <text x="565" y="282" class="h">Kubernetes Cluster</text>
+  <text x="565" y="314" class="s">API Server에 선언한 spec을 Controller가 관찰하고 조정</text>
+
+  <rect x="610" y="350" width="260" height="88" rx="14" class="api"/>
+  <text x="642" y="386" class="h">API Server</text>
+  <text x="642" y="416" class="s">desired state 저장</text>
+
+  <rect x="990" y="350" width="270" height="88" rx="14" class="ctrl"/>
+  <text x="1022" y="386" class="h">Controller Loop</text>
+  <text x="1022" y="416" class="s">watch → compare → act</text>
+
+  <rect x="585" y="505" width="180" height="110" rx="14" class="ctrl"/>
+  <text x="608" y="542" class="h">Deployment</text>
+  <text x="608" y="574" class="s">rollout / rollback</text>
+
+  <rect x="815" y="505" width="180" height="110" rx="14" class="ctrl"/>
+  <text x="840" y="542" class="h">DaemonSet</text>
+  <text x="840" y="574" class="s">노드마다 1개</text>
+
+  <rect x="1045" y="505" width="180" height="110" rx="14" class="batch"/>
+  <text x="1068" y="542" class="h">Job / CronJob</text>
+  <text x="1068" y="574" class="s">일회성 / 예약</text>
+
+  <rect x="1275" y="505" width="180" height="110" rx="14" class="state"/>
+  <text x="1300" y="542" class="h">StatefulSet</text>
+  <text x="1300" y="574" class="s">고정 ordinal</text>
+
+  <rect x="585" y="675" width="180" height="76" rx="14" class="work"/>
+  <text x="615" y="722" class="h">ReplicaSet</text>
+
+  <rect x="815" y="675" width="180" height="76" rx="14" class="work"/>
+  <text x="875" y="722" class="h">Pods</text>
+
+  <rect x="1045" y="675" width="180" height="76" rx="14" class="batch"/>
+  <text x="1080" y="722" class="h">Job Pods</text>
+
+  <rect x="1275" y="675" width="180" height="76" rx="14" class="state"/>
+  <text x="1305" y="722" class="h">Ordered Pods</text>
+
+  <path class="arrow" d="M 465 490 C 505 460, 555 415, 605 395"/>
+  <path class="arrow" d="M 870 394 L 985 394"/>
+  <path class="soft" d="M 675 615 L 675 670"/>
+  <path class="soft" d="M 765 713 L 810 713"/>
+  <path class="soft" d="M 905 615 L 905 670"/>
+  <path class="soft" d="M 1135 615 L 1135 670"/>
+  <path class="soft" d="M 1365 615 L 1365 670"/>
+</svg>

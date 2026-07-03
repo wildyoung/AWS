@@ -18,6 +18,7 @@ AWS 개념과 실습 기록입니다.
 - [Lab12 Disaster Recovery](Lab12_disaster_recovery/README.md)
 - [Lab13 Kubernetes Basic](Lab13_kubernetes_basic/README.md)
 - [Lab14 Kubernetes Pod](Lab14_kubernetes_pod/README.md)
+- [Lab15 Kubernetes Controller](Lab15_kubernetes_controller/README.md)
 - [Part2 Docker](Part2_Docker/README.md)
 
 ## 정리한 내용
@@ -81,6 +82,10 @@ AWS 개념과 실습 기록입니다.
 - Pod IP 할당, Pod 생명주기, Single/Multi Container Pod
 - LivenessProbe 기반 Self-healing, Init Container, 환경 변수 주입
 - Pod 내부 localhost 통신과 컨테이너 간 네트워크 공유
+- Kubernetes Controller의 watch, compare, act control loop
+- ReplicationController와 ReplicaSet의 Pod 복제본 유지 방식
+- Deployment rolling update, rollout history, rollback
+- DaemonSet, Job, CronJob, StatefulSet의 목적과 동작 차이
 
 ## 읽는 순서
 
@@ -99,6 +104,7 @@ AWS 개념과 실습 기록입니다.
 13. `Part2_Docker`: 클라우드 네이티브 개념에서 Docker 기본 명령, 네트워크/볼륨, Dockerfile, 이미지 관리, Compose까지 정리합니다.
 14. `Lab13_kubernetes_basic`: EC2 단일 노드 k3s 환경에서 Kubernetes 구조, kubectl, namespace, YAML manifest, Service 흐름을 실습합니다.
 15. `Lab14_kubernetes_pod`: Pod IP, 단일/멀티 컨테이너 Pod, livenessProbe, init container, 환경 변수 전달을 실습합니다.
+16. `Lab15_kubernetes_controller`: RC, ReplicaSet, Deployment, DaemonSet, Job, CronJob, StatefulSet의 Controller 동작을 실습합니다.
 
 ## 보안 주의사항
 
